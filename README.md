@@ -6,8 +6,6 @@
 |                                 **BE**                                  |                                 **BE**                                  |                                 **FE**                                 |                                 **FE**                                 |
 |                       [@flydog98](https://github.com/flydog98)                        |                       [@LuizyHub](https://github.com/LuizyHub)                        |                   [@YuHyun-P](https://github.com/YuHyun-P)                    |                  [@yunchaehyun](https://github.com/yunchaehyun)                   |
 
-# 협업 전략
-
 <br/>
 
 
