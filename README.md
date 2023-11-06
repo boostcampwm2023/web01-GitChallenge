@@ -1,11 +1,12 @@
 # web01-GitChallenge
 ## 팀원 소개
+|                                  박용준                                   |                                  박정제                                   |                                 박유현                                  |                                 윤채현                                  |
+| :----------------------------------------------------------------------------: | :----------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/50614833?v=4" width="120" /> | <img src="https://avatars.githubusercontent.com/u/104267255?v=4" width="120" /> | <img src="https://avatars.githubusercontent.com/u/96400112?v=4" width="120"> | <img src="https://avatars.githubusercontent.com/u/79246447?v=4" width="120"> |
+|                                 **BE**                                  |                                 **BE**                                  |                                 **FE**                                 |                                 **FE**                                 |
+|                       [@flydog98](https://github.com/flydog98)                        |                       [@LuizyHub](https://github.com/LuizyHub)                        |                   [@YuHyun-P](https://github.com/YuHyun-P)                    |                  [@yunchaehyun](https://github.com/yunchaehyun)                   |
 
-| 박용준 | 박정제 | 박유현 | 윤채현 |
-| --- | --- | --- | --- |
-|     <img width="120px" src="https://avatars.githubusercontent.com/u/50614833?v=4">  |  <img width="120px" src="https://avatars.githubusercontent.com/u/104267255?v=4"> |  <img width="120px" src="https://avatars.githubusercontent.com/u/96400112?v=4"> |  <img width="120px" src="https://avatars.githubusercontent.com/u/79246447?v=4">    |
-| [@flydog98](https://github.com/flydog98) |  [@LuizyHub](https://github.com/LuizyHub) |  [@YuHyun-P](https://github.com/YuHyun-P) |  [@yunchaehyun](https://github.com/yunchaehyun) |
-| **BE** | **BE** | **FE** | **FE** |
+# 협업 전략
 
 <br/>
 
