@@ -1,0 +1,10 @@
+{
+  "name": "web01-GitChallenge",
+  "packageManager": "yarn@3.4.1",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  },
+  "scripts": {
+    "postinstall": "husky install"
+  }
+}
