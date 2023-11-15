@@ -1,0 +1,12 @@
+{
+  "packageManager": "yarn@4.0.2",
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "pinst": "^3.0.0"
+  },
+  "scripts": {
+    "postinstall": "husky install",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable"
+  }
+}
