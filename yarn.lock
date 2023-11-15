@@ -29,5 +29,26 @@ __metadata:
   dependencies:
     husky: "npm:^8.0.0"
     pinst: "npm:^3.0.0"
+    typescript: "npm:5.0.0-beta"
   languageName: unknown
   linkType: soft
+
+"typescript@npm:5.0.0-beta":
+  version: 5.0.0-beta
+  resolution: "typescript@npm:5.0.0-beta"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 20065f1e868f1de9fddcf80078794c8f0411df60c765d1fe95d7c8e02df20eae4a7b544cb3615e59cbddb0fadb6857bc03294c18b1e8404556f2dc466bd43691
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.0.0-beta#optional!builtin<compat/typescript>":
+  version: 5.0.0-beta
+  resolution: "typescript@patch:typescript@npm%3A5.0.0-beta#optional!builtin<compat/typescript>::version=5.0.0-beta&hash=8b0de9"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 547a6e602bd76b921e6883df1694befa4e736139c0417cffd484eba3e47c077ee2e7d55eac5bd702f12e6456562167cc45f09b3df8b96f24062ff05e104a868f
+  languageName: node
+  linkType: hard

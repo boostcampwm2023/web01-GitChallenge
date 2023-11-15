@@ -27,7 +27,8 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["husky", "npm:8.0.3"],\
-          ["pinst", "npm:3.0.0"]\
+          ["pinst", "npm:3.0.0"],\
+          ["typescript", "patch:typescript@npm%3A5.0.0-beta#optional!builtin<compat/typescript>::version=5.0.0-beta&hash=8b0de9"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -56,9 +57,19 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["root-workspace-0b6124", "workspace:."],\
           ["husky", "npm:8.0.3"],\
-          ["pinst", "npm:3.0.0"]\
+          ["pinst", "npm:3.0.0"],\
+          ["typescript", "patch:typescript@npm%3A5.0.0-beta#optional!builtin<compat/typescript>::version=5.0.0-beta&hash=8b0de9"]\
         ],\
         "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["typescript", [\
+      ["patch:typescript@npm%3A5.0.0-beta#optional!builtin<compat/typescript>::version=5.0.0-beta&hash=8b0de9", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/typescript-patch-61af667511-10c0.zip/node_modules/typescript/",\
+        "packageDependencies": [\
+          ["typescript", "patch:typescript@npm%3A5.0.0-beta#optional!builtin<compat/typescript>::version=5.0.0-beta&hash=8b0de9"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]]\
   ]\
