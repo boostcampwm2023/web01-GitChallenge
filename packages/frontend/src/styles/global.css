@@ -1,3 +1,111 @@
 @import "reset.css";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
+
+:root[data-theme] {
+    color-scheme: light dark;
+}
+
+:root[data-theme] {
+    --mm-static-color-blue-50: #E8F3FF;
+    --mm-static-color-blue-700: #1B64DA;
+    --mm-static-color-brown-50: #F4EFEE;
+    --mm-static-color-brown-100: #DED5D4;
+    --mm-static-color-brown-400: #B19792;
+    --mm-static-color-brown-500: #917974;
+    --mm-static-color-coral-50: #FFF1ED;
+    --mm-static-color-coral-100: #FFE3DC;
+    --mm-static-color-coral-400: #FF977D;
+    --mm-static-color-coral-500: #FF7B5A;
+    --mm-static-color-green-50: #F0FAF6;
+    --mm-static-color-green-700: #029359;
+    --mm-static-color-orange-50: #FFF3E0;
+    --mm-static-color-orange-700: #F57800;
+    --mm-static-color-purple-50: #F9F0FC;
+    --mm-static-color-purple-700: #8222A2;
+    --mm-static-color-red-50: #FFEEEE;
+    --mm-static-color-red-700: #D22030;
+    --mm-static-color-teal-50: #EDF8F8;
+    --mm-static-color-teal-700: #0C8585;
+    --mm-static-color-yellow-50: #FFF9E7;
+    --mm-static-color-yellow-700: #FAA131;
+    --mm-semantic-color-badge-blue-bg: var(--mm-static-color-blue-50);
+    --mm-semantic-color-badge-blue: var(--mm-static-color-blue-700);
+    --mm-semantic-color-badge-green-bg: var(--mm-static-color-green-50);
+    --mm-semantic-color-badge-green: var(--mm-static-color-green-700);
+    --mm-semantic-color-badge-orange-bg: var(--mm-static-color-orange-50);
+    --mm-semantic-color-badge-orange: var(--mm-static-color-orange-700);
+    --mm-semantic-color-badge-purple-bg: var(--mm-static-color-purple-50);
+    --mm-semantic-color-badge-purple: var(--mm-static-color-purple-700);
+    --mm-semantic-color-badge-red-bg: var(--mm-static-color-red-50);
+    --mm-semantic-color-badge-red: var(--mm-static-color-red-700);
+    --mm-semantic-color-badge-teal-bg: var(--mm-static-color-teal-50);
+    --mm-semantic-color-badge-teal: var(--mm-static-color-teal-700);
+    --mm-semantic-color-badge-yellow-bg: var(--mm-static-color-yellow-50);
+    --mm-semantic-color-badge-yellow: var(--mm-static-color-yellow-700);
+    --mm-semantic-color-primary-hover: var(--mm-static-color-coral-400);
+    --mm-semantic-color-primary-low-hover: var(--mm-static-color-coral-100);
+    --mm-semantic-color-primary-low: var(--mm-static-color-coral-50);
+    --mm-semantic-color-primary: var(--mm-static-color-coral-500);
+    --mm-semantic-color-secondary-hover: var(--mm-static-color-brown-400);
+    --mm-semantic-color-secondary-low-hover: var(--mm-static-color-brown-100);
+    --mm-semantic-color-secondary-low: var(--mm-static-color-brown-50);
+    --mm-semantic-color-secondary: var(--mm-static-color-brown-500);
+    /* Font Size */
+    --mm-scale-font-size-25: 11px;
+    --mm-scale-font-size-50: 12px;
+    --mm-scale-font-size-75: 13px;
+    --mm-scale-font-size-100: 14px;
+    --mm-scale-font-size-150: 16px;
+    --mm-scale-font-size-200: 18px;
+    --mm-scale-font-size-300: 20px;
+    --mm-scale-font-size-400: 24px;
+    --mm-scale-font-size-500: 26px;
+    --mm-scale-font-size-600: 30px;
+    /* Font Weight */
+    --mm-static-font-weight-regular: 400;
+    --mm-static-font-weight-bold: 700;
+    /* Line Height */
+    --mm-static-line-height-small: 135%;
+    --mm-static-line-height-medium: 150%;
+    /* Letter Spacing */
+    --mm-static-letter-spacing-none: 0;
+    --mm-static-letter-spacing-medium: -0.3px;
+    --mm-static-letter-spacing-large: -0.7px;
+}
+
+:root[data-theme='light']{
+    --mm-scale-color-brown-50: #F4EFEE;
+    --mm-scale-color-brown-100: #DED5D4;
+    --mm-scale-color-brown-200: #CFC0BE;
+    --mm-scale-color-brown-300: #C4B0AD;
+    --mm-scale-color-brown-400: #B19792;
+    --mm-scale-color-brown-500: #917974;
+    --mm-scale-color-brown-600: #76605C;
+    --mm-scale-color-brown-700: #675552;
+    --mm-scale-color-brown-800: #5A4B48;
+    --mm-scale-color-brown-900: #4A3C39;
+    --mm-scale-color-brown-950: #413932;
+    --mm-scale-color-coral-50: #FFF1ED;
+    --mm-scale-color-coral-100: #FFE3DC;
+    --mm-scale-color-coral-200: #FFCABC;
+    --mm-scale-color-coral-300: #FFB4A1;
+    --mm-scale-color-coral-400: #FF977D;
+    --mm-scale-color-coral-500: #FF7B5A;
+    --mm-scale-color-coral-600: #FC6E4A;
+    --mm-scale-color-coral-700: #F15F3B;
+    --mm-scale-color-coral-800: #E64F29;
+    --mm-scale-color-coral-900: #CD4B2B;
+    --mm-scale-color-coral-950: #A93C20;
+    --mm-scale-color-grey-00: #FFFFFF;
+    --mm-scale-color-grey-50: #F7F8FA;
+    --mm-scale-color-grey-100: #F2F3F6;
+    --mm-scale-color-grey-200: #EAEBEE;
+    --mm-scale-color-grey-300: #DCDEE3;
+    --mm-scale-color-grey-400: #D1D3D8;
+    --mm-scale-color-grey-500: #ADB1BA;
+    --mm-scale-color-grey-600: #868B94;
+    --mm-scale-color-grey-700: #4D5159;
+    --mm-scale-color-grey-800: #393A40;
+    --mm-scale-color-grey-900: #212124;
+}
