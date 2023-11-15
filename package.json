@@ -8,5 +8,8 @@
     "postinstall": "husky install",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
