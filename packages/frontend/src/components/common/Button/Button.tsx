@@ -1,5 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
+import classnames from "../../../utils/classnames";
+
 import {
   type ButtonVariants,
   buttonBaseStyle,
@@ -25,26 +27,20 @@ export function Button({
   disabled = false,
   onClick,
 }: ButtonProps) {
+  const buttonStyle = classnames(
+    buttonBaseStyle,
+    buttonVariantStyle[variant],
+    full ? widthFull : ""
+  );
+
   return (
     <button
       type={type === "button" ? "button" : "submit"}
-      className={getButtonStyle({ full, variant })}
+      className={buttonStyle}
       onClick={onClick}
       disabled={disabled}
     >
       {children}
     </button>
   );
-}
-
-function getButtonStyle({
-  full,
-  variant,
-}: {
-  full: boolean;
-  variant: ButtonVariants;
-}) {
-  return [buttonBaseStyle, buttonVariantStyle[variant], full ? widthFull : ""]
-    .join(" ")
-    .trim();
 }
