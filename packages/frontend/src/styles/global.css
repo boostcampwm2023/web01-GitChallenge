@@ -167,7 +167,7 @@
     letter-spacing: var(--mm-static-letter-spacing-medium);
 }
 
-.mm-semantic-typography-title3--bold{
+.mm-semantic-typography-title3-bold{
     font-size: var(--mm-scale-font-size-150);
     font-weight: var(--mm-static-font-weight-bold);
     line-height: var(--mm-static-line-height-small);
