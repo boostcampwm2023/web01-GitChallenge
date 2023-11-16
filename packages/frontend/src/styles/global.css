@@ -3,10 +3,6 @@
 @import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
 
 :root[data-theme] {
-    color-scheme: light dark;
-}
-
-:root {
     --mm-static-color-blue-50: #E8F3FF;
     --mm-static-color-blue-700: #1B64DA;
     --mm-static-color-brown-50: #F4EFEE;
@@ -74,7 +70,7 @@
     --mm-static-letter-spacing-large: -0.7px;
 }
 
-:root{
+:root[data-theme="light"]{
     --mm-scale-color-brown-50: #F4EFEE;
     --mm-scale-color-brown-100: #DED5D4;
     --mm-scale-color-brown-200: #CFC0BE;
@@ -109,6 +105,43 @@
     --mm-scale-color-grey-800: #393A40;
     --mm-scale-color-grey-900: #212124;
     --mm-semantic-color-border: var(--mm-scale-color-grey-300);
+}
+
+:root[data-theme="dark"]{
+    --mm-scale-color-brown-50: #413932;
+    --mm-scale-color-brown-100: #4A3C39;
+    --mm-scale-color-brown-200: #5A4B48;
+    --mm-scale-color-brown-300: #675552;
+    --mm-scale-color-brown-400: #76605C;
+    --mm-scale-color-brown-500: #917974;
+    --mm-scale-color-brown-600: #B19792;
+    --mm-scale-color-brown-700: #C4B0AD;
+    --mm-scale-color-brown-800: #CFC0BE;
+    --mm-scale-color-brown-900: #DED5D4;
+    --mm-scale-color-brown-950: #F4EFEE;
+    --mm-scale-color-coral-50: #A93C20;
+    --mm-scale-color-coral-100: #CD4B2B;
+    --mm-scale-color-coral-200: #E64F29;
+    --mm-scale-color-coral-300: #F15F3B;
+    --mm-scale-color-coral-400: #FC6E4A;
+    --mm-scale-color-coral-500: #FF7B5A;
+    --mm-scale-color-coral-600: #FF977D;
+    --mm-scale-color-coral-700: #FFB4A1;
+    --mm-scale-color-coral-800: #FFCABC;
+    --mm-scale-color-coral-900: #FFE3DC;
+    --mm-scale-color-coral-950: #FFF1ED;
+    --mm-scale-color-grey-00: #212124;
+    --mm-scale-color-grey-50: #393A40;
+    --mm-scale-color-grey-100: #4D5159;
+    --mm-scale-color-grey-200: #868B94;
+    --mm-scale-color-grey-300: #ADB1BA;
+    --mm-scale-color-grey-400: #D1D3D8;
+    --mm-scale-color-grey-500: #DCDEE3;
+    --mm-scale-color-grey-600: #EAEBEE;
+    --mm-scale-color-grey-700: #F2F3F6;
+    --mm-scale-color-grey-800: #F7F8FA;
+    --mm-scale-color-grey-900: #FFFFFF;
+    --mm-semantic-color-border: var(--mm-scale-color-grey-100);
 }
 
 .mm-semantic-typography-h1{
