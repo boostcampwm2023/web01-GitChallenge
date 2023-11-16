@@ -43,7 +43,7 @@ const $semantic = {
   secondaryHover: "var(--mm-semantic-color-secondary-hover)",
   secondaryLow: "var(--mm-semantic-color-secondary-low)",
   secondaryLowHover: "var(--mm-semantic-color-secondary-low-hover)",
-  border: "var(--mm-scale-color-grey-300)",
+  border: "var(--mm-semantic-color-border)",
   badgeBlue: "var(--mm-semantic-color-badge-blue)",
   badgeBlueBg: "var(--mm-semantic-color-badge-blue-bg)",
   badgeGreen: "var(--mm-semantic-color-badge-green)",
