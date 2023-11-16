@@ -28,7 +28,9 @@
           "index"
         ]
       }
-    ]
+    ],
+    "react/require-default-props": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   },
   "settings": {
     "import/external-module-folders": [".yarn"]
