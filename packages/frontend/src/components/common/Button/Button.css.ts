@@ -6,7 +6,7 @@ import typography from "../../../styles/typography";
 export const widthFull = style({ width: "100%" });
 
 export const buttonBaseStyle = style([
-  typography.$semantic.title2Regular,
+  typography.$semantic.title3Regular,
   {
     height: 48,
     border: "1px solid transparent",
@@ -14,16 +14,16 @@ export const buttonBaseStyle = style([
     padding: "12px 30px",
 
     ":disabled": {
-      borderColor: color.$scale.grey200,
-      color: color.$scale.grey500,
-      backgroundColor: color.$scale.grey200,
+      borderColor: color.$semantic.bgDisabled,
+      color: color.$semantic.textDisabled,
+      backgroundColor: color.$semantic.bgDisabled,
     },
   },
 ]);
 
 export const buttonVariantStyle = styleVariants({
   primaryFill: {
-    color: color.$scale.grey00,
+    color: color.$semantic.textWhite,
     backgroundColor: color.$semantic.primary,
 
     selectors: {
@@ -34,7 +34,7 @@ export const buttonVariantStyle = styleVariants({
   },
 
   secondaryFill: {
-    color: color.$scale.grey00,
+    color: color.$semantic.textWhite,
     backgroundColor: color.$semantic.secondary,
 
     selectors: {
@@ -47,7 +47,7 @@ export const buttonVariantStyle = styleVariants({
   primaryLine: {
     border: `1px solid ${color.$semantic.primary}`,
     color: color.$semantic.primary,
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgWhite,
 
     selectors: {
       "&:hover:not(:disabled)": {
@@ -59,7 +59,7 @@ export const buttonVariantStyle = styleVariants({
   secondaryLine: {
     border: `1px solid ${color.$semantic.secondary}`,
     color: color.$semantic.secondary,
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgWhite,
 
     selectors: {
       "&:hover:not(:disabled)": {
