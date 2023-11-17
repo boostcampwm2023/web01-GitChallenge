@@ -2,6 +2,10 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
 
+* {
+  box-sizing: border-box;
+}
+
 :root[data-theme] {
   --mm-static-color-white: #ffffff;
   --mm-static-color-grey-200: #eaebee;
