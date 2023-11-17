@@ -3,6 +3,9 @@
 @import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
 
 :root[data-theme] {
+  --mm-static-color-white: #ffffff;
+  --mm-static-color-grey-200: #eaebee;
+  --mm-static-color-grey-500: #adb1ba;
   --mm-static-color-blue-50: #e8f3ff;
   --mm-static-color-blue-700: #1b64da;
   --mm-static-color-brown-50: #f4efee;
@@ -25,6 +28,10 @@
   --mm-static-color-teal-700: #0c8585;
   --mm-static-color-yellow-50: #fff9e7;
   --mm-static-color-yellow-700: #faa131;
+  --mm-semantic-color-text-white-default: var(--mm-static-color-white);
+  --mm-semantic-color-bg-white-default: var(--mm-static-color-white);
+  --mm-semantic-color-text-disabled: var(--mm-static-color-grey-500);
+  --mm-semantic-color-bg-disabled: var(--mm-static-color-grey-200);
   --mm-semantic-color-badge-blue-bg: var(--mm-static-color-blue-50);
   --mm-semantic-color-badge-blue: var(--mm-static-color-blue-700);
   --mm-semantic-color-badge-green-bg: var(--mm-static-color-green-50);
