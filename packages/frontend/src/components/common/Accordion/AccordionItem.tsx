@@ -4,10 +4,14 @@ import { itemStyle } from "./Accordion.css";
 import { useAccordion } from "./AccordionContextProvider";
 
 interface AccordionItemProps {
+  className?: string;
   children: ReactNode;
 }
 
-export default function AccordionItem({ children }: AccordionItemProps) {
+export default function AccordionItem({
+  className = itemStyle,
+  children,
+}: AccordionItemProps) {
   const accordionContext = useAccordion();
   if (!accordionContext) {
     throw new Error(
@@ -15,5 +19,5 @@ export default function AccordionItem({ children }: AccordionItemProps) {
     );
   }
 
-  return <li className={itemStyle}>{children}</li>;
+  return <li className={className}>{children}</li>;
 }
