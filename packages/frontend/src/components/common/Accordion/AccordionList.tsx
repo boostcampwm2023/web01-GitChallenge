@@ -4,10 +4,14 @@ import { listStyle } from "./Accordion.css";
 import { useAccordion } from "./AccordionContextProvider";
 
 interface AccordionListProps {
+  className?: string;
   children: ReactNode;
 }
 
-export default function AccordionList({ children }: AccordionListProps) {
+export default function AccordionList({
+  className = listStyle,
+  children,
+}: AccordionListProps) {
   const accordionContext = useAccordion();
   if (!accordionContext) {
     throw new Error(
@@ -15,5 +19,5 @@ export default function AccordionList({ children }: AccordionListProps) {
     );
   }
 
-  return <ul className={listStyle}>{children}</ul>;
+  return <ul className={className}>{children}</ul>;
 }
