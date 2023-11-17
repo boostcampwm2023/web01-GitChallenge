@@ -1,6 +1,6 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import color from "../../../../styles/color";
+import color from "../../../styles/color";
 
 export const displayBlock = style({
   display: "block",
@@ -16,7 +16,7 @@ export const iconBaseStyle = style({
   borderRadius: "50%",
 });
 
-export const iconStyle = styleVariants({
+export const iconVariantStyle = styleVariants({
   success: { backgroundColor: "#1F8CE6" },
   error: { backgroundColor: color.$scale.coral900 },
 });

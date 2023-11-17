@@ -4,7 +4,7 @@ import {
   toast as baseToast,
 } from "react-toastify";
 
-import { ErrorIcon, SuccessIcon } from "./Icon";
+import ToastIcon from "./ToastIcon";
 
 export default function toast<TData = unknown>(
   content: ToastContent<TData>,
@@ -16,11 +16,11 @@ export default function toast<TData = unknown>(
 toast.success = (content: string, options?: ToastOptions) =>
   toast(content, {
     ...options,
-    icon: SuccessIcon,
+    icon: ToastIcon.success,
   });
 
 toast.error = (content: string, options?: ToastOptions) =>
   toast(content, {
     ...options,
-    icon: ErrorIcon,
+    icon: ToastIcon.error,
   });
