@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { itemStyle } from "./Accordion.css";
+import * as styles from "./Accordion.css";
 import { useAccordion } from "./AccordionContextProvider";
 
 interface AccordionItemProps {
@@ -9,7 +9,7 @@ interface AccordionItemProps {
 }
 
 export default function AccordionItem({
-  className = itemStyle,
+  className = styles.item,
   children,
 }: AccordionItemProps) {
   const accordionContext = useAccordion();

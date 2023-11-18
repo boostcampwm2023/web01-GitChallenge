@@ -1,20 +1,34 @@
 import { MouseEventHandler, type ReactNode } from "react";
 
-import { summaryStyle } from "./Accordion.css";
+import classnames from "../../../utils/classnames";
+
+import * as styles from "./Accordion.css";
 import { useAccordion } from "./AccordionContextProvider";
 import ChevronIcon from "./ChevronIcon/ChevronIcon";
 
 interface AccordionSummaryProps {
+  color?: "black" | "grey";
+  size?: "md" | "sm";
   children: ReactNode;
 }
 
-export default function AccordionSummary({ children }: AccordionSummaryProps) {
+export default function AccordionSummary({
+  color = "black",
+  size = "md",
+  children,
+}: AccordionSummaryProps) {
   const accordionContext = useAccordion();
   if (!accordionContext) {
     throw new Error(
       "Accordion.Summary 컴포넌트는 Accordion 컴포넌트로 래핑해야 합니다."
     );
   }
+
+  const summaryStyle = classnames(
+    styles.summaryText[size],
+    styles.summaryColor[color],
+    styles.summaryContainer[size]
+  );
 
   const { open, onChange } = accordionContext;
   const chevronType = open ? "up" : "down";
@@ -29,7 +43,7 @@ export default function AccordionSummary({ children }: AccordionSummaryProps) {
     <summary className={summaryStyle} onClick={handleChange}>
       <div>{children}</div>
       <div>
-        <ChevronIcon type={chevronType} />
+        <ChevronIcon type={chevronType} size={size} />
       </div>
     </summary>
   );

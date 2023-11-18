@@ -1,23 +1,36 @@
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
 import color from "../../../../styles/color";
+import classnames from "../../../../utils/classnames";
 
-import containerStyle from "./ChevronIcon.css";
+import * as styles from "./ChevronIcon.css";
 
 interface ChevronIconProps {
-  type: keyof typeof chevronMap;
+  size: "md" | "sm";
+  type: keyof typeof chevronIconMap;
 }
 
-export default function ChevronIcon({ type }: ChevronIconProps) {
-  const Chevron = chevronMap[type];
+export default function ChevronIcon({ type, size }: ChevronIconProps) {
+  const containerStyle = classnames(
+    styles.containerBase,
+    styles.containerVariants[size]
+  );
+
+  const Chevron = chevronIconMap[type];
+
   return (
     <div className={containerStyle}>
-      <Chevron color={color.$scale.grey600} size={14} />
+      <Chevron color={color.$scale.grey600} size={chevronSizeMap[size]} />
     </div>
   );
 }
 
-const chevronMap = {
+const chevronIconMap = {
   up: BsChevronUp,
   down: BsChevronDown,
+};
+
+const chevronSizeMap = {
+  sm: 10,
+  md: 14,
 };

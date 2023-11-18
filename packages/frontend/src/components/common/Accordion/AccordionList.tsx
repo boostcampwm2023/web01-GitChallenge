@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { listStyle } from "./Accordion.css";
+import * as styles from "./Accordion.css";
 import { useAccordion } from "./AccordionContextProvider";
 
 interface AccordionListProps {
@@ -9,7 +9,7 @@ interface AccordionListProps {
 }
 
 export default function AccordionList({
-  className = listStyle,
+  className = styles.list,
   children,
 }: AccordionListProps) {
   const accordionContext = useAccordion();
