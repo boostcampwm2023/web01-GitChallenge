@@ -10,15 +10,7 @@ export class ProblemsController {
   async getProblemById(@Param('id') id: number): Promise<ProblemDto> {
     const problem = await this.problemsService.getProblemById(id);
 
-    const problemDto: ProblemDto = {
-      id: problem.id,
-      title: problem.title,
-      description: problem.description,
-      keywords: problem.keywords.map((keyword) => keyword.keyword),
-      category: problem.category.name,
-    };
-
-    return problemDto;
+    return problem;
   }
 
   @Get('/')

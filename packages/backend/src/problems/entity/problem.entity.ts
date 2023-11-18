@@ -4,7 +4,8 @@ import {
   Column,
   BaseEntity,
   JoinTable,
-  ManyToMany, ManyToOne,
+  ManyToMany,
+  ManyToOne,
 } from 'typeorm';
 import { Keyword } from './keyword.entity';
 import { Category } from './category.entity';
