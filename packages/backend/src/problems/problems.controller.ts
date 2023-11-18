@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ProblemsService } from './problems.service';
 import { ProblemDto } from './dto/problem.dto';
 
-@Controller('problems')
+@Controller('api/v1/problems')
 export class ProblemsController {
   constructor(private readonly problemsService: ProblemsService) {}
 
@@ -19,5 +19,10 @@ export class ProblemsController {
     };
 
     return problemDto;
+  }
+
+  @Get('/')
+  async getProblemsGroupedByCategory() {
+    return this.problemsService.findAllProblemsGroupedByCategory();
   }
 }
