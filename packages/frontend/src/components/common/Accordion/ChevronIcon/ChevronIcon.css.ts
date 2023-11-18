@@ -1,15 +1,22 @@
-import { style } from "@vanilla-extract/css";
+import { style, styleVariants } from "@vanilla-extract/css";
 
 import color from "../../../../styles/color";
 
-const containerStyle = style({
+export const containerBase = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  width: 25,
-  height: 25,
   border: `1px solid ${color.$scale.grey300}`,
   borderRadius: "50%",
 });
 
-export default containerStyle;
+export const containerVariants = styleVariants({
+  sm: {
+    width: 18,
+    height: 18,
+  },
+  md: {
+    width: 25,
+    height: 25,
+  },
+});
