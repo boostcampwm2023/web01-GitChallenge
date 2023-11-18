@@ -2,12 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 import classnames from "../../../utils/classnames";
 
-import {
-  type ButtonVariants,
-  buttonBaseStyle,
-  buttonVariantStyle,
-  widthFull,
-} from "./Button.css";
+import * as styles from "./Button.css";
 
 export interface ButtonProps
   extends Pick<
@@ -15,7 +10,7 @@ export interface ButtonProps
     "type" | "disabled" | "onClick"
   > {
   full?: boolean;
-  variant: ButtonVariants;
+  variant: styles.ButtonVariants;
   children: ReactNode;
 }
 
@@ -28,9 +23,9 @@ export function Button({
   onClick,
 }: ButtonProps) {
   const buttonStyle = classnames(
-    buttonBaseStyle,
-    buttonVariantStyle[variant],
-    full ? widthFull : ""
+    styles.buttonBaseStyle,
+    styles.buttonVariantStyle[variant],
+    full ? styles.widthFull : "",
   );
 
   return (
