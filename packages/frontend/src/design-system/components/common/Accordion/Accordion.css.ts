@@ -1,7 +1,7 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import color from "../../../styles/color";
-import typography from "../../../styles/typography";
+import color from "../../../tokens/color";
+import typography from "../../../tokens/typography";
 
 export const summaryText = {
   sm: typography.$semantic.caption1Regular,

@@ -1,7 +1,7 @@
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
-import color from "../../../../styles/color";
-import classnames from "../../../../utils/classnames";
+import classnames from "../../../../../utils/classnames";
+import color from "../../../../tokens/color";
 
 import * as styles from "./ChevronIcon.css";
 
