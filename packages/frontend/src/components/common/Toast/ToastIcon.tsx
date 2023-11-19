@@ -3,7 +3,7 @@ import { FaCheck } from "react-icons/fa";
 
 import classnames from "../../../utils/classnames";
 
-import { displayBlock, iconBaseStyle, iconVariantStyle } from "./ToastIcon.css";
+import * as styles from "./ToastIcon.css";
 
 interface ToastIconProps {
   type: "error" | "success";
@@ -12,8 +12,8 @@ interface ToastIconProps {
 export default function ToastIcon({ type }: ToastIconProps) {
   const { Icon, size } = iconMap[type];
   return (
-    <div className={classnames(iconBaseStyle, iconVariantStyle[type])}>
-      <Icon className={displayBlock} size={size} />
+    <div className={classnames(styles.iconBase, styles.iconVariants[type])}>
+      <Icon className={styles.displayBlock} size={size} />
     </div>
   );
 }
