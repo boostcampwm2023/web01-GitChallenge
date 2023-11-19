@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { globalStyle, style } from "@vanilla-extract/css";
 
 import color from "../../../design-system/tokens/color";
 import typography from "../../../design-system/tokens/typography";
@@ -42,3 +42,11 @@ export const description = style([
     },
   },
 ]);
+
+globalStyle(`${description} code`, {
+  borderRadius: 4,
+  paddingLeft: 4,
+  paddingRight: 4,
+  color: color.$scale.coral500,
+  backgroundColor: color.$scale.grey100,
+});
