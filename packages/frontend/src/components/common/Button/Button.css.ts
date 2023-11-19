@@ -5,7 +5,7 @@ import typography from "../../../styles/typography";
 
 export const widthFull = style({ width: "100%" });
 
-export const buttonBaseStyle = style([
+export const buttonBase = style([
   typography.$semantic.title3Regular,
   {
     height: 48,
