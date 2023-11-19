@@ -1,10 +1,10 @@
-import { HTMLAttributes, ReactNode } from "react";
+import { ReactNode } from "react";
 
 import classnames from "../../../utils/classnames";
 
 import * as styles from "./Badge.css";
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps {
   variant: styles.BadgeVariant;
   label: ReactNode;
 }
