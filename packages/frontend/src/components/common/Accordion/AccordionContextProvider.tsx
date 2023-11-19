@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-type AccordionContextType = {
+export type AccordionContextType = {
   open: boolean;
   width: number;
   onChange: (open: boolean) => void;

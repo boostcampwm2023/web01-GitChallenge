@@ -3,14 +3,19 @@ import { MouseEventHandler, type ReactNode } from "react";
 import classnames from "../../../utils/classnames";
 
 import * as styles from "./Accordion.css";
-import { useAccordion } from "./AccordionContextProvider";
+import {
+  type AccordionContextType,
+  useAccordion,
+} from "./AccordionContextProvider";
 import ChevronIcon from "./ChevronIcon/ChevronIcon";
 
 interface AccordionSummaryProps {
   color?: "black" | "grey";
   size?: "md" | "sm";
-  children: ReactNode;
+  children: ReactNode | RenderComponentType;
 }
+
+type RenderComponentType = (props: AccordionContextType) => ReactNode;
 
 export default function AccordionSummary({
   color = "black",
@@ -41,7 +46,9 @@ export default function AccordionSummary({
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <summary className={summaryStyle} onClick={handleChange}>
-      <div>{children}</div>
+      <div>
+        {children instanceof Function ? children(accordionContext) : children}
+      </div>
       <div>
         <ChevronIcon type={chevronType} size={size} />
       </div>
