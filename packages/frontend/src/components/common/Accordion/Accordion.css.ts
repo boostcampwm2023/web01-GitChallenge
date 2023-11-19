@@ -38,24 +38,3 @@ export const summaryContainer = styleVariants({
     },
   ],
 });
-
-export const list = style([
-  typography.$semantic.title3Regular,
-  {
-    width: "100%",
-    marginTop: 13,
-    borderTop: `1px solid ${color.$semantic.border}`,
-    padding: "13px 0",
-    color: color.$scale.grey600,
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-  },
-]);
-
-export const item = style({
-  selectors: {
-    "& ~ &": {
-      paddingTop: 13,
-    },
-  },
-});
