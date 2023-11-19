@@ -1,2 +1,2 @@
-export { Button } from "./Button/Button";
+export { Button } from "./Button";
 export { Badge, BadgeGroup } from "./Badge";
