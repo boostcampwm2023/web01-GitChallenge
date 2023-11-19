@@ -1,6 +1,6 @@
 import { MouseEventHandler, type ReactNode } from "react";
 
-import classnames from "../../../utils/classnames";
+import classnames from "../../../../utils/classnames";
 
 import * as styles from "./Accordion.css";
 import {
