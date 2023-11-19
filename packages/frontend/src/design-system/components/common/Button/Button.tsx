@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 import classnames from "../../../../utils/classnames";
+import * as utils from "../../../tokens/utils.css";
 
 import { buttonVariantStyle } from "./Button.css";
 import * as styles from "./Button.css";
@@ -28,7 +29,7 @@ export function Button({
   const buttonStyle = classnames(
     styles.buttonBase,
     styles.buttonVariantStyle[variant],
-    full ? styles.widthFull : "",
+    full ? utils.widthFull : "",
   );
 
   return (

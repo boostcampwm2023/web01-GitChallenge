@@ -1,6 +1,6 @@
 import { ToastContainer as BaseToastContainer, Slide } from "react-toastify";
 
-import typography from "../../../styles/typography";
+import typography from "../../../tokens/typography";
 
 import "./Toast.css";
 

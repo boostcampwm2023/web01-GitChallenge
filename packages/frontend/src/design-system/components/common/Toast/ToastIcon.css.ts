@@ -1,10 +1,6 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import color from "../../../styles/color";
-
-export const displayBlock = style({
-  display: "block",
-});
+import color from "../../../tokens/color";
 
 export const iconBase = style({
   display: "flex",

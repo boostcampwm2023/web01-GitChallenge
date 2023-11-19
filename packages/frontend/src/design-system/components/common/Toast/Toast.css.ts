@@ -1,6 +1,6 @@
 import { globalStyle } from "@vanilla-extract/css";
 
-import color from "../../../styles/color";
+import color from "../../../tokens/color";
 
 globalStyle(".Toastify .Toastify__toast", {
   display: "block",
