@@ -58,6 +58,8 @@
   --mm-semantic-color-secondary-low-hover: var(--mm-static-color-brown-100);
   --mm-semantic-color-secondary-low: var(--mm-static-color-brown-50);
   --mm-semantic-color-secondary: var(--mm-static-color-brown-500);
+  --mm-semantic-color-success: var(--mm-static-color-blue-700);
+  --mm-semantic-color-danger: var(--mm-static-color-red-700);
   /* Font Size */
   --mm-scale-font-size-25: 11px;
   --mm-scale-font-size-50: 12px;
