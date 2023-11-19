@@ -12,11 +12,11 @@ export const iconBaseStyle = style({
   alignItems: "center",
   width: 22,
   height: 22,
-  color: color.$scale.grey00,
+  color: color.$semantic.textWhite,
   borderRadius: "50%",
 });
 
 export const iconVariantStyle = styleVariants({
-  success: { backgroundColor: "#1F8CE6" },
-  error: { backgroundColor: color.$scale.coral900 },
+  success: { backgroundColor: color.$semantic.success },
+  error: { backgroundColor: color.$semantic.danger },
 });
