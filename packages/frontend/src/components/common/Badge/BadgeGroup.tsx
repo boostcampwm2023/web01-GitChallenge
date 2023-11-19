@@ -1,15 +1,9 @@
+import { objectKeys } from "../../../utils/types";
+
 import { Badge } from "./Badge";
 import * as styles from "./Badge.css";
 
-const variants: styles.BadgeVariant[] = [
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "teal",
-  "purple",
-];
-
+const variants = objectKeys(styles.badgeVariants);
 export interface BadgeGroupProps {
   items: { label: string }[];
 }
