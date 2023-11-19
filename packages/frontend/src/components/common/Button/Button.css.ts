@@ -91,5 +91,3 @@ export const buttonVariantStyle = styleVariants({
     },
   },
 });
-
-export type ButtonVariants = keyof typeof buttonVariantStyle;

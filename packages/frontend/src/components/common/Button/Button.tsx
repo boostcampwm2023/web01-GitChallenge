@@ -2,7 +2,10 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 import classnames from "../../../utils/classnames";
 
+import { buttonVariantStyle } from "./Button.css";
 import * as styles from "./Button.css";
+
+export type ButtonVariantType = keyof typeof buttonVariantStyle;
 
 export interface ButtonProps
   extends Pick<
@@ -10,7 +13,7 @@ export interface ButtonProps
     "type" | "disabled" | "onClick"
   > {
   full?: boolean;
-  variant: styles.ButtonVariants;
+  variant: ButtonVariantType;
   children: ReactNode;
 }
 

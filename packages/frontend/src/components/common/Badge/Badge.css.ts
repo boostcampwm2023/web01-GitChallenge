@@ -43,5 +43,3 @@ export const badgeVariants = styleVariants({
     backgroundColor: color.$semantic.badgePurpleBg,
   },
 });
-
-export type BadgeVariant = keyof typeof badgeVariants;

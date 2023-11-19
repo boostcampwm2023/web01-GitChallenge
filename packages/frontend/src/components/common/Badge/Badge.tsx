@@ -2,10 +2,13 @@ import { ReactNode } from "react";
 
 import classnames from "../../../utils/classnames";
 
+import { badgeVariants } from "./Badge.css";
 import * as styles from "./Badge.css";
 
+export type BadgeVariantType = keyof typeof badgeVariants;
+
 export interface BadgeProps {
-  variant: styles.BadgeVariant;
+  variant: BadgeVariantType;
   label: ReactNode;
 }
 
