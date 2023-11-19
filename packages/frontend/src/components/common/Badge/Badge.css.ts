@@ -11,7 +11,6 @@ export const container = style({
 export const badgeBaseStyle = style([
   typography.$semantic.caption2Regular,
   {
-    color: color.$semantic.textWhite,
     height: 22,
     padding: "3px 7px",
     borderRadius: 5,
