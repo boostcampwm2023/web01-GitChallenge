@@ -1,3 +1,4 @@
+import toCodeTag from "../../../utils/mapper";
 import QuizLocation from "../QuizLocation";
 
 import * as styles from "./QuizContent.css";
@@ -17,7 +18,10 @@ export default function QuizContent({
     <>
       <QuizLocation items={[category, title]} />
       <strong className={styles.strong}>문제</strong>
-      <p className={styles.description}>{description}</p>
+      <p
+        className={styles.description}
+        dangerouslySetInnerHTML={{ __html: toCodeTag(description) }}
+      />
     </>
   );
 }
