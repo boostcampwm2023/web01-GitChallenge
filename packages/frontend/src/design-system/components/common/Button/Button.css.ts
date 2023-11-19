@@ -3,15 +3,13 @@ import { style, styleVariants } from "@vanilla-extract/css";
 import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
 
-export const widthFull = style({ width: "100%" });
-
 export const buttonBase = style([
   typography.$semantic.title3Regular,
   {
-    height: 48,
+    height: 45,
     border: "1px solid transparent",
     borderRadius: 8,
-    padding: "12px 30px",
+    padding: "11px 22px",
 
     ":disabled": {
       borderColor: color.$semantic.bgDisabled,
