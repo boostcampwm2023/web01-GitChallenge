@@ -1,7 +1,8 @@
 import { BsX } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 
-import classnames from "../../../utils/classnames";
+import classnames from "../../../../utils/classnames";
+import * as utils from "../../../tokens/utils.css";
 
 import * as styles from "./ToastIcon.css";
 
@@ -13,7 +14,7 @@ export default function ToastIcon({ type }: ToastIconProps) {
   const { Icon, size } = iconMap[type];
   return (
     <div className={classnames(styles.iconBase, styles.iconVariants[type])}>
-      <Icon className={styles.displayBlock} size={size} />
+      <Icon className={utils.block} size={size} />
     </div>
   );
 }
