@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import classnames from "../../../utils/classnames";
+import classnames from "../../../../utils/classnames";
 
 import { badgeVariants } from "./Badge.css";
 import * as styles from "./Badge.css";

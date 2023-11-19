@@ -1,4 +1,4 @@
-import { objectKeys } from "../../../utils/types";
+import { objectKeys } from "../../../../utils/types";
 
 import { Badge } from "./Badge";
 import * as styles from "./Badge.css";
