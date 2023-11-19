@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
+export const widthMax = style({ maxWidth: 1440 });
 export const widthFull = style({ width: "100%" });
 export const backLayer = style({ zIndex: -1 });
 export const baseLayer = style({ zIndex: 0 });
