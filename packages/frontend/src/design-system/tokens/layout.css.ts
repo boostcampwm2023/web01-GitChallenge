@@ -17,7 +17,6 @@ export const base = style([
   utils.flex,
   {
     width: 1440,
-    height: 650,
     marginTop: 56,
   },
 ]);
@@ -27,6 +26,6 @@ export const sideBar = style({
 });
 
 export const container = style({
-  width: 1226,
+  width: 1106,
   margin: "0 60px",
 });
