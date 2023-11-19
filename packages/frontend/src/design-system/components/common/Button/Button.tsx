@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-import classnames from "../../../utils/classnames";
+import classnames from "../../../../utils/classnames";
 
 import { buttonVariantStyle } from "./Button.css";
 import * as styles from "./Button.css";
