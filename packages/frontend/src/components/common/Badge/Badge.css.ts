@@ -8,7 +8,7 @@ export const container = style({
   gap: 10,
 });
 
-export const badgeBaseStyle = style([
+export const badgeBase = style([
   typography.$semantic.caption2Regular,
   {
     height: 22,

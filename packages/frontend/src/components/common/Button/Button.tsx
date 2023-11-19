@@ -26,7 +26,7 @@ export function Button({
   onClick,
 }: ButtonProps) {
   const buttonStyle = classnames(
-    styles.buttonBaseStyle,
+    styles.buttonBase,
     styles.buttonVariantStyle[variant],
     full ? styles.widthFull : "",
   );

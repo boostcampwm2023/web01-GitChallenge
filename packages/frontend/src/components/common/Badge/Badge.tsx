@@ -14,7 +14,7 @@ export interface BadgeProps {
 
 export function Badge({ variant, label }: BadgeProps) {
   const badgeStyle = classnames(
-    styles.badgeBaseStyle,
+    styles.badgeBase,
     styles.badgeVariants[variant],
   );
   return <span className={badgeStyle}>{label}</span>;
