@@ -2,8 +2,6 @@ import { type ReactNode } from "react";
 
 import { AccordionContextProvider } from "./AccordionContextProvider";
 import AccordionDetails from "./AccordionDetails";
-import AccordionItem from "./AccordionItem";
-import AccordionList from "./AccordionList";
 import AccordionSummary from "./AccordionSummary";
 
 interface AccordionProps {
@@ -26,5 +24,3 @@ export default function Accordion({
 
 Accordion.Details = AccordionDetails;
 Accordion.Summary = AccordionSummary;
-Accordion.List = AccordionList;
-Accordion.Item = AccordionItem;
