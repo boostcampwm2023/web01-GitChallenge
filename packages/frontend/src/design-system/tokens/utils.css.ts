@@ -38,3 +38,7 @@ export const flexColumnCenter = style([
     flexDirection: "column",
   },
 ]);
+
+export const boxShadow = style({
+  boxShadow: "0 3px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.05)",
+});
