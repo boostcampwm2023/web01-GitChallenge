@@ -30,14 +30,14 @@ export default function Modal({ onClose, children }: ModalProps) {
       onClick={onClose}
       role="button"
       tabIndex={0}
-      aria-hidden="true"
+      onKeyDown={onClose}
     >
       <div
         className={styles.container}
         onClick={preventBubbling}
         role="button"
         tabIndex={0}
-        aria-hidden="true"
+        onKeyDown={onClose}
       >
         <div className={styles.buttonContainer}>
           <IconButton className={styles.close} onClick={onClose}>
