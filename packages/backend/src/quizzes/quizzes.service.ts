@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { QuizDto } from './dto/quiz.dto';
 import { CategoryQuizzesDto, QuizzesDto } from './dto/quizzes.dto';
 import { Category } from './entity/category.entity';
+import { ContainersService } from 'src/containers/containers.service';
+import { CommandResponseDto } from './dto/command-response.dto';
 
 @Injectable()
 export class QuizzesService {
@@ -13,6 +15,7 @@ export class QuizzesService {
     private quizRepository: Repository<Quiz>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+    private containerService: ContainersService,
   ) {}
   async getQuizById(id: number): Promise<QuizDto> {
     const quiz = await this.quizRepository.findOne({
@@ -54,5 +57,9 @@ export class QuizzesService {
     const quizzesDtos: QuizzesDto = { categories: categoryQuizzesDtos };
 
     return quizzesDtos;
+  }
+
+  async runSSHCommand(command: string): Promise<CommandResponseDto> {
+    return this.containerService.runSSHCommand('testContainer', command);
   }
 }
