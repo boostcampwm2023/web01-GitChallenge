@@ -20,7 +20,7 @@ export class CategoryQuizzesDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => QuizDto)
-  problems: QuizDto[];
+  quizzes: QuizDto[];
 }
 
 export class QuizzesDto {
