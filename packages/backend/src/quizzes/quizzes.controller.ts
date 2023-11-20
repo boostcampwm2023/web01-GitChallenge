@@ -30,12 +30,12 @@ export class QuizzesController {
   }
 
   @Post(':id/command')
-  async runSSHCommand(
+  async runGitCommand(
     @Param('id') id: number,
     @Body() execCommandDto: CommandRequestDto,
   ): Promise<CommandResponseDto> {
     try {
-      const { message, result } = await this.quizService.runSSHCommand(
+      const { message, result } = await this.quizService.runGitCommand(
         execCommandDto.command,
       );
       return {

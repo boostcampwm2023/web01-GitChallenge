@@ -59,7 +59,15 @@ export class QuizzesService {
     return quizzesDtos;
   }
 
-  async runSSHCommand(command: string): Promise<CommandResponseDto> {
-    return this.containerService.runSSHCommand('testContainer', command);
+  async runGitCommand(command: string): Promise<CommandResponseDto> {
+    // 세션 검색
+
+    // 세션 없으면 or 세션에 할당된 컨테이너 없으면 컨테이너 생성
+    // await this.containerService.getContainer(quizId);
+
+    // 컨테이너 생성, 세션에 할당하고 DB 저장
+
+    // 최종 실행
+    return this.containerService.runGitCommand('testContainer', command);
   }
 }
