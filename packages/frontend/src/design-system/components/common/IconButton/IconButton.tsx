@@ -5,13 +5,13 @@ import classnames from "../../../../utils/classnames";
 import * as styles from "./IconButton.css";
 
 export interface IconButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className: string;
+  extends Pick<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
+  className?: string;
   children: ReactNode;
 }
 
 export default function IconButton({
-  className,
+  className = "",
   children,
   onClick,
 }: IconButtonProps) {
