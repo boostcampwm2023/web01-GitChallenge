@@ -44,7 +44,7 @@ export class QuizzesService {
       (category) => ({
         id: category.id,
         category: category.name,
-        problems: category.quizzes.map((quiz) => ({
+        quizzes: category.quizzes.map((quiz) => ({
           id: quiz.id,
           title: quiz.title,
         })),
