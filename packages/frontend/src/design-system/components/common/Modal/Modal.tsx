@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoCloseOutline } from "react-icons/io5";
 
-import useModal from "../../../../hooks/useModal";
+import { ESC_KEY_CODE } from "../../../../constants";
 import { preventBubbling } from "../../../../utils/event";
 import IconButton from "../IconButton/IconButton";
 
@@ -13,14 +13,27 @@ export interface ModalProps {
   children: ReactNode;
 }
 
+const setScrollLock = (isLock: boolean) => {
+  document.body.style.overflow = isLock ? "hidden" : "auto";
+};
+
 export default function Modal({ onClose, children }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const escKeyCloseEvent = (event: KeyboardEvent) => {
+      if (event.key === ESC_KEY_CODE) {
+        onClose();
+      }
+    };
+    setScrollLock(true);
+    window.addEventListener("keydown", escKeyCloseEvent);
+    return () => {
+      window.removeEventListener("keydown", escKeyCloseEvent);
+      setScrollLock(false);
+    };
   }, []);
-
-  useModal({ onClose });
 
   if (!mounted) return null;
 
