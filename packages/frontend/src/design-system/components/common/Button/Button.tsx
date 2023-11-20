@@ -3,10 +3,9 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import classnames from "../../../../utils/classnames";
 import * as utils from "../../../tokens/utils.css";
 
-import { buttonVariantStyle } from "./Button.css";
 import * as styles from "./Button.css";
 
-export type ButtonVariantType = keyof typeof buttonVariantStyle;
+export type ButtonVariantType = keyof typeof styles.buttonVariants;
 
 export interface ButtonProps
   extends Pick<
@@ -28,7 +27,7 @@ export function Button({
 }: ButtonProps) {
   const buttonStyle = classnames(
     styles.buttonBase,
-    styles.buttonVariantStyle[variant],
+    styles.buttonVariants[variant],
     full ? utils.widthFull : "",
   );
 
