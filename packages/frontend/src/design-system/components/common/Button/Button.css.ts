@@ -19,7 +19,7 @@ export const buttonBase = style([
   },
 ]);
 
-export const buttonVariantStyle = styleVariants({
+export const buttonVariants = styleVariants({
   primaryFill: {
     color: color.$semantic.textWhite,
     backgroundColor: color.$semantic.primary,
