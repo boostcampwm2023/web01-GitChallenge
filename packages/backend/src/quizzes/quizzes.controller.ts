@@ -82,11 +82,12 @@ export class QuizzesController {
         execCommandDto.command,
       );
 
-      return {
+      response.send({
         message,
         result,
         // graph: 필요한 경우 여기에 추가
-      };
+      });
+      return;
     } catch (error) {
       throw new HttpException(
         {
