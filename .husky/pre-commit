@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# 현재 브랜치의 이름을 가져오기
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# 브랜치명에 'fe'가 포함되어 있는지 확인
+if echo "$current_branch" | grep -q "fe"; then
+  echo "Husky 훅을 실행할 브랜치입니다."
+  . "$(dirname -- "$0")/_/husky.sh"
+else
+  echo "Husky 훅을 실행하지 않을 브랜치입니다."
+fi
+
+yarn workspace frontend run lint-staged
