@@ -48,8 +48,6 @@ export class SessionService {
     containerId: string,
   ): Promise<void> {
     const session = await this.getSessionById(sessionId);
-    console.log(session);
-    console.log(problemId);
     if (!session.problems.get(problemId.toString())) {
       throw new Error('problem not found');
     }
