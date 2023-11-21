@@ -1,14 +1,8 @@
-import {
-  type KeyboardEventHandler,
-  RefObject,
-  forwardRef,
-  useEffect,
-  useRef,
-} from "react";
+import { type KeyboardEventHandler, RefObject, useEffect, useRef } from "react";
 
-import classnames from "../../utils/classnames";
-
+import CommandInput from "./CommandInput";
 import * as styles from "./Terminal.css";
+import TerminalContent from "./TerminalContent";
 
 type TerminalContentType =
   | STDINContentType
@@ -49,8 +43,6 @@ export default function Terminal({
     event.preventDefault();
   };
 
-  const terminalContent = contentArray.map(toTerminalContentComponent);
-
   useEffect(() => {
     scrollIntoView(commandInputRef);
   }, [contentArray]);
@@ -59,75 +51,13 @@ export default function Terminal({
     <div className={styles.container}>
       <div className={styles.hr} />
       <div className={styles.terminalContainer}>
-        <div>{terminalContent}</div>
+        <TerminalContent contentArray={contentArray} />
+
         <CommandInput handleInput={handleSTDIN} ref={commandInputRef} />
       </div>
     </div>
   );
 }
-
-const contentMap = {
-  stdin: StdInContent,
-  stdout: StdOutContent,
-  stderr: StdErrContent,
-};
-
-function Prompt() {
-  return <span className={styles.prompt}>$</span>;
-}
-
-function StdInContent({ content }: Pick<STDINContentType, "content">) {
-  return (
-    <div className={styles.stdinContainer}>
-      <Prompt />
-      <span className={styles.stdin}>{content}</span>
-    </div>
-  );
-}
-
-function StdOutContent({ content }: Pick<STDOUTContentType, "content">) {
-  return (
-    <div>
-      <span>{content}</span>
-    </div>
-  );
-}
-
-function StdErrContent({ content }: Pick<STDERRContentType, "content">) {
-  return (
-    <div className={styles.stdinContainer}>
-      <Prompt />
-      <span className={styles.stdin}>{content}</span>
-    </div>
-  );
-}
-
-interface CommandInputProps {
-  handleInput: KeyboardEventHandler;
-}
-
-const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
-  ({ handleInput }, ref) => (
-    <div className={styles.commandInputContainer}>
-      <span id="commandLabel" style={{ display: "none" }}>
-        Enter git command
-      </span>
-      <Prompt />
-      <span
-        className={classnames(styles.commandInput, styles.stdin)}
-        contentEditable
-        onKeyDown={handleInput}
-        role="textbox"
-        aria-placeholder="git command"
-        aria-labelledby="commandLabel"
-        tabIndex={0}
-        ref={ref}
-      />
-    </div>
-  ),
-);
-
-CommandInput.displayName = "CommandInput";
 
 function scrollIntoView<T extends Element>(ref: RefObject<T>) {
   const $element = ref.current;
@@ -136,12 +66,4 @@ function scrollIntoView<T extends Element>(ref: RefObject<T>) {
   }
 
   $element.scrollIntoView();
-}
-
-function toTerminalContentComponent(
-  { type, content }: TerminalContentType,
-  index: number,
-) {
-  const Content = contentMap[type];
-  return <Content key={[type, index].join("-")} content={content} />;
 }
