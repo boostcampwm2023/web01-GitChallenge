@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import classnames from "../../../../utils/classnames";
@@ -12,7 +13,7 @@ export default function Header() {
       <div className={styles.container}>
         <h1>
           <Link href="/">
-            <img src="logo.svg" alt="git-challenge-logo" />
+            <Image src="logo.svg" alt="git-challenge-logo" />
           </Link>
         </h1>
       </div>

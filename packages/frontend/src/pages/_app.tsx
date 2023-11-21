@@ -11,6 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <React.StrictMode>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Component {...pageProps} />
       </React.StrictMode>
       <ToastContainer />

@@ -33,7 +33,7 @@ export default function Modal({ onClose, children }: ModalProps) {
       window.removeEventListener("keydown", escKeyCloseEvent);
       setScrollLock(false);
     };
-  }, []);
+  }, [onClose]);
 
   if (!mounted) return null;
 
