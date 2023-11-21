@@ -1,18 +1,11 @@
-import { type KeyboardEventHandler, RefObject, useEffect, useRef } from "react";
+import { type KeyboardEventHandler, useEffect, useRef } from "react";
+
+import type { TerminalContentType } from "../../types/terminalType";
+import { scrollIntoView } from "../../utils/scroll";
 
 import CommandInput from "./CommandInput";
 import * as styles from "./Terminal.css";
 import TerminalContent from "./TerminalContent";
-
-type TerminalContentType =
-  | STDINContentType
-  | STDOUTContentType
-  | STDERRContentType;
-
-type STDContentType<T> = { type: T; content: string };
-type STDINContentType = STDContentType<"stdin">;
-type STDOUTContentType = STDContentType<"stdout">;
-type STDERRContentType = STDContentType<"stderr">;
 
 interface TerminalProps {
   contentArray: TerminalContentType[];
@@ -23,28 +16,28 @@ export default function Terminal({
   contentArray,
   onStandardInput,
 }: TerminalProps) {
-  const commandInputRef = useRef<HTMLSpanElement>(null);
+  const inputRef = useRef<HTMLSpanElement>(null);
 
-  const handleSTDIN: KeyboardEventHandler = (event) => {
+  const handleStandardInput: KeyboardEventHandler = (event) => {
     const { key, currentTarget } = event;
     if (key !== "Enter") {
       return;
     }
 
+    event.preventDefault();
+
     const value = (currentTarget.textContent ?? "").trim();
     if (!value) {
-      event.preventDefault();
       return;
     }
 
     onStandardInput(value);
 
     currentTarget.textContent = "";
-    event.preventDefault();
   };
 
   useEffect(() => {
-    scrollIntoView(commandInputRef);
+    scrollIntoView(inputRef);
   }, [contentArray]);
 
   return (
@@ -53,7 +46,7 @@ export default function Terminal({
       <div className={styles.terminalContainer}>
         <TerminalContent contentArray={contentArray} />
 
-        <CommandInput handleInput={handleSTDIN} ref={commandInputRef} />
+        <CommandInput handleInput={handleStandardInput} ref={inputRef} />
       </div>
     </div>
   );
