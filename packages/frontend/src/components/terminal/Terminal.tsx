@@ -58,12 +58,3 @@ export default function Terminal({
     </div>
   );
 }
-
-function scrollIntoView<T extends Element>(ref: RefObject<T>) {
-  const $element = ref.current;
-  if (!$element) {
-    return;
-  }
-
-  $element.scrollIntoView();
-}
