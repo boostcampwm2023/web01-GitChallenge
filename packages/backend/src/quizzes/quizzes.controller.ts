@@ -175,9 +175,9 @@ export class QuizzesController {
         return;
       }
 
-      await this.containerService.deleteContainer(containerId);
+      this.containerService.deleteContainer(containerId);
 
-      await this.sessionService.deleteCommandHistory(sessionId, id);
+      this.sessionService.deleteCommandHistory(sessionId, id);
     } catch (e) {
       throw new HttpException(
         {
