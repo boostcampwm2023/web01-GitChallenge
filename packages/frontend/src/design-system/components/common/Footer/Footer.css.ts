@@ -2,11 +2,14 @@ import { style } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
-import { flex } from "../../../tokens/utils.css";
+import { border, flex } from "../../../tokens/utils.css";
 
-export const container = style({
-  backgroundColor: color.$scale.grey200,
-});
+export const container = style([
+  border.top,
+  {
+    backgroundColor: color.$scale.grey00,
+  },
+]);
 
 export const content = style([
   flex,
@@ -36,11 +39,12 @@ export const contact = style({
   color: color.$scale.grey600,
 });
 
-export const hr = style({
-  margin: "20px 0",
-  border: "none",
-  borderTop: `1px solid ${color.$semantic.border}`,
-});
+export const hr = style([
+  border.top,
+  {
+    margin: "20px 0",
+  },
+]);
 
 export const rightsContainer = style([
   typography.$semantic.caption1Regular,

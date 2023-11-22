@@ -1,12 +1,12 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import color from "../../../../tokens/color";
+import { border } from "../../../../tokens/utils.css";
 import * as utils from "../../../../tokens/utils.css";
 
 export const containerBase = style([
   utils.flexCenter,
+  border.all,
   {
-    border: `1px solid ${color.$scale.grey300}`,
     borderRadius: "50%",
   },
 ]);
