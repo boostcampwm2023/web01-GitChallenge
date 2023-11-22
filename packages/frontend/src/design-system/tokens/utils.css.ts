@@ -1,6 +1,8 @@
 import { style } from "@vanilla-extract/css";
 
-export const widthMax = style({ maxWidth: 1440 });
+import color from "./color";
+
+export const widthMax = style({ maxWidth: 1280 });
 export const widthFull = style({ width: "100%" });
 export const backLayer = style({ zIndex: -1 });
 export const baseLayer = style({ zIndex: 0 });
@@ -42,3 +44,27 @@ export const flexColumnCenter = style([
 export const boxShadow = style({
   boxShadow: "0 3px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.05)",
 });
+
+export const scrollBarHidden = style({
+  overflow: "scroll",
+  msOverflowStyle: "none",
+  scrollbarWidth: "none",
+  selectors: {
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  },
+});
+
+export const border = {
+  side: style({
+    border: `1px solid ${color.$semantic.border}`,
+    borderTop: "none",
+    borderBottom: "none",
+  }),
+  all: style({
+    border: `1px solid ${color.$semantic.border}`,
+  }),
+  top: style({ borderTop: `1px solid ${color.$semantic.border}` }),
+  bottom: style({ borderBottom: `1px solid ${color.$semantic.border}` }),
+};

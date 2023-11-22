@@ -8,12 +8,18 @@ import * as styles from "./Header.css";
 
 export default function Header() {
   const headerStyle = classnames(styles.borderBottom, headerLayout);
+
   return (
     <header className={headerStyle}>
       <div className={styles.container}>
         <h1>
           <Link href="/">
-            <Image src="logo.svg" alt="git-challenge-logo" />
+            <Image
+              src="light-logo.svg"
+              alt="git-challenge-logo"
+              width={238}
+              height={30}
+            />
           </Link>
         </h1>
       </div>

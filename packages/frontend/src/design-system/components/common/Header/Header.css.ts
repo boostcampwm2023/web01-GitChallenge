@@ -1,11 +1,9 @@
 import { style } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
-import { flexAlignCenter, widthMax } from "../../../tokens/utils.css";
+import { border, flexAlignCenter, widthMax } from "../../../tokens/utils.css";
 
-export const borderBottom = style({
-  borderBottom: `1px solid ${color.$semantic.border}`,
-});
+export const borderBottom = border.bottom;
 
 export const container = style([
   flexAlignCenter,
@@ -13,5 +11,6 @@ export const container = style([
   {
     height: "100%",
     margin: "0 auto",
+    backgroundColor: color.$scale.grey00,
   },
 ]);
