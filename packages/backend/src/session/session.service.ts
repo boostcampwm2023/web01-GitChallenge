@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Logger } from 'winston';
 import { Model } from 'mongoose';
 import { Session } from './schema/session.schema';
 import { ObjectId } from 'typeorm';
 
 @Injectable()
 export class SessionService {
-  constructor(@InjectModel(Session.name) private sessionModel: Model<Session>) {
+  constructor(
+    @InjectModel(Session.name) private sessionModel: Model<Session>,
+    @Inject('winston') private readonly logger: Logger,
+  ) {
     const testSession = new this.sessionModel({
       problems: {},
     });
@@ -18,7 +22,7 @@ export class SessionService {
       problems: {},
     });
     return await session.save().then((session) => {
-      console.log(`session ${session._id as ObjectId} created`);
+      this.logger.log('info', `session ${session._id as ObjectId} created`);
       return (session._id as ObjectId).toString('hex');
     });
   }
@@ -35,11 +39,15 @@ export class SessionService {
         logs: [],
         containerId: '',
       });
-      console.log(`session ${session._id as ObjectId} updated`);
-      console.log(`session's new quizId: ${problemId}, document created`);
+      this.logger.log('info', `session ${session._id as ObjectId} updated`);
+      this.logger.log(
+        'info',
+        `session's new quizId: ${problemId}, document created`,
+      );
       await session.save();
     } else {
-      console.log(
+      this.logger.log(
+        'info',
         `containerId: ${session.problems.get(problemId)?.containerId}`,
       );
     }
@@ -55,7 +63,10 @@ export class SessionService {
     if (!session.problems.get(problemId)) {
       throw new Error('problem not found');
     }
-    console.log(`setting ${sessionId}'s containerId as ${containerId}`);
+    this.logger.log(
+      'info',
+      `setting ${sessionId}'s containerId as ${containerId}`,
+    );
     session.problems.get(problemId).containerId = containerId;
     session.save();
   }

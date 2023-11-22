@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from 'winston';
 import { CommandResponseDto } from 'src/quizzes/dto/command-response.dto';
 import { Client } from 'ssh2';
 
 @Injectable()
 export class ContainersService {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    @Inject('winston') private readonly logger: Logger,
+  ) {}
 
   private async getSSH(): Promise<Client> {
     const conn = new Client();
