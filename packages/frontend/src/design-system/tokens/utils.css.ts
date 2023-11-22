@@ -57,14 +57,19 @@ export const scrollBarHidden = style({
 });
 
 export const border = {
-  side: style({
+  top: style({ borderTop: `1px solid ${color.$semantic.border}` }),
+  bottom: style({ borderBottom: `1px solid ${color.$semantic.border}` }),
+  verticalSide: style({
     border: `1px solid ${color.$semantic.border}`,
     borderTop: "none",
     borderBottom: "none",
   }),
+  horizontalSide: style({
+    border: `1px solid ${color.$semantic.border}`,
+    borderLeft: "none",
+    borderRight: "none",
+  }),
   all: style({
     border: `1px solid ${color.$semantic.border}`,
   }),
-  top: style({ borderTop: `1px solid ${color.$semantic.border}` }),
-  bottom: style({ borderBottom: `1px solid ${color.$semantic.border}` }),
 };
