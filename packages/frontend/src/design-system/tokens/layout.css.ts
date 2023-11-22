@@ -1,14 +1,21 @@
 import { style } from "@vanilla-extract/css";
 
-import { border, flexColumn, scrollBarHidden } from "./utils.css";
-import * as utils from "./utils.css";
+import {
+  border,
+  flex,
+  flexColumn,
+  middleLayer,
+  scrollBarHidden,
+  widthFull,
+  widthMax,
+} from "./utils.css";
 
 const headerHeight = "56px";
 const footerHeight = "250px";
 
 export const header = style([
-  utils.middleLayer,
-  utils.widthFull,
+  middleLayer,
+  widthFull,
   {
     height: headerHeight,
     position: "fixed",
@@ -18,8 +25,8 @@ export const header = style([
 ]);
 
 export const base = style([
-  utils.flex,
-  utils.widthMax,
+  flex,
+  widthMax,
   {
     height: "100vh",
     paddingTop: headerHeight,
@@ -45,7 +52,7 @@ export const container = style([
 ]);
 
 export const footer = style([
-  utils.widthMax,
+  widthMax,
   {
     height: footerHeight,
     margin: "0 auto",

@@ -1,10 +1,9 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import { border } from "../../../../tokens/utils.css";
-import * as utils from "../../../../tokens/utils.css";
+import { border, flexCenter } from "../../../../tokens/utils.css";
 
 export const containerBase = style([
-  utils.flexCenter,
+  flexCenter,
   border.all,
   {
     borderRadius: "50%",
