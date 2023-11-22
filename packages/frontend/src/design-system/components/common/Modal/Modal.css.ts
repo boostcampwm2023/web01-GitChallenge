@@ -1,11 +1,17 @@
 import { style } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
-import * as utils from "../../../tokens/utils.css";
+import {
+  boxShadow,
+  flexAlignCenter,
+  flexCenter,
+  flexColumn,
+  modalLayer,
+} from "../../../tokens/utils.css";
 
 export const backdrop = style([
-  utils.modalLayer,
-  utils.flexCenter,
+  modalLayer,
+  flexCenter,
   {
     position: "fixed",
     top: 0,
@@ -17,9 +23,9 @@ export const backdrop = style([
 ]);
 
 export const container = style([
-  utils.boxShadow,
-  utils.flexColumn,
-  utils.flexAlignCenter,
+  boxShadow,
+  flexColumn,
+  flexAlignCenter,
   {
     width: 427,
     borderRadius: 8,

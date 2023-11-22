@@ -2,7 +2,7 @@ import { style, styleVariants } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
-import * as utils from "../../../tokens/utils.css";
+import { flex } from "../../../tokens/utils.css";
 
 export const summaryText = {
   sm: typography.$semantic.caption1Regular,
@@ -19,7 +19,7 @@ export const summaryColor = styleVariants({
 });
 
 const summaryContainerBase = style([
-  utils.flex,
+  flex,
   {
     justifyContent: "flex-start",
     alignItems: "center",
