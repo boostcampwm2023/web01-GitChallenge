@@ -49,10 +49,8 @@ export const scrollBarHidden = style({
   overflow: "scroll",
   msOverflowStyle: "none",
   scrollbarWidth: "none",
-  selectors: {
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
+  "::-webkit-scrollbar": {
+    display: "none",
   },
 });
 

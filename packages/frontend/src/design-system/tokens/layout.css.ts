@@ -38,7 +38,7 @@ export const sideBar = style([
 ]);
 
 export const container = style([
-  border.side,
+  border.verticalSide,
   {
     width: 1030,
   },
