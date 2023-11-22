@@ -6,7 +6,7 @@ import * as utils from "../../../tokens/utils.css";
 
 export const summaryText = {
   sm: typography.$semantic.caption1Regular,
-  md: typography.$semantic.title2Bold,
+  md: typography.$semantic.title3Bold,
 };
 
 export const summaryColor = styleVariants({
