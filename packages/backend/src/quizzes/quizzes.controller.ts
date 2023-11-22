@@ -76,40 +76,44 @@ export class QuizzesController {
     @Res() response: Response,
     @Req() request: Request,
   ): Promise<CommandResponseDto> {
-    let sessionId = request.cookies?.sessionId;
-
-    if (!sessionId) {
-      // 세션 아이디가 없다면
-      response.cookie(
-        'sessionId',
-        (sessionId = await this.sessionService.createSession()),
-        {
-          httpOnly: true,
-          // 개발 이후 활성화 시켜야함
-          // secure: true,
-        },
-      ); // 세션 아이디를 생성한다.
-    }
-
-    // 살려야함
-    // let containerId = await this.sessionService.getContainerIdBySessionId(
-    //   sessionId,
-    //   id,
-    // );
-
-    // 살려야함
-    // if (!this.containerService.isValidateContainerId(containerId)) {
-    //   containerId = await this.containerService.getContainer(id);
-    //   await this.sessionService.setContainerBySessionId(
-    //     sessionId,
-    //     id,
-    //     containerId,
-    //   );
-    // }
-
     try {
+      let sessionId = request.cookies?.sessionId;
+
+      if (!sessionId) {
+        // 세션 아이디가 없다면
+        response.cookie(
+          'sessionId',
+          (sessionId = await this.sessionService.createSession()),
+          {
+            httpOnly: true,
+            // 개발 이후 활성화 시켜야함
+            // secure: true,
+          },
+        ); // 세션 아이디를 생성한다.
+      }
+
+      let containerId = await this.sessionService.getContainerIdBySessionId(
+        sessionId,
+        id,
+      );
+
+      if (!(await this.containerService.isValidateContainerId(containerId))) {
+        console.log(
+          'no docker container or invalid container Id. creating container...',
+        );
+        containerId = await this.containerService.getContainer(id);
+        await this.sessionService.setContainerBySessionId(
+          sessionId,
+          id,
+          containerId,
+        );
+      }
+
+      console.log(
+        `running command ${execCommandDto.command} for container ${containerId}`,
+      );
       const { message, result } = await this.containerService.runGitCommand(
-        'testContainer',
+        containerId,
         execCommandDto.command,
       );
 
