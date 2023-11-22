@@ -9,6 +9,7 @@ import {
   Res,
   Req,
   Inject,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -136,6 +137,49 @@ export class QuizzesController {
       });
       return;
     } catch (error) {
+      throw new HttpException(
+        {
+          message: 'Internal Server Error',
+          result: 'fail',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Delete(':id/command')
+  @ApiOperation({ summary: 'Git 명령기록과, 할당된 컨테이너를 삭제합니다' })
+  @ApiResponse({
+    status: 200,
+    description:
+      'session에 저장된 command 기록과 컨테이너를 삭제하고, 실제 컨테이너도 삭제 합니다',
+  })
+  @ApiParam({ name: 'id', description: '문제 ID' })
+  @ApiBody({ required: false })
+  async deleteCommandHistory(
+    @Param('id') id: number,
+    @Req() request: Request,
+  ): Promise<void> {
+    try {
+      const sessionId = request.cookies?.sessionId;
+
+      if (!sessionId) {
+        return;
+      }
+
+      const containerId = await this.sessionService.getContainerIdBySessionId(
+        sessionId,
+        id,
+      );
+
+      if (!containerId) {
+        return;
+      }
+
+      await this.containerService.deleteContainer(containerId);
+
+      await this.sessionService.deleteCommandHistory(sessionId, id);
+    } catch (e) {
       throw new HttpException(
         {
           message: 'Internal Server Error',
