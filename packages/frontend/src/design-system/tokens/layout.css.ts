@@ -22,7 +22,7 @@ export const base = style([
   utils.widthMax,
   {
     height: "100vh",
-    paddingTop: 56,
+    paddingTop: headerHeight,
     margin: "0 auto",
   },
 ]);
