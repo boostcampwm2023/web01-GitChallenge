@@ -1,7 +1,7 @@
-export const nav = [
+export const sidebarNavigation = [
   {
     title: "$ git help",
-    subTitles: [
+    subItems: [
       {
         subTitle: "명령어 이해하기",
         href: "/",
@@ -10,7 +10,7 @@ export const nav = [
   },
   {
     title: "git start",
-    subTitles: [
+    subItems: [
       {
         subTitle: "git 시작하기",
         href: "/",
@@ -39,7 +39,7 @@ export const nav = [
   },
   {
     title: "git advanced",
-    subTitles: [
+    subItems: [
       {
         subTitle: "커밋 메시지 수정하기",
         href: "/",
@@ -70,4 +70,4 @@ export const nav = [
       },
     ],
   },
-] as const;
+];
