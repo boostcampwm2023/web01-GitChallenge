@@ -79,16 +79,28 @@ export class ContainersService {
     );
 
     const createContainerCommand = `docker run -itd mergemasters/alpine-git:0.1 /bin/sh`;
-    const { stdoutData: containerId } = await this.executeSSHCommand(
-      createContainerCommand,
-    );
+    const { stdoutData } = await this.executeSSHCommand(createContainerCommand);
+    const containerId = stdoutData.trim();
 
     const createDirectoryCommand = `docker exec ${containerId} mkdir -p /${host}/quiz/`;
     await this.executeSSHCommand(createDirectoryCommand);
 
-    const copyFilesCommand = `docker cp ~/quizzes/${quizId}/ ${containerId}:/${host}/quiz/`;
+    const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/${host}/quiz/`;
     await this.executeSSHCommand(copyFilesCommand);
 
     return containerId;
+  }
+
+  async isValidateContainerId(containerId: string): Promise<boolean> {
+    const command = `docker ps -a --filter "id=${containerId}" --format "{{.ID}}"`;
+
+    const { stdoutData, stderrData } = await this.executeSSHCommand(command);
+
+    if (stderrData) {
+      // 도커 미설치 등의 에러일 듯
+      throw new Error(stderrData);
+    }
+
+    return stdoutData.trim() !== '';
   }
 }
