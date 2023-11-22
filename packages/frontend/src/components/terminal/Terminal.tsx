@@ -10,13 +10,10 @@ import TerminalContent from "./TerminalContent";
 
 interface TerminalProps {
   contentArray: TerminalContentType[];
-  onStandardInput: (input: string) => void;
+  onTerminal: (input: string) => void;
 }
 
-export default function Terminal({
-  contentArray,
-  onStandardInput,
-}: TerminalProps) {
+export default function Terminal({ contentArray, onTerminal }: TerminalProps) {
   const inputRef = useRef<HTMLSpanElement>(null);
 
   const handleStandardInput: KeyboardEventHandler = (event) => {
@@ -32,7 +29,7 @@ export default function Terminal({
       return;
     }
 
-    onStandardInput(value);
+    onTerminal(value);
 
     currentTarget.textContent = "";
   };
