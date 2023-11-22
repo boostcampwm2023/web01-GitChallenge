@@ -45,12 +45,7 @@ export class QuizzesController {
     type: QuizDto,
   })
   @ApiParam({ name: 'id', description: '문제 ID' })
-  async getProblemById(
-    @Param('id') id: number,
-    @Req() request: Request,
-  ): Promise<QuizDto> {
-    this.logRequest('GET', `/${id}`, request.cookies?.sessionId);
-
+  async getProblemById(@Param('id') id: number): Promise<QuizDto> {
     const quizDto = await this.quizService.getQuizById(id);
 
     return quizDto;
@@ -65,11 +60,7 @@ export class QuizzesController {
     description: '카테고리 별로 문제의 제목과 id가 리턴됩니다.',
     type: QuizzesDto,
   })
-  async getProblemsGroupedByCategory(
-    @Req() request: Request,
-  ): Promise<QuizzesDto> {
-    this.logRequest(`GET`, `/`, request.cookies?.sessionId);
-
+  async getProblemsGroupedByCategory(): Promise<QuizzesDto> {
     return this.quizService.findAllProblemsGroupedByCategory();
   }
 
@@ -88,8 +79,6 @@ export class QuizzesController {
     @Res() response: Response,
     @Req() request: Request,
   ): Promise<CommandResponseDto> {
-    this.logRequest(`POST`, `/${id}/command`, request.cookies?.sessionId);
-
     try {
       let sessionId = request.cookies?.sessionId;
 
@@ -155,14 +144,5 @@ export class QuizzesController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-  }
-
-  private logRequest(method: string, uri: string, sessionId: string) {
-    this.logger.log(
-      'info',
-      `Request ${method} /api/v1/quizzes${uri} from session: ${
-        sessionId || "(it's new session)"
-      }`,
-    );
   }
 }
