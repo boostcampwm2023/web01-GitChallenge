@@ -126,7 +126,7 @@ export class QuizzesController {
 
       this.logger.log(
         'info',
-        `running command ${execCommandDto.command} for container ${containerId}`,
+        `running command "${execCommandDto.command}" for container ${containerId}`,
       );
 
       const { message, result } = await this.containerService.runGitCommand(
