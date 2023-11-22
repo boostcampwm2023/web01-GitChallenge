@@ -22,7 +22,7 @@ export class Session extends Document {
     },
   })
   problems: Map<
-    string,
+    number,
     {
       status: string;
       logs: string[];
