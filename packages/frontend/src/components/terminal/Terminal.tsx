@@ -1,6 +1,6 @@
 import { type KeyboardEventHandler, useEffect, useRef } from "react";
 
-import { ENTER_KEY_CODE } from "../../constants";
+import { ENTER_KEY } from "../../constants";
 import type { TerminalContentType } from "../../types/terminalType";
 import { scrollIntoView } from "../../utils/scroll";
 
@@ -21,7 +21,7 @@ export default function Terminal({
 
   const handleStandardInput: KeyboardEventHandler = (event) => {
     const { key, currentTarget } = event;
-    if (key !== ENTER_KEY_CODE) {
+    if (key !== ENTER_KEY) {
       return;
     }
 
