@@ -15,9 +15,9 @@ export const hr = style({
   height: hrHeight,
   margin: 0,
   border: "none",
-  borderTop: `1px solid ${color.$scale.grey600}`,
-  borderBottom: `1px solid ${color.$scale.grey600}`,
-  backgroundColor: color.$scale.grey300,
+  borderTop: `1px solid ${color.$semantic.border}`,
+  borderBottom: `1px solid ${color.$semantic.border}`,
+  backgroundColor: color.$scale.grey100,
 });
 
 export const terminalContainer = style([
@@ -26,20 +26,8 @@ export const terminalContainer = style([
     height: `calc(100% - ${hrHeight})`,
     padding: "20px 10px 0",
     overflowY: "auto",
-
-    "::-webkit-scrollbar": {
-      width: 5,
-      backgroundColor: "transparent",
-    },
-
-    "::-webkit-scrollbar-thumb": {
-      borderRadius: 5,
-      backgroundColor: color.$scale.grey100,
-    },
-
-    "::-webkit-scrollbar-button": {
-      display: "none",
-    },
+    color: color.$scale.grey900,
+    backgroundColor: color.$scale.grey00,
   },
 ]);
 
