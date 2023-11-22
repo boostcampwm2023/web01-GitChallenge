@@ -1,7 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
 import {
-  border,
   flex,
   flexColumn,
   middleLayer,
@@ -44,12 +43,9 @@ export const sideBar = style([
   },
 ]);
 
-export const container = style([
-  border.verticalSide,
-  {
-    width: 1030,
-  },
-]);
+export const container = style({
+  width: 1030,
+});
 
 export const footer = style([
   widthMax,
