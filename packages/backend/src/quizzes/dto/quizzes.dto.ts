@@ -35,8 +35,9 @@ export class QuizzesDto {
         id: 1,
         category: 'Git Start',
         quizzes: [
-          { id: 3, title: 'git add & git status' },
           { id: 1, title: 'git init' },
+          { id: 2, title: 'git config' },
+          { id: 3, title: 'git add & git status' },
         ],
       },
       {
