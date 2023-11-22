@@ -4,16 +4,16 @@ import color from "../../../design-system/tokens/color";
 import typography from "../../../design-system/tokens/typography";
 
 export const strong = style([
-  typography.$semantic.title1Bold,
+  typography.$semantic.title3Bold,
   { color: color.$scale.grey800 },
 ]);
 
 export const description = style([
-  typography.$semantic.body1Regular,
+  typography.$semantic.body2Regular,
   {
-    height: 264,
-    marginTop: 15,
-    padding: "4px 8px 4px 0",
+    marginTop: 10,
+    height: 250,
+    padding: "0 8px 4px 0",
     color: color.$scale.grey700,
     overflowY: "auto",
     whiteSpace: "break-spaces",

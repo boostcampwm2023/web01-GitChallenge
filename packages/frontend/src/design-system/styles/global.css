@@ -251,7 +251,7 @@
 .mm-semantic-typography-body2-regular {
   font-size: var(--mm-scale-font-size-100);
   font-weight: var(--mm-static-font-weight-regular);
-  line-height: var(--mm-static-line-height-small);
+  line-height: var(--mm-static-line-height-medium);
   letter-spacing: var(--mm-static-letter-spacing-medium);
 }
 

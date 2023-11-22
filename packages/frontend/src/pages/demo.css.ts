@@ -3,8 +3,7 @@ import { style } from "@vanilla-extract/css";
 import color from "../design-system/tokens/color";
 import { border } from "../design-system/tokens/utils.css";
 
-const paddingRight = "36px";
-const paddingBottom = "30px";
+const containerPadding = 23;
 
 export const main = style({
   marginBottom: "54px",
@@ -14,7 +13,7 @@ export const mainInner = style([
   border.all,
   {
     borderTop: 0,
-    marginBottom: "25px",
+    marginBottom: "17px",
   },
 ]);
 
@@ -27,18 +26,18 @@ export const gitGraph = style({
 export const quizContentContainer = style({
   position: "relative",
   width: "50%",
-  height: "545px",
-  padding: `42px ${paddingRight} ${paddingBottom}`,
+  height: "410px",
+  padding: containerPadding,
 });
 
 export const commandAccordion = style({
-  marginTop: "15px",
+  marginTop: "12px",
 });
 
 export const checkAnswerButton = style({
   position: "absolute",
-  right: paddingRight,
-  bottom: paddingBottom,
+  right: containerPadding,
+  bottom: containerPadding,
 });
 
 export const submitButton = style({
