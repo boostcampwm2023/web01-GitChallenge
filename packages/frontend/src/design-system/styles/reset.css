@@ -104,9 +104,9 @@ body {
   line-height: 1;
   font-family: "Pretendard Variable", "Noto Sans KR", sans-serif;
   font-weight: 400;
-  display: flex;
-  justify-content: center;
+  background-color: var(--mm-scale-color-grey-00);
 }
+
 ol,
 ul {
   list-style: none;
