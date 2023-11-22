@@ -107,4 +107,16 @@ export class ContainersService {
 
     return stdoutData.trim() !== '';
   }
+
+  async deleteContainer(containerId: string): Promise<void> {
+    const command = `docker rm -f ${containerId}`;
+
+    const { stdoutData, stderrData } = await this.executeSSHCommand(command);
+
+    console.log(`container deleted : ${stdoutData}`);
+
+    if (stderrData) {
+      throw new Error(stderrData);
+    }
+  }
 }
