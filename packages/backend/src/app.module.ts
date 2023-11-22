@@ -9,6 +9,7 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import { format } from 'winston';
 import { typeOrmConfig } from './configs/typeorm.config';
 import { QuizzesModule } from './quizzes/quizzes.module';
+import { LoggingInterceptor } from './common/logging.interceptor';
 
 @Module({
   imports: [
@@ -39,6 +40,12 @@ import { QuizzesModule } from './quizzes/quizzes.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}
