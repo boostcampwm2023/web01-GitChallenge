@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoCloseOutline } from "react-icons/io5";
 
-import { ESC_KEY_CODE } from "../../../../constants";
+import { ESC_KEY } from "../../../../constants";
 import { preventBubbling } from "../../../../utils/event";
 import IconButton from "../IconButton/IconButton";
 
@@ -23,7 +23,7 @@ export default function Modal({ onClose, children }: ModalProps) {
   useEffect(() => {
     setMounted(true);
     const escKeyCloseEvent = (event: KeyboardEvent) => {
-      if (event.key === ESC_KEY_CODE) {
+      if (event.key === ESC_KEY) {
         onClose();
       }
     };
