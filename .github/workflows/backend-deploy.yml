@@ -69,6 +69,7 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
             docker rm -f backend || true
             docker run -d --name backend -p 8080:8080 \
+              -v /${{ secrets.CONTAINER_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
               -e CONTAINER_SSH_HOST=${{ secrets.CONTAINER_SSH_HOST }} \
               -e CONTAINER_SSH_PORT=${{ secrets.CONTAINER_SSH_PORT }} \
               -e CONTAINER_SSH_USERNAME=${{ secrets.CONTAINER_SSH_USERNAME }} \
