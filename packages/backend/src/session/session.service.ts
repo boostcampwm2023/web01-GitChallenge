@@ -84,6 +84,19 @@ export class SessionService {
     session.save();
   }
 
+  async deleteCommandHistory(
+    sessionId: string,
+    problemId: number,
+  ): Promise<void> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    session.problems.get(problemId).logs = [];
+    session.problems.get(problemId).containerId = '';
+    session.save();
+  }
+
   private async getSessionById(id: string): Promise<Session> {
     return await this.sessionModel.findById(id);
   }
