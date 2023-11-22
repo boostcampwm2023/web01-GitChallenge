@@ -155,7 +155,6 @@ export class QuizzesController {
       'session에 저장된 command 기록과 컨테이너를 삭제하고, 실제 컨테이너도 삭제 합니다',
   })
   @ApiParam({ name: 'id', description: '문제 ID' })
-  @ApiBody({ required: false })
   async deleteCommandHistory(
     @Param('id') id: number,
     @Req() request: Request,
