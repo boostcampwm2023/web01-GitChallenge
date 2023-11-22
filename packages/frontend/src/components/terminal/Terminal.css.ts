@@ -7,7 +7,7 @@ import { flexAlignCenter } from "../../design-system/tokens/utils.css";
 const hrHeight = "20px";
 
 export const container = style({
-  height: 250,
+  height: 170,
   width: "100%",
 });
 

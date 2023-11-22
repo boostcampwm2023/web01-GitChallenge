@@ -47,7 +47,7 @@ export default function QuizPage() {
       </div>
 
       <div className={styles.submitButton}>
-        <Button variant="primaryFill">제출하기</Button>
+        <Button variant="primaryFill">제출 후 채점하기</Button>
       </div>
     </main>
   );

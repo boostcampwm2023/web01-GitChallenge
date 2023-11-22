@@ -4,12 +4,12 @@ import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
 
 export const buttonBase = style([
-  typography.$semantic.title3Regular,
+  typography.$semantic.title4Regular,
   {
-    height: 45,
+    height: 42,
     border: "1px solid transparent",
     borderRadius: 8,
-    padding: "11px 22px",
+    padding: "8px 13px",
 
     ":disabled": {
       borderColor: color.$semantic.bgDisabled,

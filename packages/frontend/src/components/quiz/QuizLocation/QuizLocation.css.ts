@@ -10,7 +10,7 @@ export const list = style([
   {
     justifyContent: "flex-start",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 7,
     color: color.$scale.grey700,
   },
 ]);
