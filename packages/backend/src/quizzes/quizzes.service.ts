@@ -47,10 +47,12 @@ export class QuizzesService {
       (category) => ({
         id: category.id,
         category: category.name,
-        quizzes: category.quizzes.map((quiz) => ({
-          id: quiz.id,
-          title: quiz.title,
-        })),
+        quizzes: category.quizzes
+          .map((quiz) => ({
+            id: quiz.id,
+            title: quiz.title,
+          }))
+          .sort((a, b) => a.id - b.id),
       }),
     );
 
