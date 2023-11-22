@@ -117,6 +117,12 @@ export class QuizzesController {
         execCommandDto.command,
       );
 
+      this.sessionService.pushLogBySessionId(
+        execCommandDto.command,
+        sessionId,
+        id,
+      );
+
       response.status(HttpStatus.OK).send({
         message,
         result,

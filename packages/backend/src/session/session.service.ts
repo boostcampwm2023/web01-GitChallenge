@@ -60,6 +60,19 @@ export class SessionService {
     session.save();
   }
 
+  async pushLogBySessionId(
+    command: string,
+    sessionId: string,
+    problemId: number,
+  ): Promise<void> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    session.problems.get(problemId).logs.push(command);
+    session.save();
+  }
+
   private async getSessionById(id: string): Promise<Session> {
     return await this.sessionModel.findById(id);
   }
