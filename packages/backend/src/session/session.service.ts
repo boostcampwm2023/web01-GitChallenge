@@ -18,7 +18,7 @@ export class SessionService {
       problems: {},
     });
     return await session.save().then((session) => {
-      console.log('session created');
+      console.log(`session ${session._id as ObjectId} created`);
       return (session._id as ObjectId).toString('hex');
     });
   }
@@ -29,17 +29,21 @@ export class SessionService {
   ): Promise<string> {
     const session = await this.getSessionById(sessionId);
 
-    if (!session.problems[problemId]) {
-      session.problems.set(problemId.toString(), {
+    if (!session.problems.get(problemId)) {
+      session.problems.set(problemId, {
         status: 'solving',
         logs: [],
         containerId: '',
       });
-      console.log('session updated');
-      console.log(session.problems[problemId]);
+      console.log(`session ${session._id as ObjectId} updated`);
+      console.log(`session's new quizId: ${problemId}, document created`);
       await session.save();
+    } else {
+      console.log(
+        `containerId: ${session.problems.get(problemId)?.containerId}`,
+      );
     }
-    return session.problems[problemId]?.containerId;
+    return session.problems.get(problemId)?.containerId;
   }
 
   async setContainerBySessionId(
@@ -48,10 +52,11 @@ export class SessionService {
     containerId: string,
   ): Promise<void> {
     const session = await this.getSessionById(sessionId);
-    if (!session.problems.get(problemId.toString())) {
+    if (!session.problems.get(problemId)) {
       throw new Error('problem not found');
     }
-    session.problems.get(problemId.toString()).containerId = containerId;
+    console.log(`setting ${sessionId}'s containerId as ${containerId}`);
+    session.problems.get(problemId).containerId = containerId;
     session.save();
   }
 
