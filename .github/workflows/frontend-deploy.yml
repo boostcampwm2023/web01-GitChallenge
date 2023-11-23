@@ -23,11 +23,13 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
-
+        
+      - name: Create .env file
+        run: echo "NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }}" > packages/frontend/.env
+      
       - name: Build
         run: | 
           cd packages/frontend
-          echo "NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }}" > .env
           yarn build
 
   docker:
