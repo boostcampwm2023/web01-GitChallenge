@@ -1,6 +1,6 @@
 import { type KeyboardEventHandler, useEffect, useRef } from "react";
 
-import { ENTER_KEY } from "../../constants";
+import { ENTER_KEY } from "../../constants/event";
 import type { TerminalContentType } from "../../types/terminalType";
 import { scrollIntoView } from "../../utils/scroll";
 
