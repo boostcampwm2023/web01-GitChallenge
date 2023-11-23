@@ -7,3 +7,11 @@ export type Command = {
   result: CommandSuccess | CommandFail | CommandVI;
   graph?: string;
 };
+
+export type Quiz = {
+  id: number;
+  title: string;
+  description: string;
+  keywords: string[];
+  category: string;
+};

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { requestCommand } from "../../apis/quizzes";
+import { quizAPI } from "../../apis/quizzes";
 import { Button } from "../../design-system/components/common";
 import { flex } from "../../design-system/tokens/utils.css";
 import quizContentMockData from "../../mocks/apis/data/quizContentData";
@@ -16,7 +16,7 @@ export default function Demo() {
   const [contentArray, setContentArray] = useState<TerminalContentType[]>([]);
 
   const handleTerminal = async (input: string) => {
-    const data = await requestCommand({
+    const data = await quizAPI.postCommand({
       id: 1,
       command: input,
     });
@@ -32,7 +32,6 @@ export default function Demo() {
       <div className={styles.mainInner}>
         <div className={flex}>
           <div className={styles.gitGraph} />
-
           <div className={styles.quizContentContainer}>
             <QuizContent
               category={category}
@@ -47,10 +46,8 @@ export default function Demo() {
             </div>
           </div>
         </div>
-
         <Terminal contentArray={contentArray} onTerminal={handleTerminal} />
       </div>
-
       <div className={styles.submitButton}>
         <Button variant="primaryFill">제출 후 채점하기</Button>
       </div>
