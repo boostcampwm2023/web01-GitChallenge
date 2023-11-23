@@ -4,7 +4,7 @@ import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
 import { border, flexAlignCenter, flexColumn } from "../../../tokens/utils.css";
 
-export const olStyle = style([
+export const linkContainerStyle = style([
   flexColumn,
   border.top,
   {
@@ -13,7 +13,7 @@ export const olStyle = style([
   },
 ]);
 
-export const liStyle = style({
+export const linkItemStyle = style({
   height: 40,
   selectors: {
     "&:hover": {
@@ -23,14 +23,23 @@ export const liStyle = style({
   },
 });
 
-export const aStyle = style([
-  typography.$semantic.title4Regular,
+export const baseLinkStyle = style([
   flexAlignCenter,
+  { width: "100%", height: "100%", paddingLeft: 15, textDecoration: "none" },
+]);
+
+export const currentLinkStyle = style([
+  baseLinkStyle,
+  typography.$semantic.title4Regular,
   {
-    width: "100%",
-    height: "100%",
-    paddingLeft: 15,
+    color: color.$scale.grey900,
+  },
+]);
+
+export const linkStyle = style([
+  baseLinkStyle,
+  typography.$semantic.title4Regular,
+  {
     color: color.$scale.grey600,
-    textDecoration: "none",
   },
 ]);
