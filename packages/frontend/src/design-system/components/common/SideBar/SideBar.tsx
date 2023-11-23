@@ -10,7 +10,7 @@ export default function SideBar() {
   return (
     <nav className={layout.sideBar}>
       {sidebarNavigation.map((item) => (
-        <Accordion key={item.title}>
+        <Accordion key={item.title} open>
           <Accordion.Details>
             <Accordion.Summary>{item.title}</Accordion.Summary>
             <SubItems subItems={item.subItems} />

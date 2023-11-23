@@ -12,7 +12,7 @@ export const description = style([
   typography.$semantic.body2Regular,
   {
     marginTop: 10,
-    height: 250,
+    height: 60,
     padding: "0 8px 4px 0",
     color: color.$scale.grey700,
     overflowY: "auto",
