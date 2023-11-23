@@ -10,7 +10,7 @@ import {
 
 export type AccordionContextType = {
   open: boolean;
-  width: number;
+  width: number | string;
   onChange: (open: boolean) => void;
 };
 
@@ -27,7 +27,7 @@ export function AccordionContextProvider({
   children,
 }: {
   open: boolean;
-  width: number;
+  width: number | string;
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(initOpen);
@@ -36,12 +36,12 @@ export function AccordionContextProvider({
     (nextOpen: boolean) => {
       setOpen(nextOpen);
     },
-    [setOpen]
+    [setOpen],
   );
 
   const accordionContextValue = useMemo(
     () => ({ open, onChange: handleChange, width }),
-    [open, handleChange, width]
+    [open, handleChange, width],
   );
 
   useEffect(() => {
