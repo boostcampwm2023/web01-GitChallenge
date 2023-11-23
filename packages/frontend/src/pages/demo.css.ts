@@ -26,8 +26,13 @@ export const gitGraph = style({
 export const quizContentContainer = style({
   position: "relative",
   width: "50%",
-  height: "410px",
+  height: "400px",
   padding: containerPadding,
+  "@media": {
+    "(min-width: 1920px) and (max-width: 2559px)": {
+      height: "500px",
+    },
+  },
 });
 
 export const commandAccordion = style({

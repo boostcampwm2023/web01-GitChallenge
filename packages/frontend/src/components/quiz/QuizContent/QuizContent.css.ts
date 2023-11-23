@@ -17,6 +17,11 @@ export const description = style([
     color: color.$scale.grey700,
     overflowY: "auto",
     whiteSpace: "break-spaces",
+    "@media": {
+      "(min-width: 1920px) and (max-width: 2559px)": {
+        height: "330px",
+      },
+    },
   },
 ]);
 
