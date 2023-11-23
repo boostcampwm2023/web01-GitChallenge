@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
-import color from "../design-system/tokens/color";
-import { border } from "../design-system/tokens/utils.css";
+import color from "../../design-system/tokens/color";
+import { border } from "../../design-system/tokens/utils.css";
 
 const containerPadding = 23;
 
