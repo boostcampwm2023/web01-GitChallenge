@@ -1,5 +1,5 @@
 import { API_PATH } from "../constants/path";
-import { Command, Quiz } from "../types/quiz";
+import { Categories, Command, Quiz } from "../types/quiz";
 
 import { instance } from "./base";
 
@@ -11,8 +11,12 @@ export const quizAPI = {
     );
     return data;
   },
-  getQuiz: async (id: string) => {
+  getQuiz: async (id: number) => {
     const { data } = await instance.get<Quiz>(`${API_PATH.QUIZZES}/${id}`);
+    return data;
+  },
+  getCategories: async () => {
+    const { data } = await instance.get<Categories>(API_PATH.QUIZZES);
     return data;
   },
 };

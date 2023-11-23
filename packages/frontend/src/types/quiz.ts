@@ -15,3 +15,16 @@ export type Quiz = {
   keywords: string[];
   category: string;
 };
+
+export type Quizzes = {
+  id: number;
+  category: string;
+  quizzes: {
+    id: number;
+    title: string;
+  }[];
+}[];
+
+export type Categories = {
+  categories: Quizzes;
+};
