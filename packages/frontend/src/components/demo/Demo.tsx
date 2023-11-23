@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { requestCommand } from "../../apis/request/quizzes";
+import { requestCommand } from "../../apis/quizzes";
 import { Button } from "../../design-system/components/common";
 import { flex } from "../../design-system/tokens/utils.css";
 import quizContentMockData from "../../mocks/apis/data/quizContentData";

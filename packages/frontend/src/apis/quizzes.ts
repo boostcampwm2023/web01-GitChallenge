@@ -1,6 +1,7 @@
-import { API_PATH } from "../../constants/path";
-import { Command } from "../../types/command";
-import { instance } from "../index";
+import { API_PATH } from "../constants/path";
+import { Command } from "../types/command";
+
+import { instance } from "./base";
 
 export const requestCommand = async ({
   id,
