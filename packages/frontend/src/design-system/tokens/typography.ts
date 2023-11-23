@@ -18,6 +18,7 @@ const $semantic = {
   caption1Bold: "mm-semantic-typography-caption1-bold",
   caption2Regular: "mm-semantic-typography-caption2-regular",
   caption2Bold: "mm-semantic-typography-caption2-bold",
+  code: "mm-semantic-typography-code",
 };
 
 const typography = { $semantic };

@@ -1,6 +1,7 @@
 @import "reset.css";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
+@import url("https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css");
 
 * {
   box-sizing: border-box;
@@ -288,4 +289,9 @@
   font-weight: var(--mm-static-font-weight-bold);
   line-height: var(--mm-static-line-height-small);
   letter-spacing: var(--mm-static-letter-spacing-large);
+}
+
+.mm-semantic-typography-code {
+  font-family: "Fira Code", monospace;
+  line-height: var(--mm-static-line-height-medium);
 }
