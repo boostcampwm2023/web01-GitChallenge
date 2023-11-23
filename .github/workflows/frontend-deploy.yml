@@ -25,8 +25,9 @@ jobs:
         run: yarn install
 
       - name: Build
-        run: |
+        run: | 
           cd packages/frontend
+          echo "NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }}" > .env
           yarn build
 
   docker:
