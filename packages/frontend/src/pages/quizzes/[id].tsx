@@ -1,5 +1,7 @@
+import axios from "axios";
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { quizAPI } from "../../apis/quizzes";
 import * as styles from "../../components/demo/Demo.css";
@@ -7,24 +9,16 @@ import { CommandAccordion, QuizContent } from "../../components/quiz";
 import { Terminal } from "../../components/terminal";
 import { Button } from "../../design-system/components/common";
 import { flex } from "../../design-system/tokens/utils.css";
-import { Quiz } from "../../types/quiz";
+import { Categories, Quiz } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
 import { isString } from "../../utils/typeGuard";
 
-export default function QuizPage() {
+export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const [contentArray, setContentArray] = useState<TerminalContentType[]>([]);
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
   const {
     query: { id },
   } = useRouter();
 
-  useEffect(() => {
-    if (!isString(id)) {
-      return;
-    }
-
-    quizAPI.getQuiz(id).then((data) => setQuiz(data));
-  }, [id]);
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
       return;
@@ -69,3 +63,29 @@ export default function QuizPage() {
     </main>
   );
 }
+
+export const getStaticProps = (async ({ params }: GetStaticPropsContext) => {
+  const { data } = await axios.get<Quiz>(
+    `https://git-challenge.com/api/v1/quizzes/${params?.id}`,
+  );
+
+  return {
+    props: {
+      quiz: data,
+    },
+  };
+}) satisfies GetStaticProps<{
+  quiz: Quiz;
+}>;
+
+export const getStaticPaths = (async () => {
+  const {
+    data: { categories },
+  } = await axios.get<Categories>("https://git-challenge.com/api/v1/quizzes");
+
+  const paths = categories.flatMap(({ quizzes }) =>
+    quizzes.map(({ id }) => ({ params: { id: String(id) } })),
+  );
+
+  return { paths, fallback: "blocking" };
+}) satisfies GetStaticPaths;
