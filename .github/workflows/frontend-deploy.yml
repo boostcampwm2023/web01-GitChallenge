@@ -23,10 +23,7 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
-        
-      - name: Create .env file
-        run: echo "NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }}" > packages/frontend/.env
-      
+
       - name: Build
         run: | 
           cd packages/frontend
@@ -73,5 +70,4 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-frontend:0.1
             docker rm -f frontend || true
             docker run -d --name frontend -p 3000:3000 \
-              -e NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-frontend:0.1
