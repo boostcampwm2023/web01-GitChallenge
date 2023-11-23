@@ -6,10 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entity/category.entity';
 import { ContainersModule } from '../containers/containers.module';
 import { SessionModule } from '../session/session.module';
+import { Keyword } from './entity/keyword.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Quiz, Category]),
+    TypeOrmModule.forFeature([Quiz, Category, Keyword]),
     ContainersModule,
     SessionModule,
   ],
