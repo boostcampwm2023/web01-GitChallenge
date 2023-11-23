@@ -8,6 +8,16 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  app.enableCors({
+    origin: [
+      'https://web01-git-challenge-frontend.vercel.app/',
+      'https://git-challenge.com',
+      'http://localhost:3000',
+    ],
+    credentials: true,
+    exposedHeaders: ['Cookie'],
+  });
+
   const config = new DocumentBuilder()
     .setTitle("Merge Masters' Git Challenge API")
     .setDescription('Git Challenge의 API 설명서입니다! 파이팅!')
