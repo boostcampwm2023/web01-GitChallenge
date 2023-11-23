@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { requestCommand } from "../apis/request/quizzes";
 import { CommandAccordion, QuizContent } from "../components/quiz";
 import { Terminal } from "../components/terminal";
 import { Button } from "../design-system/components/common";
@@ -14,11 +15,15 @@ const { category, title, description, keywords } = quizContentMockData;
 export default function QuizPage() {
   const [contentArray, setContentArray] = useState<TerminalContentType[]>([]);
 
-  const handleTerminal = (input: string) => {
+  const handleTerminal = async (input: string) => {
+    const data = await requestCommand({
+      id: 1,
+      command: input,
+    });
     setContentArray([
       ...contentArray,
       { type: "stdin", content: input },
-      { type: "stdout", content: "응답값" },
+      { type: "stdout", content: data.message },
     ]);
   };
 
