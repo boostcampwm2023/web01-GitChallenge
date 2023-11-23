@@ -2,8 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
+import fs from 'fs';
 
 async function bootstrap() {
+  const dbPath = 'db.sqlite';
+
+  // DB 파일이 존재하면 삭제
+  if (fs.existsSync(dbPath)) {
+    fs.unlinkSync(dbPath);
+  }
+
   const app = await NestFactory.create(AppModule);
 
   app.use(cookieParser());
