@@ -25,12 +25,12 @@ export const linkItemStyle = style({
 
 export const baseLinkStyle = style([
   flexAlignCenter,
+  typography.$semantic.title4Regular,
   { width: "100%", height: "100%", paddingLeft: 15, textDecoration: "none" },
 ]);
 
 export const currentLinkStyle = style([
   baseLinkStyle,
-  typography.$semantic.title4Regular,
   {
     color: color.$scale.grey900,
   },
@@ -38,7 +38,6 @@ export const currentLinkStyle = style([
 
 export const linkStyle = style([
   baseLinkStyle,
-  typography.$semantic.title4Regular,
   {
     color: color.$scale.grey600,
   },
