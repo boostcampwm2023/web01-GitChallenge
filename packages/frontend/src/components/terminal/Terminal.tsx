@@ -10,13 +10,13 @@ import TerminalContent from "./TerminalContent";
 
 interface TerminalProps {
   contentArray: TerminalContentType[];
-  onTerminal: (input: string) => void;
+  onTerminal: (input: string) => Promise<void>;
 }
 
 export default function Terminal({ contentArray, onTerminal }: TerminalProps) {
   const inputRef = useRef<HTMLSpanElement>(null);
 
-  const handleStandardInput: KeyboardEventHandler = (event) => {
+  const handleStandardInput: KeyboardEventHandler = async (event) => {
     const { key, currentTarget } = event;
     if (key !== ENTER_KEY) {
       return;
@@ -29,7 +29,7 @@ export default function Terminal({ contentArray, onTerminal }: TerminalProps) {
       return;
     }
 
-    onTerminal(value);
+    await onTerminal(value);
 
     currentTarget.textContent = "";
   };
