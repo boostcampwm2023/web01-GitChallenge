@@ -48,7 +48,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
               description={quiz.description}
             />
             <div className={styles.commandAccordion}>
-              <CommandAccordion items={quiz.keywords} />
+              <CommandAccordion width="100%" items={quiz.keywords} />
             </div>
             <div className={styles.checkAnswerButton}>
               <Button variant="secondaryFill">모범 답안 확인하기</Button>

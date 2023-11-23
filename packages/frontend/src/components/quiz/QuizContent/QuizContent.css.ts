@@ -19,7 +19,7 @@ export const description = style([
     whiteSpace: "break-spaces",
     "@media": {
       "(min-width: 1920px) and (max-width: 2559px)": {
-        height: "330px",
+        height: 250,
       },
     },
   },

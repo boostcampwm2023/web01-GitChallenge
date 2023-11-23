@@ -5,7 +5,7 @@ import AccordionDetails from "./AccordionDetails";
 import AccordionSummary from "./AccordionSummary";
 
 interface AccordionProps {
-  width?: number;
+  width?: number | string;
   open?: boolean;
   children: ReactNode;
 }
