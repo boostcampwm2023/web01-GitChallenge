@@ -70,5 +70,5 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-frontend:0.1
             docker rm -f frontend || true
             docker run -d --name frontend -p 3000:3000 \
-              -e ${{ secrets.NEXT_PUBLIC_API_HOST }} \
+              -e NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-frontend:0.1
