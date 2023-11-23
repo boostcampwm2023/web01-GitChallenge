@@ -6,10 +6,13 @@ import { flexAlignCenter } from "../../design-system/tokens/utils.css";
 
 const hrHeight = "20px";
 
-export const container = style({
-  height: 170,
-  width: "100%",
-});
+export const container = style([
+  typography.$semantic.code,
+  {
+    height: 180,
+    width: "100%",
+  },
+]);
 
 export const hr = style({
   height: hrHeight,
@@ -24,10 +27,11 @@ export const terminalContainer = style([
   typography.$semantic.caption1Regular,
   {
     height: `calc(100% - ${hrHeight})`,
-    padding: "20px 10px 0",
+    padding: "10px 10px",
     overflowY: "auto",
     color: color.$scale.grey900,
     backgroundColor: color.$scale.grey00,
+    whiteSpace: "break-spaces",
   },
 ]);
 
