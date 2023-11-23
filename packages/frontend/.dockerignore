@@ -1,0 +1,26 @@
+# 버전 관리 시스템
+.git
+.gitignore
+
+# 노드 모듈
+node_modules
+
+# 로그 파일
+npm-debug.log
+yarn-error.log
+
+# 빌드 디렉토리
+dist
+build
+
+# 개발 도구 설정
+.editorconfig
+*.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
