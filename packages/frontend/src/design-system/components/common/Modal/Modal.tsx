@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoCloseOutline } from "react-icons/io5";
 
-import { ESC_KEY } from "../../../../constants";
+import { ESC_KEY } from "../../../../constants/event";
 import { preventBubbling } from "../../../../utils/event";
 import IconButton from "../IconButton/IconButton";
 
