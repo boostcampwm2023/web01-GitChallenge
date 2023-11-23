@@ -1555,6 +1555,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/papaparse@npm:^5":
+  version: 5.3.13
+  resolution: "@types/papaparse@npm:5.3.13"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 333c57794d67a461194ff4c8696a18b5f234ca7feb86516b5a49738017cdd31caf3453da2d148f00dfa35b3c0532919e3b3ed1c9369240939227d938a823c351
+  languageName: node
+  linkType: hard
+
 "@types/qs@npm:*":
   version: 6.9.10
   resolution: "@types/qs@npm:6.9.10"
@@ -2412,6 +2421,7 @@ __metadata:
     "@types/express": "npm:^4.17.17"
     "@types/jest": "npm:^29.5.2"
     "@types/node": "npm:^20.3.1"
+    "@types/papaparse": "npm:^5"
     "@types/ssh2": "npm:^1"
     "@types/supertest": "npm:^2.0.12"
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
@@ -2426,6 +2436,7 @@ __metadata:
     lint-staged: "npm:^15.1.0"
     mongoose: "npm:^8.0.1"
     nest-winston: "npm:^1.9.4"
+    papaparse: "npm:^5.4.1"
     prettier: "npm:^3.1.0"
     reflect-metadata: "npm:^0.1.13"
     rxjs: "npm:^7.8.1"
@@ -6765,6 +6776,13 @@ __metadata:
   version: 2.2.0
   resolution: "p-try@npm:2.2.0"
   checksum: c36c19907734c904b16994e6535b02c36c2224d433e01a2f1ab777237f4d86e6289fd5fd464850491e940379d4606ed850c03e0f9ab600b0ebddb511312e177f
+  languageName: node
+  linkType: hard
+
+"papaparse@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "papaparse@npm:5.4.1"
+  checksum: 201f37c4813453fed5bfb4c01816696b099d2db9ff1e8fb610acc4771fdde91d2a22b6094721edb0fedb21ca3c46f04263f68be4beb3e35b8c72278f0cedc7b7
   languageName: node
   linkType: hard
 
