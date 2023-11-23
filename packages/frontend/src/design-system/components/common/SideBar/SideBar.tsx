@@ -1,14 +1,18 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
+import { BROWSWER_PATH } from "../../../../constants/path";
 import * as layout from "../../../tokens/layout.css";
 import { Accordion } from "../Accordion";
 
+import GitHelpAccordian from "./GitHelpAccordian";
 import { sidebarNavigation } from "./nav";
 import * as styles from "./SideBar.css";
 
 export default function SideBar() {
   return (
     <nav className={layout.sideBar}>
+      <GitHelpAccordian />
       {sidebarNavigation.map((item) => (
         <Accordion key={item.title} open>
           <Accordion.Details>
@@ -22,19 +26,29 @@ export default function SideBar() {
 }
 
 interface SubItemsProps {
+  id?: number;
   subTitle: string;
-  href: string;
 }
 
 function SubItems({ subItems }: { subItems: SubItemsProps[] }) {
+  const {
+    query: { id },
+  } = useRouter();
+  const idNum = id ? +id : 0;
+
   return (
-    <ol className={styles.olStyle}>
+    <ol className={styles.linkContainerStyle}>
       {subItems.map((subTitle) => (
         <li
-          className={styles.liStyle}
-          key={[subTitle.subTitle, subTitle.href].join("")}
+          className={styles.linkItemStyle}
+          key={[subTitle.subTitle, subTitle?.id].join("")}
         >
-          <Link href={subTitle.href} className={styles.aStyle}>
+          <Link
+            href={`${BROWSWER_PATH.QUIZZES}/${subTitle.id}`}
+            className={
+              idNum === subTitle.id ? styles.currentLinkStyle : styles.linkStyle
+            }
+          >
             {subTitle.subTitle}
           </Link>
         </li>

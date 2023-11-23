@@ -1,4 +1,8 @@
-const BROWSWER_PATH = {} as const;
+const BROWSWER_PATH = {
+  MAIN: "/",
+  QUIZZES: "/quizzes",
+  SHARE: "/share",
+} as const;
 
 const API_PATH = {
   QUIZZES: "/quizzes",
