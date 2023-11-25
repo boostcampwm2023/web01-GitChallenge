@@ -82,7 +82,7 @@ export class ContainersService {
       'CONTAINER_SSH_USERNAME',
     );
 
-    const createContainerCommand = `docker run -itd mergemasters/alpine-git:0.1 /bin/sh`;
+    const createContainerCommand = `docker run --network none -itd mergemasters/alpine-git:0.1 /bin/sh`;
     const { stdoutData } = await this.executeSSHCommand(createContainerCommand);
     const containerId = stdoutData.trim();
 
