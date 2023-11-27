@@ -8,4 +8,6 @@ const API_PATH = {
   QUIZZES: "/quizzes",
 } as const;
 
-export { BROWSWER_PATH, API_PATH };
+const GIT_BOOK_URL = "https://git-scm.com/docs/git";
+
+export { BROWSWER_PATH, API_PATH, GIT_BOOK_URL };
