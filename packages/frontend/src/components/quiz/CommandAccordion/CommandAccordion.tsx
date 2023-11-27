@@ -1,8 +1,8 @@
 import Link from "next/link";
 
+import { GIT_BOOK_URL } from "../../../constants/path";
 import { Accordion, Badge } from "../../../design-system/components/common";
-import { badgeVariants } from "../../../design-system/components/common/Badge/Badge.css";
-import { objectKeys } from "../../../utils/types";
+import { badgeVariantList } from "../../../design-system/components/common/Badge/Badge";
 
 import badgeGroupLayout from "./CommandAccordion.css";
 
@@ -14,9 +14,8 @@ interface CommandAccordionProps {
 
 export default function CommandAccordion({
   width = "100%",
-    items,
-}: CommandAccordionProps) {  const variants = objectKeys(badgeVariants);
-  const gitBookURL = "https://git-scm.com/docs/git";
+  items,
+}: CommandAccordionProps) {
   return (
     <Accordion width={width}>
       <Accordion.Details>
@@ -25,8 +24,8 @@ export default function CommandAccordion({
         </Accordion.Summary>
         <div className={badgeGroupLayout}>
           {items.map((item, index) => (
-            <Badge key={item} variant={variants[index % items.length]}>
-              <Link href={`${gitBookURL}-${item}`}>{item}</Link>
+            <Badge key={item} variant={badgeVariantList[index % items.length]}>
+              <Link href={`${GIT_BOOK_URL}-${item}`}>{item}</Link>
             </Badge>
           ))}
         </div>
