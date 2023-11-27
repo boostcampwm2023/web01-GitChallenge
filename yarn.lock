@@ -5444,6 +5444,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/shell-escape@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@types/shell-escape@npm:0.2.3"
+  checksum: 4f153f424138339fff4be34a8316402b8866cbf94cad40667affacc50547f85a702554c99c9c3d25a69434c2911312e86d4ea37616a216a9074d39c24221559c
+  languageName: node
+  linkType: hard
+
 "@types/ssh2@npm:^1":
   version: 1.11.17
   resolution: "@types/ssh2@npm:1.11.17"
@@ -6872,6 +6879,7 @@ __metadata:
     "@types/jest": "npm:^29.5.2"
     "@types/node": "npm:^20.3.1"
     "@types/papaparse": "npm:^5"
+    "@types/shell-escape": "npm:^0.2.3"
     "@types/ssh2": "npm:^1"
     "@types/supertest": "npm:^2.0.12"
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
@@ -6890,6 +6898,7 @@ __metadata:
     prettier: "npm:^3.1.0"
     reflect-metadata: "npm:^0.1.13"
     rxjs: "npm:^7.8.1"
+    shell-escape: "npm:^0.2.0"
     source-map-support: "npm:^0.5.21"
     sqlite3: "npm:^5.1.6"
     ssh2: "npm:^1.14.0"
@@ -16206,6 +16215,13 @@ __metadata:
   version: 3.0.0
   resolution: "shebang-regex@npm:3.0.0"
   checksum: 1dbed0726dd0e1152a92696c76c7f06084eb32a90f0528d11acd764043aacf76994b2fb30aa1291a21bd019d6699164d048286309a278855ee7bec06cf6fb690
+  languageName: node
+  linkType: hard
+
+"shell-escape@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "shell-escape@npm:0.2.0"
+  checksum: 501616713d13fd053b3858da18b613d83bfcdc8368e62be393dc563cc9fe2550492d403f73211e9a84429f39c8b9617f1e016dabee177b0ebdcb298fa47fc612
   languageName: node
   linkType: hard
 
