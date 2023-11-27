@@ -1,0 +1,43 @@
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "next/core-web-vitals",
+    "plugin:storybook/recommended",
+    "prettier",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+    "sort-imports": ["error", { "ignoreDeclarationSort": true }],
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ]
+      }
+    ],
+    "react/require-default-props": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "import/prefer-default-export": "off"
+  },
+  "settings": {
+    "import/external-module-folders": [".yarn"]
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
+}
