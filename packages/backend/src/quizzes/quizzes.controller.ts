@@ -118,16 +118,16 @@ export class QuizzesController {
 
       this.logger.log(
         'info',
-        `running command "${execCommandDto.command}" for container ${containerId}`,
+        `running command "${execCommandDto.message}" for container ${containerId}`,
       );
 
       const { message, result } = await this.containerService.runGitCommand(
         containerId,
-        execCommandDto.command,
+        execCommandDto.message,
       );
 
       this.sessionService.pushLogBySessionId(
-        execCommandDto.command,
+        execCommandDto.message,
         sessionId,
         id,
       );
