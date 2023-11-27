@@ -63,7 +63,7 @@ export class ContainersService {
     command: string,
   ): Promise<CommandResponseDto> {
     const { stdoutData, stderrData } = await this.executeSSHCommand(
-      `docker exec -w ~/quiz/ ${container} ${command}`,
+      `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} /usr/local/bin/restricted-shell ${command}`,
     );
 
     if (stderrData) {
@@ -78,19 +78,19 @@ export class ContainersService {
     // 차후에는 준비된 컨테이너 중 하나를 선택해서 준다.
     // quizId에 대한 유효성 검사는 이미 끝났다(이미 여기서는 DB 접근 불가)
 
-    const host: string = this.configService.get<string>(
-      'CONTAINER_SSH_USERNAME',
+    const user: string = this.configService.get<string>(
+      'CONTAINER_GIT_USERNAME',
     );
 
-    const createContainerCommand = `docker run --network none -itd mergemasters/alpine-git:0.1 /bin/sh`;
+    const createContainerCommand = `docker run --network none -itd mergemasters/alpine-git:0.2 /bin/sh`;
     const { stdoutData } = await this.executeSSHCommand(createContainerCommand);
     const containerId = stdoutData.trim();
 
-    const createDirectoryCommand = `docker exec ${containerId} mkdir -p /${host}/quiz/`;
-    await this.executeSSHCommand(createDirectoryCommand);
-
-    const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/${host}/quiz/`;
+    const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
     await this.executeSSHCommand(copyFilesCommand);
+
+    const chownCommand = `docker exec -u root ${containerId} chown -R ${user}:${user} /home/${user}/quiz`;
+    await this.executeSSHCommand(chownCommand);
 
     return containerId;
   }
