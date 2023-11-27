@@ -1,6 +1,7 @@
 {
   "packageManager": "yarn@4.0.2",
   "devDependencies": {
+    "eslint": "^8.53.0",
     "husky": "^8.0.0",
     "pinst": "^3.0.0",
     "prettier": "^3.1.0",

@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# 현재 브랜치의 이름을 가져오기
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if echo "$current_branch" | grep -q "fe"; then
+  . "$(dirname -- "$0")/_/husky.sh"
+  yarn workspace frontend run lint-staged
+fi
+
+if echo "$current_branch" | grep -q "be"; then
+  . "$(dirname -- "$0")/_/husky.sh"
+  yarn workspace backend run lint-staged
+fi
