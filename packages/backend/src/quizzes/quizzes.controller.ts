@@ -7,9 +7,9 @@ import {
   HttpException,
   HttpStatus,
   Res,
-  Req,
   Inject,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -25,8 +25,11 @@ import { QuizzesDto } from './dto/quizzes.dto';
 import { CommandRequestDto } from './dto/command-request.dto';
 import { CommandResponseDto } from './dto/command-response.dto';
 import { SessionService } from '../session/session.service';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { ContainersService } from '../containers/containers.service';
+import { SessionId } from '../session/session.decorator';
+import { SessionGuard } from '../session/session.guard';
+import { CommandGuard } from '../command.guard';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
@@ -66,6 +69,7 @@ export class QuizzesController {
   }
 
   @Post(':id/command')
+  @UseGuards(CommandGuard)
   @ApiOperation({ summary: 'Git 명령을 실행합니다.' })
   @ApiResponse({
     status: 200,
@@ -78,22 +82,20 @@ export class QuizzesController {
     @Param('id') id: number,
     @Body() execCommandDto: CommandRequestDto,
     @Res() response: Response,
-    @Req() request: Request,
+    @SessionId() sessionId: string,
   ): Promise<CommandResponseDto> {
     try {
-      let sessionId = request.cookies?.sessionId;
-
       if (!sessionId) {
         // 세션 아이디가 없다면
+        this.logger.log('info', 'no session id. creating session..');
         response.cookie(
           'sessionId',
           (sessionId = await this.sessionService.createSession()),
           {
             httpOnly: true,
-            // 개발 이후 활성화 시켜야함
-            // secure: true,
           },
         ); // 세션 아이디를 생성한다.
+        this.logger.log('info', `session id: ${sessionId} created`);
       }
 
       let containerId = await this.sessionService.getContainerIdBySessionId(
@@ -148,6 +150,7 @@ export class QuizzesController {
   }
 
   @Delete(':id/command')
+  @UseGuards(SessionGuard)
   @ApiOperation({ summary: 'Git 명령기록과, 할당된 컨테이너를 삭제합니다' })
   @ApiResponse({
     status: 200,
@@ -157,15 +160,9 @@ export class QuizzesController {
   @ApiParam({ name: 'id', description: '문제 ID' })
   async deleteCommandHistory(
     @Param('id') id: number,
-    @Req() request: Request,
+    @SessionId() sessionId: string,
   ): Promise<void> {
     try {
-      const sessionId = request.cookies?.sessionId;
-
-      if (!sessionId) {
-        return;
-      }
-
       const containerId = await this.sessionService.getContainerIdBySessionId(
         sessionId,
         id,
