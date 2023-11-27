@@ -40,6 +40,7 @@ export const commandInputContainer = style([
   {
     width: "100%",
     position: "relative",
+    paddingLeft: 6,
   },
 ]);
 
