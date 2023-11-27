@@ -3,11 +3,6 @@ import { style, styleVariants } from "@vanilla-extract/css";
 import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
 
-export const container = style({
-  display: "flex",
-  gap: 10,
-});
-
 export const badgeBase = style([
   typography.$semantic.caption2Regular,
   {
