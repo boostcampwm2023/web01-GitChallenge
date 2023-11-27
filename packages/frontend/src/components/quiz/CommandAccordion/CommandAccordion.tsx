@@ -1,7 +1,8 @@
-import {
-  Accordion,
-  BadgeGroup,
-} from "../../../design-system/components/common";
+import Link from "next/link";
+
+import { Accordion, Badge } from "../../../design-system/components/common";
+import { badgeVariants } from "../../../design-system/components/common/Badge/Badge.css";
+import { objectKeys } from "../../../utils/types";
 
 import badgeGroupLayout from "./CommandAccordion.css";
 
@@ -10,10 +11,12 @@ interface CommandAccordionProps {
   items: string[];
 }
 
+
 export default function CommandAccordion({
   width = "100%",
-  items,
-}: CommandAccordionProps) {
+    items,
+}: CommandAccordionProps) {  const variants = objectKeys(badgeVariants);
+  const gitBookURL = "https://git-scm.com/docs/git";
   return (
     <Accordion width={width}>
       <Accordion.Details>
@@ -21,13 +24,13 @@ export default function CommandAccordion({
           {({ open }) => <>핵심명령어 {open ? "숨기기" : "보기"}</>}
         </Accordion.Summary>
         <div className={badgeGroupLayout}>
-          <BadgeGroup items={items.map(toLabelProps)} />
+          {items.map((item, index) => (
+            <Badge key={item} variant={variants[index % items.length]}>
+              <Link href={`${gitBookURL}-${item}`}>{item}</Link>
+            </Badge>
+          ))}
         </div>
       </Accordion.Details>
     </Accordion>
   );
-}
-
-function toLabelProps(item: string) {
-  return { label: item };
 }
