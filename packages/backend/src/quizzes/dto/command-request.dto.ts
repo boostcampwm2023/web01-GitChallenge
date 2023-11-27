@@ -1,12 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export const MODE = {
+  COMMAND: 'command',
+  EDITOR: 'editor',
+} as const;
+
+type ModeType = (typeof MODE)[keyof typeof MODE];
+
 export class CommandRequestDto {
   @ApiProperty({
     description:
       '실행할 명령 모드. 예: "command" (명령 실행), "editor" (에디터 명령)',
     example: 'command',
+    enum: Object.values(MODE),
   })
-  mode: string;
+  mode: ModeType;
 
   @ApiProperty({
     description:
