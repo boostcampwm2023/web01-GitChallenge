@@ -71,6 +71,17 @@ export class SessionService {
     session.save();
   }
 
+  async getRecentLog(sessionId: string, problemId: number): Promise<string> {
+    const session = await this.getSessionById(sessionId);
+
+    const problemLogs = session?.problems.get(problemId)?.logs;
+    if (!problemLogs || problemLogs.length === 0) {
+      throw new Error('No execution record(이전에 명령을 실행한 적 없습니다.)');
+    }
+
+    return problemLogs[problemLogs.length - 1];
+  }
+
   async pushLogBySessionId(
     command: string,
     sessionId: string,
