@@ -22,7 +22,7 @@ import { Logger } from 'winston';
 import { QuizDto } from './dto/quiz.dto';
 import { QuizzesService } from './quizzes.service';
 import { QuizzesDto } from './dto/quizzes.dto';
-import { CommandRequestDto } from './dto/command-request.dto';
+import { CommandRequestDto, MODE } from './dto/command-request.dto';
 import { CommandResponseDto } from './dto/command-response.dto';
 import { SessionService } from '../session/session.service';
 import { Response } from 'express';
@@ -116,16 +116,47 @@ export class QuizzesController {
         );
       }
 
-      this.logger.log(
-        'info',
-        `running command "${execCommandDto.message}" for container ${containerId}`,
-      );
+      // 리팩토링 필수입니다.
+      let message: string, result: string;
 
-      const { message, result } = await this.containerService.runGitCommand(
-        containerId,
-        execCommandDto.message,
-      );
+      if (execCommandDto.mode === MODE.COMMAND) {
+        this.logger.log(
+          'info',
+          `running command "${execCommandDto.message}" for container ${containerId}`,
+        );
 
+        ({ message, result } = await this.containerService.runGitCommand(
+          containerId,
+          execCommandDto.message,
+        ));
+      } else if (execCommandDto.mode === MODE.EDITOR) {
+        const recentCommand = await this.sessionService.getRecentLog(
+          sessionId,
+          id,
+        );
+
+        const bodyPreview =
+          execCommandDto.message.length > 15
+            ? execCommandDto.message.slice(0, 20) + '...'
+            : execCommandDto.message;
+
+        this.logger.log(
+          'info',
+          `running editor command "${recentCommand}" for container ${containerId} with body starts with "${bodyPreview}"`,
+        );
+
+        ({ message, result } = await this.containerService.runEditorCommand(
+          containerId,
+          recentCommand,
+          execCommandDto.message,
+        ));
+      } else {
+        response.status(HttpStatus.BAD_REQUEST).send({
+          message: '잘못된 요청입니다.',
+        });
+      }
+
+      // 일단 editor일 때도 message를 저장합니다.
       this.sessionService.pushLogBySessionId(
         execCommandDto.message,
         sessionId,
