@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from 'winston';
 import { CommandResponseDto } from 'src/quizzes/dto/command-response.dto';
 import { Client } from 'ssh2';
+import shellEscape from 'shell-escape';
 
 @Injectable()
 export class ContainersService {
@@ -66,6 +67,28 @@ export class ContainersService {
       `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} /usr/local/bin/restricted-shell ${command}`,
     );
 
+    if (stdoutData.endsWith('# CREATED_BY_OUTPUT.SH\n')) {
+      return { message: stdoutData, result: 'editor' };
+    }
+
+    if (stderrData) {
+      return { message: stderrData, result: 'fail' };
+    }
+
+    return { message: stdoutData, result: 'success' };
+  }
+
+  async runEditorCommand(
+    container: string,
+    command: string,
+    message: string,
+  ): Promise<CommandResponseDto> {
+    const escapedMessage = shellEscape([message]);
+
+    const { stdoutData, stderrData } = await this.executeSSHCommand(
+      `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} sh -c "git config --global core.editor /editor/input.sh && echo ${escapedMessage} | ${command}; git config --global core.editor /editor/output.sh"`,
+    );
+
     if (stderrData) {
       return { message: stderrData, result: 'fail' };
     }
@@ -82,15 +105,20 @@ export class ContainersService {
       'CONTAINER_GIT_USERNAME',
     );
 
-    const createContainerCommand = `docker run --network none -itd mergemasters/alpine-git:0.2 /bin/sh`;
+    const createContainerCommand = `docker run -itd --network none -v ~/editor:/editor \
+mergemasters/alpine-git:0.2 /bin/sh`;
     const { stdoutData } = await this.executeSSHCommand(createContainerCommand);
     const containerId = stdoutData.trim();
 
+    // TODO: 연속 실행할 때 매번 SSH 하는거 리팩토링 해야 함
     const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
     await this.executeSSHCommand(copyFilesCommand);
 
-    const chownCommand = `docker exec -u root ${containerId} chown -R ${user}:${user} /home/${user}/quiz`;
+    const chownCommand = `docker exec -u root ${containerId} chown -R ${user}:${user} /home/${user}`;
     await this.executeSSHCommand(chownCommand);
+
+    const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
+    await this.executeSSHCommand(coreEditorCommand);
 
     return containerId;
   }
