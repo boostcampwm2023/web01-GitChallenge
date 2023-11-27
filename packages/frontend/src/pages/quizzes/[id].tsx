@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { quizAPI } from "../../apis/quizzes";
 import * as styles from "../../components/demo/Demo.css";
@@ -18,6 +18,10 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const {
     query: { id },
   } = useRouter();
+
+  useEffect(() => {
+    setContentArray([]);
+  }, [id]);
 
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
