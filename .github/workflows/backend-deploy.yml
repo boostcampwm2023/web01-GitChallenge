@@ -1,0 +1,78 @@
+name: "backend-docker-build"
+
+on:
+  push:
+    branches: [ "dev-be" ]
+    
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # 노드 버전 설정 및 의존성 설치
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.17.1'
+
+      - name: Corepack Enable
+        run: corepack enable
+
+      - name: Install Dependencies
+        run: yarn install
+
+      # 테스트 실행 (필요한 경우)
+      # - name: Run Tests
+      #   run: yarn test
+
+  docker:
+    name: Deploy Docker Image
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and Push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./packages/backend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
+
+  deploy:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.BACKEND_SSH_HOST }}
+          username: ${{ secrets.BACKEND_SSH_USERNAME }}
+          password: ${{ secrets.BACKEND_SSH_PASSWORD }}
+          port: ${{ secrets.BACKEND_SSH_PORT }}
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
+            docker rm -f backend || true
+            docker run -d --name backend -p 8080:8080 \
+              -v /${{ secrets.CONTAINER_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
+              -e CONTAINER_SSH_HOST=${{ secrets.CONTAINER_SSH_HOST }} \
+              -e CONTAINER_SSH_PORT=${{ secrets.CONTAINER_SSH_PORT }} \
+              -e CONTAINER_SSH_USERNAME=${{ secrets.CONTAINER_SSH_USERNAME }} \
+              -e CONTAINER_SSH_PASSWORD=${{ secrets.CONTAINER_SSH_PASSWORD }} \
+              -e MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
+              ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
