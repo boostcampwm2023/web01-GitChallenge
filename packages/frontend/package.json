@@ -66,5 +66,8 @@
     "storybook": "^7.5.3",
     "typescript": "5.0.0-beta",
     "webpack": "^5.89.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
