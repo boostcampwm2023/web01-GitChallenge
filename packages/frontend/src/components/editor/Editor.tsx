@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { isString } from "../../utils/typeGuard";
+
 import * as styles from "./Editor.css";
 
 type ModeType = "insert" | "command";
@@ -18,7 +20,6 @@ interface EditorProps {
 
 export function Editor({ initialFile, onSubmit }: EditorProps) {
   const [mode, setMode] = useState<ModeType>("command");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [inputReadonly, setInputReadonly] = useState(true);
   const [inputValue, setInputValue] = useState("");
 
@@ -85,6 +86,13 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         }
 
         onSubmit(initialFile);
+        return;
+      }
+
+      if (value === ":wq" || value === ":wq!") {
+        if (isString(currentFile)) {
+          onSubmit(currentFile);
+        }
       }
     }
   };
