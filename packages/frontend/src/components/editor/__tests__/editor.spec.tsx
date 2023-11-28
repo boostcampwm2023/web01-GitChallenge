@@ -30,23 +30,30 @@ const mockData = `
 
 describe("Editor", () => {
   describe("초기 데이터가 전달되면", () => {
-    const mockFn = jest.fn();
-    render(<Editor initialFile={mockData} onSubmit={mockFn} />);
-    const $input = screen.getByTestId("input");
-    const $textArea = screen.getByTestId("textarea");
-    const user = userEvent.setup();
     it("편집기에 전달받은 초기 데이터를 보여준다.", () => {
-      expect($textArea).toHaveValue(mockData);
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+
+      expect(screen.getByTestId("textarea")).toHaveValue(mockData);
     });
+
     it("편집기는 명령 모드로 textarea에 입력이 안된다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
       await user.type(
-        $textArea,
+        screen.getByTestId("textarea"),
         "이 값을 타이핑해도 TextArea의 값이 바뀌지 않아야함.",
       );
-      expect($textArea).toHaveValue(mockData);
+
+      expect(screen.getByTestId("textarea")).toHaveValue(mockData);
     });
+
     it("편집기의 명령 모드로 명령어 입력 input에도 입력이 되지 않는다.", () => {
-      expect($input).toHaveAttribute("readonly");
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+
+      expect(screen.getByTestId("input")).toHaveAttribute("readonly");
     });
   });
 });
