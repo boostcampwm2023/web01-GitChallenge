@@ -22,7 +22,7 @@ export async function getConfig(
   return stdoutData;
 }
 
-export async function readGitIndex(container: string): Promise<string> {
+export async function getCachedDiff(container: string): Promise<string> {
   const { stdoutData } = await executeSSHCommand(
     `docker exec -u quizzer -w /home/quizzer/quiz ${container} git diff --cached`,
   );
