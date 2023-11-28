@@ -11,13 +11,19 @@ type ModeType = "insert" | "command";
 
 const ARROW = "Arrow";
 
-export function Editor() {
+interface EditorProps {
+  initialFile: string;
+  onSubmit: (file: string) => void;
+}
+
+export function Editor({ initialFile, onSubmit }: EditorProps) {
   const [mode, setMode] = useState<ModeType>("command");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [inputReadonly, setInputReadonly] = useState(true);
   const [inputValue, setInputValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleTextareaKeyDown: KeyboardEventHandler = (event) => {
     const { key } = event;
@@ -55,6 +61,34 @@ export function Editor() {
     }
   };
 
+  const handleInputKeydown: KeyboardEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    const {
+      key,
+      currentTarget: { value },
+    } = event;
+    const currentFile = textareaRef.current?.value;
+
+    if (key === "Enter") {
+      const changedFile = initialFile !== currentFile;
+
+      if (value === ":q") {
+        if (changedFile) {
+          setInputValue("E37: No write since last change (add ! to override)");
+          setInputReadonly(true);
+          setMode("command");
+          event.preventDefault();
+
+          textareaRef.current?.focus();
+          return;
+        }
+
+        onSubmit(initialFile);
+      }
+    }
+  };
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
   }) => {
@@ -68,13 +102,17 @@ export function Editor() {
         <textarea
           className={styles.textarea}
           onKeyDown={handleTextareaKeyDown}
+          defaultValue={initialFile}
+          ref={textareaRef}
         />
         <input
           className={styles.input}
           type="text"
           value={inputValue}
           onChange={handleInputChange}
+          onKeyDown={handleInputKeydown}
           ref={inputRef}
+          readOnly={inputReadonly}
         />
       </div>
     </>
