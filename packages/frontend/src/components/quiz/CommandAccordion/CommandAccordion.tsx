@@ -1,8 +1,7 @@
 import Link from "next/link";
 
 import { GIT_BOOK_URL } from "../../../constants/path";
-import { Accordion, Badge } from "../../../design-system/components/common";
-import { badgeVariantList } from "../../../design-system/components/common/Badge/Badge";
+import { Accordion, Badge , badgeVariantList } from "../../../design-system/components/common";
 
 import badgeGroupLayout from "./CommandAccordion.css";
 
@@ -10,7 +9,6 @@ interface CommandAccordionProps {
   width?: number | string;
   items: string[];
 }
-
 
 export default function CommandAccordion({
   width = "100%",
