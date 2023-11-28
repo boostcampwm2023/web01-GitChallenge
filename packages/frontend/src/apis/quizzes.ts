@@ -1,5 +1,5 @@
 import { API_PATH } from "../constants/path";
-import { Categories, Command, Quiz } from "../types/quiz";
+import { Categories, Command, Quiz, QuizSolve } from "../types/quiz";
 
 import { instance } from "./base";
 
@@ -17,6 +17,12 @@ export const quizAPI = {
   },
   getCategories: async () => {
     const { data } = await instance.get<Categories>(API_PATH.QUIZZES);
+    return data;
+  },
+  submit: async (id: number) => {
+    const { data } = await instance.post<QuizSolve>(
+      `${API_PATH.QUIZZES}/${id}/submit`,
+    );
     return data;
   },
 };

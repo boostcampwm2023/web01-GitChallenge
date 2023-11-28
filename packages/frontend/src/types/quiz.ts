@@ -28,3 +28,14 @@ export type Quizzes = {
 export type Categories = {
   categories: Quizzes;
 };
+
+export type QuizSolve = QuizSolveCorrect | QuizSolveWrong;
+
+export type QuizSolveCorrect = {
+  solved: true;
+  link: string;
+};
+
+export type QuizSolveWrong = {
+  solved: false;
+};
