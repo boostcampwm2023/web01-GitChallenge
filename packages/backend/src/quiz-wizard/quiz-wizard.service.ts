@@ -14,7 +14,7 @@ export class QuizWizardService {
           process.cwd(),
           'src',
           'quiz-wizard',
-          'tests',
+          'comparers',
           `${quizId}.spec.ts`,
         )} ${containerId}`,
       );

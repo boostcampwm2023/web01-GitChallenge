@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { QuizWizardService } from './quiz-wizard.service';
-import { ContainersService } from '../containers/containers.service';
-import { executeSSHCommand } from '../common/ssh.util';
+import { QuizWizardService } from '../quiz-wizard.service';
+import { ContainersService } from '../../containers/containers.service';
+import { executeSSHCommand } from '../../common/ssh.util';
 import { ConfigService } from '@nestjs/config';
 
 const DOCKER_TEMPLATE = 'docker exec -w /home/quizzer/quiz -u quizzer';
