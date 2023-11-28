@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { quizAPI } from "../../apis/quizzes";
+import { quizAPI } from "../../apis/quiz";
 import * as styles from "../../components/demo/Demo.css";
 import { CommandAccordion, QuizContent } from "../../components/quiz";
 import { Terminal } from "../../components/terminal";
