@@ -5,7 +5,7 @@ export async function isDirectoryExist(
   path: string,
 ): Promise<boolean> {
   const { stdoutData } = await executeSSHCommand(
-    `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} /usr/local/bin/sh "ls -l ${path} | grep ^d"`,
+    `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} ls -l ${path} | grep ^d`,
   );
 
   return stdoutData !== '';
