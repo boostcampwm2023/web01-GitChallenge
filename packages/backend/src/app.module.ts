@@ -10,6 +10,7 @@ import { format } from 'winston';
 import { typeOrmConfig } from './configs/typeorm.config';
 import { QuizzesModule } from './quizzes/quizzes.module';
 import { LoggingInterceptor } from './common/logging.interceptor';
+import { QuizWizardModule } from './quiz-wizard/quiz-wizard.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { LoggingInterceptor } from './common/logging.interceptor';
         ),
       ),
     }),
+    QuizWizardModule,
   ],
   controllers: [AppController],
   providers: [

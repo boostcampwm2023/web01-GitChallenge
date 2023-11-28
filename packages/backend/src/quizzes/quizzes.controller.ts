@@ -30,6 +30,8 @@ import { ContainersService } from '../containers/containers.service';
 import { SessionId } from '../session/session.decorator';
 import { SessionGuard } from '../session/session.guard';
 import { CommandGuard } from '../command.guard';
+import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
+import { Fail, SubmitDto, Success } from './dto/submit.dto';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
@@ -38,6 +40,7 @@ export class QuizzesController {
     private readonly quizService: QuizzesService,
     private readonly sessionService: SessionService,
     private readonly containerService: ContainersService,
+    private readonly quizWizardService: QuizWizardService,
     @Inject('winston') private readonly logger: Logger,
   ) {}
 
@@ -206,6 +209,56 @@ export class QuizzesController {
       this.containerService.deleteContainer(containerId);
 
       this.sessionService.deleteCommandHistory(sessionId, id);
+    } catch (e) {
+      throw new HttpException(
+        {
+          message: 'Internal Server Error',
+          result: 'fail',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post(':id/submit')
+  @UseGuards(SessionGuard)
+  @ApiOperation({ summary: '채점을 요청합니다.' })
+  @ApiResponse({
+    status: 200,
+    description: '채점 결과를 리턴합니다.',
+    type: Success,
+  })
+  @ApiParam({ name: 'id', description: '문제 ID' })
+  async submit(
+    @Param('id') id: number,
+    @SessionId() sessionId: string,
+  ): Promise<SubmitDto> {
+    try {
+      const containerId = await this.sessionService.getContainerIdBySessionId(
+        sessionId,
+        id,
+      );
+
+      if (!containerId) {
+        return;
+      }
+
+      if (!(await this.containerService.isValidateContainerId(containerId))) {
+        // 재현해서 컨테이너 발급하기
+        return;
+      }
+
+      const result: boolean = await this.quizWizardService.submit(
+        containerId,
+        id,
+      );
+
+      if (!result) {
+        return new Fail();
+      }
+
+      //create link
+      return new Success('notImplemented');
     } catch (e) {
       throw new HttpException(
         {
