@@ -4,6 +4,8 @@ import * as styles from "./Editor.css";
 
 type ModeType = "insert" | "command";
 
+const ARROW = "Arrow";
+
 export function Editor() {
   const [mode, setMode] = useState<ModeType>("command");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,6 +22,12 @@ export function Editor() {
         event.preventDefault();
         return;
       }
+
+      if (key.startsWith(ARROW)) {
+        return;
+      }
+
+      event.preventDefault();
     }
 
     if (isInsertMode(mode) && key === "Escape") {
