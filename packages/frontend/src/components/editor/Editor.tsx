@@ -18,7 +18,14 @@ export function Editor() {
         setMode("insert");
         setInputValue("-- INSERT --");
         event.preventDefault();
+        return;
       }
+    }
+
+    if (isInsertMode(mode) && key === "Escape") {
+      setMode("command");
+      setInputValue("");
+      setInputReadonly(true);
     }
   };
 
@@ -49,4 +56,8 @@ export function Editor() {
 
 function isCommandMode(mode: ModeType) {
   return mode === "command";
+}
+
+function isInsertMode(mode: ModeType) {
+  return !isCommandMode(mode);
 }
