@@ -80,7 +80,7 @@ export class ContainersService {
   }
 
   async isValidateContainerId(containerId: string): Promise<boolean> {
-    const command = `docker ps -a --filter "id=${containerId}" --format "{{.ID}}"`;
+    const command = `docker ps -a --filter "name=${containerId}" --format "{{.ID}}"`;
 
     const { stdoutData, stderrData } = await executeSSHCommand(command);
 
