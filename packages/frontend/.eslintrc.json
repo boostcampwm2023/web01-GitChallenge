@@ -31,7 +31,8 @@
     ],
     "react/require-default-props": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   },
   "settings": {
     "import/external-module-folders": [".yarn"]
