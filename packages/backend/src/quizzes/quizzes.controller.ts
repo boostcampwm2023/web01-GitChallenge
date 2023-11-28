@@ -29,7 +29,7 @@ import { Response } from 'express';
 import { ContainersService } from '../containers/containers.service';
 import { SessionId } from '../session/session.decorator';
 import { SessionGuard } from '../session/session.guard';
-import { CommandGuard } from '../command.guard';
+import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
 
