@@ -40,7 +40,6 @@ export const commandInputContainer = style([
   {
     width: "100%",
     position: "relative",
-    paddingLeft: 6,
   },
 ]);
 
@@ -48,14 +47,13 @@ export const prompt = style({
   position: "absolute",
   top: 1,
   left: 0,
-  paddingRight: 4,
 });
 
 export const stdinContainer = style({ position: "relative" });
 
 export const stdin = style({
   display: "block",
-  textIndent: 10,
+  textIndent: 16,
 });
 
 export const commandInput = style({
