@@ -9,7 +9,13 @@ export class CommandGuard implements CanActivate {
     return (
       typeof mode === 'string' &&
       typeof message === 'string' &&
-      (mode === 'editor' || (mode === 'command' && message.startsWith('git')))
+      (mode === 'editor' ||
+        (mode === 'command' &&
+          message.startsWith('git') &&
+          !this.isMessageIncluded(message, [';', '>', '|', '<'])))
     );
+  }
+  private isMessageIncluded(message: string, keywords: string[]): boolean {
+    return keywords.some((keyword) => message.includes(keyword));
   }
 }
