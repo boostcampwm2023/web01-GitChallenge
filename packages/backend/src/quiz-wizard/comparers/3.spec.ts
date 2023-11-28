@@ -1,10 +1,10 @@
-import { readGitIndex } from './test.module';
+import { getCachedDiff } from './test.module';
 
 const containerId = process.argv[3];
 
 describe('QuizWizardService', () => {
   it('should be true', async () => {
-    expect(await readGitIndex(containerId))
+    expect(await getCachedDiff(containerId))
       .toMatch(`diff --git a/README.md b/README.md
 new file mode 100644
 index 0000000..e69de29
