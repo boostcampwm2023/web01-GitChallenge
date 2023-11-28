@@ -5507,6 +5507,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^9":
+  version: 9.0.7
+  resolution: "@types/uuid@npm:9.0.7"
+  checksum: b329ebd4f9d1d8e08d4f2cc211be4922d70d1149f73d5772630e4a3acfb5170c6d37b3d7a39a0412f1a56e86e8a844c7f297c798b082f90380608bf766688787
+  languageName: node
+  linkType: hard
+
 "@types/validator@npm:^13.7.10":
   version: 13.11.7
   resolution: "@types/validator@npm:13.11.7"
@@ -6882,6 +6889,7 @@ __metadata:
     "@types/shell-escape": "npm:^0.2.3"
     "@types/ssh2": "npm:^1"
     "@types/supertest": "npm:^2.0.12"
+    "@types/uuid": "npm:^9"
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
     "@typescript-eslint/parser": "npm:^6.0.0"
     class-transformer: "npm:^0.5.1"
@@ -6910,6 +6918,7 @@ __metadata:
     tsconfig-paths: "npm:^4.2.0"
     typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.0-beta"
+    uuid: "npm:^9.0.1"
     winston: "npm:^3.11.0"
     winston-daily-rotate-file: "npm:^4.7.1"
   languageName: unknown
@@ -17971,7 +17980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:9.0.1, uuid@npm:^9.0.0":
+"uuid@npm:9.0.1, uuid@npm:^9.0.0, uuid@npm:^9.0.1":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:
