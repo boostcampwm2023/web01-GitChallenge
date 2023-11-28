@@ -89,6 +89,11 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         return;
       }
 
+      if (value === ":q!") {
+        onSubmit(initialFile);
+        return;
+      }
+
       if (value === ":wq" || value === ":wq!") {
         if (isString(currentFile)) {
           onSubmit(currentFile);
