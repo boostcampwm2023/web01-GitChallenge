@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { quizAPI } from "../../apis/quizzes";
+import { quizAPI } from "../../apis/quiz";
 import { Button } from "../../design-system/components/common";
 import { flex } from "../../design-system/tokens/utils.css";
 import quizContentMockData from "../../mocks/apis/data/quizContentData";
