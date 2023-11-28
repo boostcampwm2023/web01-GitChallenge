@@ -68,7 +68,10 @@ export class ContainersService {
     );
 
     if (stdoutData.endsWith('# CREATED_BY_OUTPUT.SH\n')) {
-      return { message: stdoutData, result: 'editor' };
+      return {
+        message: stdoutData.slice(0, -'# CREATED_BY_OUTPUT.SH\n'.length),
+        result: 'editor',
+      };
     }
 
     if (stderrData) {
