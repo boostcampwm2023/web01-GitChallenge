@@ -4,6 +4,7 @@ import { Logger } from 'winston';
 import { CommandResponseDto } from 'src/quizzes/dto/command-response.dto';
 import shellEscape from 'shell-escape';
 import { executeSSHCommand } from '../common/ssh.util';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ContainersService {
@@ -61,20 +62,19 @@ export class ContainersService {
       'CONTAINER_GIT_USERNAME',
     );
 
+    const containerId = uuidv4();
+
     const createContainerCommand = `docker run -itd --network none -v ~/editor:/editor \
-mergemasters/alpine-git:0.2 /bin/sh`;
-    const { stdoutData } = await executeSSHCommand(createContainerCommand);
-    const containerId = stdoutData.trim();
-
-    // TODO: 연속 실행할 때 매번 SSH 하는거 리팩토링 해야 함
+--name ${containerId} mergemasters/alpine-git:0.2 /bin/sh`;
     const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
-    await executeSSHCommand(copyFilesCommand);
-
     const chownCommand = `docker exec -u root ${containerId} chown -R ${user}:${user} /home/${user}`;
-    await executeSSHCommand(chownCommand);
-
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
-    await executeSSHCommand(coreEditorCommand);
+    await executeSSHCommand(
+      createContainerCommand,
+      copyFilesCommand,
+      chownCommand,
+      coreEditorCommand,
+    );
 
     return containerId;
   }
