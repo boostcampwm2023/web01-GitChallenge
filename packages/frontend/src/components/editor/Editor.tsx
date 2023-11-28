@@ -1,4 +1,9 @@
-import { ChangeEventHandler, KeyboardEventHandler, useState } from "react";
+import {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useRef,
+  useState,
+} from "react";
 
 import * as styles from "./Editor.css";
 
@@ -12,6 +17,8 @@ export function Editor() {
   const [inputReadonly, setInputReadonly] = useState(true);
   const [inputValue, setInputValue] = useState("");
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleTextareaKeyDown: KeyboardEventHandler = (event) => {
     const { key } = event;
 
@@ -19,6 +26,7 @@ export function Editor() {
       if (key === "i") {
         setMode("insert");
         setInputValue("-- INSERT --");
+
         event.preventDefault();
         return;
       }
@@ -27,13 +35,23 @@ export function Editor() {
         return;
       }
 
+      if (key === ":") {
+        setInputValue(key);
+        setInputReadonly(false);
+        inputRef.current?.focus();
+        event.preventDefault();
+        return;
+      }
+
       event.preventDefault();
     }
 
-    if (isInsertMode(mode) && key === "Escape") {
-      setMode("command");
-      setInputValue("");
-      setInputReadonly(true);
+    if (isInsertMode(mode)) {
+      if (key === "Escape") {
+        setMode("command");
+        setInputValue("");
+        setInputReadonly(true);
+      }
     }
   };
 
@@ -56,6 +74,7 @@ export function Editor() {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
+          ref={inputRef}
         />
       </div>
     </>
