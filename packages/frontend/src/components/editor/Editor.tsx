@@ -117,6 +117,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
           onKeyDown={handleTextareaKeyDown}
           defaultValue={initialFile}
           ref={textareaRef}
+          data-testid="textarea"
         />
         <input
           className={styles.input}
@@ -126,6 +127,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
           onKeyDown={handleInputKeydown}
           ref={inputRef}
           readOnly={inputReadonly}
+          data-testid="input"
         />
       </div>
     </>
