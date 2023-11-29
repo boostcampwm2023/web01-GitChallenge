@@ -141,4 +141,38 @@ describe("Editor", () => {
       expect($textarea).toHaveValue(mockData);
     });
   });
+
+  describe("명령 모드에서 :(콜론)을 누르면 편집기는 라인 모드로 전환되며", () => {
+    it("편집기의 textarea는 입력이 불가능하다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      await user.type($textarea, ":");
+
+      expect($textarea).toHaveValue(mockData);
+    });
+
+    it("편집기의 input에는 초기값이 :(콜론)으로 들어간다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+      await user.type($textarea, ":");
+
+      expect($input).toHaveValue(":");
+    });
+
+    it("편집기의 input에 포커싱이 맞춰진다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+      await user.type($textarea, ":");
+
+      expect(document.activeElement).toEqual($input);
+    });
+  });
 });
