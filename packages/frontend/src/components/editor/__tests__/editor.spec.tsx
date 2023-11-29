@@ -175,4 +175,92 @@ describe("Editor", () => {
       expect(document.activeElement).toEqual($input);
     });
   });
+
+  describe("편집기 내용이 변경되고 라인 모드로 전환했을 때", () => {
+    it("q를 입력하면 에러 메시지가 뜨고, 커서가 textarea로 맞춰진다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+
+      await user.type($textarea, "i");
+      await user.type($textarea, "테스트");
+
+      await user.keyboard("{Escape}");
+
+      await user.type($textarea, ":");
+
+      await user.type($input, "q");
+      await user.keyboard("{Enter}");
+
+      expect($input).toHaveValue(
+        "E37: No write since last change (add ! to override)",
+      );
+      expect(document.activeElement).toEqual($textarea);
+      expect($input).toHaveAttribute("readonly");
+    });
+
+    it("q!를 입력하면 변경사항이 적용되지 않은 상태로 onSubmit 함수를 실행시키고 종료된다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+
+      await user.type($textarea, "i");
+      await user.type($textarea, "테스트");
+
+      await user.keyboard("{Escape}");
+
+      await user.type($textarea, ":");
+
+      await user.type($input, "q!");
+      await user.keyboard("{Enter}");
+
+      expect(mockFn).toHaveBeenCalledWith(mockData);
+    });
+
+    it("wq를 입력하면 변경사항이 변경사항이 적용된 상태로 onSubmit 함수를 실행시키고 종료된다.", async () => {
+      const CHANGED_FILE = "테스트";
+      const mockFn = jest.fn();
+      render(<Editor initialFile="" onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+
+      await user.type($textarea, "i");
+      await user.type($textarea, CHANGED_FILE);
+
+      await user.keyboard("{Escape}");
+
+      await user.type($textarea, ":");
+
+      await user.type($input, "wq");
+      await user.keyboard("{Enter}");
+
+      expect(mockFn).toHaveBeenCalledWith(CHANGED_FILE);
+    });
+
+    it("wq!를 입력하면 변경사항이 변경사항이 적용된 상태로 onSubmit 함수를 실행시키고 종료된다.", async () => {
+      const CHANGED_FILE = "테스트";
+      const mockFn = jest.fn();
+      render(<Editor initialFile="" onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+
+      await user.type($textarea, "i");
+      await user.type($textarea, CHANGED_FILE);
+
+      await user.keyboard("{Escape}");
+
+      await user.type($textarea, ":");
+
+      await user.type($input, "wq!");
+      await user.keyboard("{Enter}");
+
+      expect(mockFn).toHaveBeenCalledWith(CHANGED_FILE);
+    });
+  });
 });
