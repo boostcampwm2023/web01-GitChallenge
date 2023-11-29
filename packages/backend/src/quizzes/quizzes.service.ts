@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { QuizDto } from './dto/quiz.dto';
 import { CategoryQuizzesDto, QuizzesDto } from './dto/quizzes.dto';
 import { Category } from './entity/category.entity';
-import { ContainersService } from 'src/containers/containers.service';
+import { ContainersService } from '../containers/containers.service';
 import { CommandResponseDto } from './dto/command-response.dto';
 import fs from 'fs';
 import * as Papa from 'papaparse';
