@@ -27,8 +27,14 @@ const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
       range.deleteContents();
 
       const textNode = document.createTextNode(pastedDataPlainText);
+      const cursorAnchorNode = document.createElement("span");
+
+      range.insertNode(cursorAnchorNode);
       range.insertNode(textNode);
       range.collapse(false);
+
+      cursorAnchorNode.scrollIntoView();
+      cursorAnchorNode.remove();
     };
 
     return (
