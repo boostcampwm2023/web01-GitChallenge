@@ -174,6 +174,7 @@ export class QuizzesController {
       });
       return;
     } catch (error) {
+      this.logger.log('error', error);
       throw new HttpException(
         {
           message: 'Internal Server Error',
