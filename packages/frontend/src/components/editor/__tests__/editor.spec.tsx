@@ -56,6 +56,7 @@ describe("Editor", () => {
       expect(screen.getByTestId("input")).toHaveAttribute("readonly");
     });
   });
+
   describe("명령 모드에서 i를 누르면", () => {
     it("편집기는 입력모드로 textarea에 입력이 가능하다.", async () => {
       const mockFn = jest.fn();
@@ -99,6 +100,45 @@ describe("Editor", () => {
       await user.type($input, "테스트");
 
       expect($input).toHaveValue("-- INSERT --");
+    });
+  });
+
+  describe("입력 모드에서 esc를 누르면", () => {
+    it("편집기는 명령모드로 input은 빈 값이다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+      await user.type($textarea, "i");
+
+      await user.keyboard("{Escape}");
+
+      expect($input).toHaveValue("");
+    });
+
+    it("편집기는 명령모드로 textarea에 커서가 포커싱 되어야 한다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      await user.type($textarea, "i");
+
+      await user.keyboard("{Escape}");
+      expect(document.activeElement).toEqual($textarea);
+    });
+
+    it("편집기는 명령모드로 textarea에 입력이 되지 않는다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile={mockData} onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      await user.type($textarea, "i");
+
+      await user.keyboard("{Escape}");
+
+      await user.type($textarea, "테스트");
+      expect($textarea).toHaveValue(mockData);
     });
   });
 });
