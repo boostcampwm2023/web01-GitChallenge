@@ -37,7 +37,7 @@ export class SessionService {
       session.problems.set(problemId, {
         status: 'solving',
         logs: [],
-        containerId: 'default-id',
+        containerId: '',
       });
       this.logger.log('info', `session ${session._id as ObjectId} updated`);
       this.logger.log(

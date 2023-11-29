@@ -102,12 +102,4 @@ export class SSHConnectionPoolService {
       this.pool.push(conn);
     }
   }
-
-  closeAllConnections() {
-    this.pool.forEach((conn) => {
-      if (conn.isAvailable()) {
-        conn.client.end();
-      }
-    });
-  }
 }
