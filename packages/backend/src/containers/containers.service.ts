@@ -3,21 +3,22 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from 'winston';
 import { CommandResponseDto } from 'src/quizzes/dto/command-response.dto';
 import shellEscape from 'shell-escape';
-import { executeSSHCommand } from '../common/ssh.util';
 import { v4 as uuidv4 } from 'uuid';
+import { SshService } from 'src/ssh/ssh.service';
 
 @Injectable()
 export class ContainersService {
   constructor(
     private configService: ConfigService,
     @Inject('winston') private readonly logger: Logger,
+    private sshService: SshService,
   ) {}
 
   async runGitCommand(
     container: string,
     command: string,
   ): Promise<CommandResponseDto> {
-    const { stdoutData, stderrData } = await executeSSHCommand(
+    const { stdoutData, stderrData } = await this.sshService.executeSSHCommand(
       `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} /usr/local/bin/restricted-shell ${command}`,
     );
 
@@ -42,7 +43,7 @@ export class ContainersService {
   ): Promise<CommandResponseDto> {
     const escapedMessage = shellEscape([message]);
 
-    const { stdoutData, stderrData } = await executeSSHCommand(
+    const { stdoutData, stderrData } = await this.sshService.executeSSHCommand(
       `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} sh -c "git config --global core.editor /editor/input.sh && echo ${escapedMessage} | ${command}; git config --global core.editor /editor/output.sh"`,
     );
 
@@ -69,7 +70,7 @@ export class ContainersService {
     const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
     const chownCommand = `docker exec -u root ${containerId} chown -R ${user}:${user} /home/${user}`;
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
-    await executeSSHCommand(
+    await this.sshService.executeSSHCommand(
       createContainerCommand,
       copyFilesCommand,
       chownCommand,
@@ -82,7 +83,8 @@ export class ContainersService {
   async isValidateContainerId(containerId: string): Promise<boolean> {
     const command = `docker ps -a --filter "name=${containerId}" --format "{{.ID}}"`;
 
-    const { stdoutData, stderrData } = await executeSSHCommand(command);
+    const { stdoutData, stderrData } =
+      await this.sshService.executeSSHCommand(command);
 
     if (stderrData) {
       // 도커 미설치 등의 에러일 듯
@@ -95,7 +97,8 @@ export class ContainersService {
   async deleteContainer(containerId: string): Promise<void> {
     const command = `docker rm -f ${containerId}`;
 
-    const { stdoutData, stderrData } = await executeSSHCommand(command);
+    const { stdoutData, stderrData } =
+      await this.sshService.executeSSHCommand(command);
 
     console.log(`container deleted : ${stdoutData}`);
 
