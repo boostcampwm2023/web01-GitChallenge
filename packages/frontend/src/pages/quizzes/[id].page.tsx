@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { quizAPI } from "../../apis/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
-import { Button } from "../../design-system/components/common";
+import { Button, toast } from "../../design-system/components/common";
 import { Categories, Quiz } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
 import { isString } from "../../utils/typeGuard";
@@ -39,6 +39,21 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     ]);
   };
 
+  const handleReset = async () => {
+    if (!isString(id)) {
+      return;
+    }
+
+    try {
+      await quizAPI.resetQuizById(+id);
+      toast.success("문제가 성공적으로 초기화되었습니다!");
+    } catch (error) {
+      toast.error(
+        "문제 초기화 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      );
+    }
+  };
+
   if (!quiz) return null;
   return (
     <main className={styles.mainContainer}>
@@ -48,7 +63,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       </div>
       <Terminal contentArray={contentArray} onTerminal={handleTerminal} />
       <div className={styles.buttonGroup}>
-        <Button variant="secondaryLine">문제 다시 풀기</Button>
+        <Button variant="secondaryLine" onClick={handleReset}>
+          문제 다시 풀기
+        </Button>
         <Button variant="primaryFill">제출 후 채점하기</Button>
       </div>
     </main>

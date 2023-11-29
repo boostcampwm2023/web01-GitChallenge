@@ -25,6 +25,10 @@ export const quizAPI = {
     );
     return data;
   },
+  resetQuizById: async (id: number) => {
+    const { data } = await instance.delete(`${API_PATH.QUIZZES}/${id}/command`);
+    return data;
+  },
 };
 
 type PostCommandRequest = {
