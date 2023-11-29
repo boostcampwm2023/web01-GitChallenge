@@ -10,6 +10,7 @@ import {
   Inject,
   Delete,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -136,10 +137,11 @@ export class QuizzesController {
           execCommandDto.message,
         ));
       } else if (execCommandDto.mode === MODE.EDITOR) {
-        const recentCommand = await this.sessionService.getRecentLog(
-          sessionId,
-          id,
-        );
+        const { mode: recentMode, message: recentMessage } =
+          await this.sessionService.getRecentLog(sessionId, id);
+        if (recentMode === MODE.EDITOR) {
+          throw new NotFoundException('편집기 명령 차례가 아닙니다');
+        }
 
         const bodyPreview =
           execCommandDto.message.length > 15
@@ -148,12 +150,12 @@ export class QuizzesController {
 
         this.logger.log(
           'info',
-          `running editor command "${recentCommand}" for container ${containerId} with body starts with "${bodyPreview}"`,
+          `running editor command "${recentMessage}" for container ${containerId} with body starts with "${bodyPreview}"`,
         );
 
         ({ message, result } = await this.containerService.runEditorCommand(
           containerId,
-          recentCommand,
+          recentMessage,
           execCommandDto.message,
         ));
       } else {
@@ -163,11 +165,7 @@ export class QuizzesController {
       }
 
       // 일단 editor일 때도 message를 저장합니다.
-      this.sessionService.pushLogBySessionId(
-        execCommandDto.message,
-        sessionId,
-        id,
-      );
+      this.sessionService.pushLogBySessionId(execCommandDto, sessionId, id);
 
       response.status(HttpStatus.OK).send({
         message,

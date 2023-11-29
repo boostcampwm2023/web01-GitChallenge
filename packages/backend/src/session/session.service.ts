@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Logger } from 'winston';
 import { Model } from 'mongoose';
-import { Session } from './schema/session.schema';
+import { ActionType, Session } from './schema/session.schema';
 import { ObjectId } from 'typeorm';
 
 @Injectable()
@@ -71,7 +71,10 @@ export class SessionService {
     session.save();
   }
 
-  async getRecentLog(sessionId: string, problemId: number): Promise<string> {
+  async getRecentLog(
+    sessionId: string,
+    problemId: number,
+  ): Promise<{ mode: string; message: string }> {
     const session = await this.getSessionById(sessionId);
 
     const problemLogs = session?.problems.get(problemId)?.logs;
@@ -83,7 +86,7 @@ export class SessionService {
   }
 
   async pushLogBySessionId(
-    command: string,
+    log: { mode: ActionType; message: string },
     sessionId: string,
     problemId: number,
   ): Promise<void> {
@@ -91,7 +94,7 @@ export class SessionService {
     if (!session.problems.get(problemId)) {
       throw new Error('problem not found');
     }
-    session.problems.get(problemId).logs.push(command);
+    session.problems.get(problemId).logs.push(log);
     session.save();
   }
 

@@ -1,14 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+const Action = {
+  Command: 'command',
+  Editor: 'editor',
+} as const;
+
+export type ActionType = (typeof Action)[keyof typeof Action];
+
 @Schema({ timestamps: true })
 export class Session extends Document {
-  // @Prop({ required: true })
-  // createdAt: Date;
-  //
-  // @Prop({ required: true })
-  // updatedAt: Date;
-
   @Prop()
   deletedAt: Date | null;
 
@@ -17,7 +18,15 @@ export class Session extends Document {
     type: Map,
     of: {
       status: { type: String, required: true },
-      logs: { type: [String], required: true },
+      logs: {
+        type: [
+          {
+            mode: { type: String, enum: Object.values(Action), required: true },
+            message: { type: String, required: true },
+          },
+        ],
+        required: true,
+      },
       containerId: { type: String, default: '' },
     },
   })
@@ -25,7 +34,10 @@ export class Session extends Document {
     number,
     {
       status: string;
-      logs: string[];
+      logs: {
+        mode: ActionType;
+        message: string;
+      }[];
       containerId: string;
     }
   >;
