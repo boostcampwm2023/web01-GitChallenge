@@ -1,17 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { SSHConnectionPoolService } from './ssh.connection-pool.service';
 
 @Injectable()
 export class SshService {
-  private sshPool: SSHConnectionPoolService;
-
-  constructor(
-    private configService: ConfigService,
-    sshConnectionPoolService: SSHConnectionPoolService,
-  ) {
-    this.sshPool = sshConnectionPoolService;
-  }
+  constructor(private sshPool: SSHConnectionPoolService) {}
 
   async executeSSHCommand(
     ...commands: string[]
