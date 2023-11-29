@@ -292,4 +292,32 @@ describe("Editor", () => {
       },
     );
   });
+
+  describe("라인 모드에서 명령 모드로 전환했을 때", () => {
+    it("textarea에 커서가 맞춰진다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile="" onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+
+      await user.type($textarea, ":");
+      expect(document.activeElement).not.toEqual($textarea);
+
+      await user.keyboard("{Escape}");
+
+      expect(document.activeElement).toEqual($textarea);
+    });
+
+    it("input은 값이 비워진다.", async () => {
+      const mockFn = jest.fn();
+      render(<Editor initialFile="" onSubmit={mockFn} />);
+      const user = userEvent.setup();
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+      await user.type($textarea, ":");
+      await user.keyboard("{Escape}");
+
+      expect($input).toHaveValue("");
+    });
+  });
 });

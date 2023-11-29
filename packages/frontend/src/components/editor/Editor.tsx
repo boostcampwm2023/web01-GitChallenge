@@ -71,6 +71,14 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     } = event;
     const currentFile = textareaRef.current?.value;
 
+    if (key === "Escape") {
+      setMode("command");
+      setInputValue("");
+      setInputReadonly(true);
+      textareaRef.current?.focus();
+      return;
+    }
+
     if (key === "Enter") {
       const changedFile = initialFile !== currentFile;
 
