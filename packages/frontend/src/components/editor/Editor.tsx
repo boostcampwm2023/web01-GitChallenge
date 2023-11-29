@@ -4,14 +4,13 @@ import {
   useRef,
   useState,
 } from "react";
+import { FaInfoCircle } from "react-icons/fa";
 
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./Editor.css";
 
 type ModeType = "insert" | "command";
-
-const ARROW = "Arrow";
 
 interface EditorProps {
   initialFile: string;
@@ -22,26 +21,22 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const [mode, setMode] = useState<ModeType>("command");
   const [inputReadonly, setInputReadonly] = useState(true);
   const [inputValue, setInputValue] = useState("");
-
+  const [textareaValue, setTextareaValue] = useState(initialFile);
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleTextareaKeyDown: KeyboardEventHandler = (event) => {
-    const { key } = event;
-
+  const handleTextareaOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
+    event,
+  ) => {
+    const key = (event.nativeEvent as InputEvent).data;
+    event.preventDefault();
     if (isCommandMode(mode)) {
       if (key === "i") {
         setMode("insert");
         setInputValue("-- INSERT --");
-
         event.preventDefault();
         return;
       }
-
-      if (key.startsWith(ARROW)) {
-        return;
-      }
-
       if (key === ":") {
         setInputValue(key);
         setInputReadonly(false);
@@ -49,10 +44,12 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         event.preventDefault();
         return;
       }
-
-      event.preventDefault();
     }
+    if (isInsertMode(mode)) setTextareaValue(event.target.value);
+  };
 
+  const handleTextareaKeyUp: KeyboardEventHandler = (event) => {
+    const { key } = event;
     if (isInsertMode(mode)) {
       if (key === "Escape") {
         setMode("command");
@@ -81,18 +78,15 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
 
     if (key === "Enter") {
       const changedFile = initialFile !== currentFile;
-
       if (value === ":q") {
         if (changedFile) {
           setInputValue("E37: No write since last change (add ! to override)");
           setInputReadonly(true);
           setMode("command");
           event.preventDefault();
-
           textareaRef.current?.focus();
           return;
         }
-
         onSubmit(initialFile);
         return;
       }
@@ -122,7 +116,9 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
       <div className={styles.container}>
         <textarea
           className={styles.textarea}
-          onKeyDown={handleTextareaKeyDown}
+          value={textareaValue}
+          onChange={handleTextareaOnChange}
+          onKeyUp={handleTextareaKeyUp}
           defaultValue={initialFile}
           ref={textareaRef}
           data-testid="textarea"
@@ -137,6 +133,19 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
           readOnly={inputReadonly}
           data-testid="input"
         />
+      </div>
+      <div className={styles.notice}>
+        {[
+          `명령 모드에서 입력 모드로 전환하려면 "i"를 눌러주세요.`,
+          `입력 모드에서 마지막 라인 모드로 전환하려면 ":"을 눌러주세요.`,
+          `마지막 라인 모드와 입력 모드에서 명령모드로 전환하려면 "ESC"를 눌러주세요.`,
+          `마지막 라인 모드에서는 "q", "q!", "wq", "wq!" 명령어만 지원합니다.`,
+        ].map((line) => (
+          <div key={line} className={styles.noticeItem}>
+            <FaInfoCircle />
+            {line}
+          </div>
+        ))}
       </div>
     </>
   );
