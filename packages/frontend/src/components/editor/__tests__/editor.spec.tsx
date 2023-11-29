@@ -263,4 +263,33 @@ describe("Editor", () => {
       expect(mockFn).toHaveBeenCalledWith(CHANGED_FILE);
     });
   });
+
+  describe("편집기 내용이 변경이 되지 않았을 때 라인 모드로 전환했을 때", () => {
+    it.each([
+      { initialFile: mockData, input: "q", expected: mockData },
+      { initialFile: mockData, input: "q!", expected: mockData },
+      { initialFile: mockData, input: "wq", expected: mockData },
+      { initialFile: mockData, input: "wq!", expected: mockData },
+    ])(
+      "$input를 입력했을 때 편집기 프로그램이 종료되고 초기 데이터가 서버에 전송된다",
+      async ({ initialFile, input, expected }) => {
+        const mockFn = jest.fn();
+        render(<Editor initialFile={initialFile} onSubmit={mockFn} />);
+        const user = userEvent.setup();
+        const $textarea = screen.getByTestId("textarea");
+        const $input = screen.getByTestId("input");
+
+        await user.type($textarea, "i");
+
+        await user.keyboard("{Escape}");
+
+        await user.type($textarea, ":");
+
+        await user.type($input, input);
+        await user.keyboard("{Enter}");
+
+        expect(mockFn).toHaveBeenCalledWith(expected);
+      },
+    );
+  });
 });
