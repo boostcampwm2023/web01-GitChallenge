@@ -106,7 +106,10 @@ export class QuizzesController {
         id,
       );
 
-      if (!(await this.containerService.isValidateContainerId(containerId))) {
+      if (
+        !containerId ||
+        !(await this.containerService.isValidateContainerId(containerId))
+      ) {
         this.logger.log(
           'info',
           'no docker container or invalid container Id. creating container..',

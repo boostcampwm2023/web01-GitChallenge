@@ -29,3 +29,14 @@ export async function getCachedDiff(container: string): Promise<string> {
 
   return stdoutData;
 }
+
+export async function getTreeHead(
+  container: string,
+  branch: string,
+): Promise<string> {
+  const { stdoutData } = await executeSSHCommand(
+    `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git cat-file -p \\\$(git rev-parse ${branch}) | grep tree | awk '{print \\\$2}'"`,
+  );
+
+  return stdoutData;
+}
