@@ -95,6 +95,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "testTimeout": 20000
+    "testTimeout": 20000,
+    "globals": {
+      "NODE_ENV": "test"
+    }
   }
 }
