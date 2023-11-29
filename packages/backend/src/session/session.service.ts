@@ -111,4 +111,12 @@ export class SessionService {
   private async getSessionById(id: string): Promise<Session> {
     return await this.sessionModel.findById(id);
   }
+
+  async deleteSession(sessionId: string): Promise<void> {
+    //soft delete
+    const session = await this.getSessionById(sessionId);
+    session.deletedAt = new Date();
+    session.save();
+    this.logger.log('info', `session ${session._id as ObjectId} deleted`);
+  }
 }
