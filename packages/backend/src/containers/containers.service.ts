@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from 'winston';
-import { CommandResponseDto } from 'src/quizzes/dto/command-response.dto';
+import { CommandResponseDto } from '../quizzes/dto/command-response.dto';
 import shellEscape from 'shell-escape';
 import { v4 as uuidv4 } from 'uuid';
-import { SshService } from 'src/ssh/ssh.service';
+import { SshService } from '../ssh/ssh.service';
 
 @Injectable()
 export class ContainersService {
