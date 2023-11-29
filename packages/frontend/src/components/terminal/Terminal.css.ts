@@ -59,4 +59,5 @@ export const stdin = style({
 export const commandInput = style({
   flex: 1,
   outline: 0,
+  wordBreak: "break-all",
 });
