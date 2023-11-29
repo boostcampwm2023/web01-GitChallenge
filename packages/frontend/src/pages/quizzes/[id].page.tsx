@@ -47,7 +47,10 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         <QuizGuide quiz={quiz} />
       </div>
       <Terminal contentArray={contentArray} onTerminal={handleTerminal} />
-      <Button variant="primaryFill">제출 후 채점하기</Button>
+      <div className={styles.buttonGroup}>
+        <Button variant="secondaryLine">문제 다시 풀기</Button>
+        <Button variant="primaryFill">제출 후 채점하기</Button>
+      </div>
     </main>
   );
 }
