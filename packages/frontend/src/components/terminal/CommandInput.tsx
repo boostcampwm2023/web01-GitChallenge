@@ -1,4 +1,8 @@
-import { type KeyboardEventHandler, forwardRef } from "react";
+import {
+  type ClipboardEventHandler,
+  type KeyboardEventHandler,
+  forwardRef,
+} from "react";
 
 import classnames from "../../utils/classnames";
 
@@ -10,24 +14,43 @@ interface CommandInputProps {
 }
 
 const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
-  ({ handleInput }, ref) => (
-    <div className={styles.commandInputContainer}>
-      <span id="commandLabel" style={{ display: "none" }}>
-        Enter git command
-      </span>
-      <Prompt />
-      <span
-        className={classnames(styles.commandInput, styles.stdin)}
-        contentEditable
-        onKeyDown={handleInput}
-        role="textbox"
-        aria-placeholder="git command"
-        aria-labelledby="commandLabel"
-        tabIndex={0}
-        ref={ref}
-      />
-    </div>
-  )
+  ({ handleInput }, ref) => {
+    const handlePaste: ClipboardEventHandler = (event) => {
+      event.preventDefault();
+
+      const pastedDataPlainText = event.clipboardData.getData("text/plain");
+      const range = document.getSelection()?.getRangeAt(0);
+      if (!range) {
+        return;
+      }
+
+      range.deleteContents();
+
+      const textNode = document.createTextNode(pastedDataPlainText);
+      range.insertNode(textNode);
+      range.collapse(false);
+    };
+
+    return (
+      <div className={styles.commandInputContainer}>
+        <span id="commandLabel" style={{ display: "none" }}>
+          Enter git command
+        </span>
+        <Prompt />
+        <span
+          className={classnames(styles.commandInput, styles.stdin)}
+          contentEditable
+          onKeyDown={handleInput}
+          onPaste={handlePaste}
+          role="textbox"
+          aria-placeholder="git command"
+          aria-labelledby="commandLabel"
+          tabIndex={0}
+          ref={ref}
+        />
+      </div>
+    );
+  },
 );
 
 CommandInput.displayName = "CommandInput";
