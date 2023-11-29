@@ -24,17 +24,9 @@ export class SshService {
         let stderrData = '';
 
         stream
-          .on('close', (code, signal) => {
+          .on('close', () => {
             this.sshPool.returnConnection(sshConnection);
-            if (code === 0) {
-              resolve({ stdoutData, stderrData });
-            } else {
-              reject(
-                new Error(
-                  `SSH command failed with code ${code} and signal ${signal}`,
-                ),
-              );
-            }
+            resolve({ stdoutData, stderrData });
           })
           .on('data', (data) => {
             stdoutData += data.toString();
