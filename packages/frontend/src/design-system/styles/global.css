@@ -293,5 +293,6 @@
 
 .mm-semantic-typography-code {
   font-family: "Fira Code", monospace;
+  font-size: var(--mm-scale-font-size-75);
   line-height: var(--mm-static-line-height-medium);
 }
