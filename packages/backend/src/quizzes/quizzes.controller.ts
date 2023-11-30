@@ -10,7 +10,6 @@ import {
   Inject,
   Delete,
   UseGuards,
-  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,13 +17,17 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { Logger } from 'winston';
 import { QuizDto } from './dto/quiz.dto';
 import { QuizzesService } from './quizzes.service';
 import { QuizzesDto } from './dto/quizzes.dto';
 import { CommandRequestDto, MODE } from './dto/command-request.dto';
-import { CommandResponseDto } from './dto/command-response.dto';
+import {
+  CommandResponseDto,
+  ForbiddenResponseDto,
+} from './dto/command-response.dto';
 import { SessionService } from '../session/session.service';
 import { Response } from 'express';
 import { ContainersService } from '../containers/containers.service';
@@ -33,6 +36,7 @@ import { SessionGuard } from '../session/session.guard';
 import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
+import { preview } from '../common/util';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
@@ -80,6 +84,10 @@ export class QuizzesController {
     description: 'Git 명령의 실행 결과(stdout/stderr)를 리턴합니다.',
     type: CommandResponseDto,
   })
+  @ApiForbiddenResponse({
+    description: '금지된 명령이거나, editor를 연속으로 사용했을때',
+    type: ForbiddenResponseDto,
+  })
   @ApiParam({ name: 'id', description: '문제 ID' })
   @ApiBody({ description: 'Command to be executed', type: CommandRequestDto })
   async runGitCommand(
@@ -107,6 +115,7 @@ export class QuizzesController {
         id,
       );
 
+      // 컨테이너가 없거나, 컨테이너가 유효하지 않다면 새로 생성한다.
       if (
         !containerId ||
         !(await this.containerService.isValidateContainerId(containerId))
@@ -126,6 +135,7 @@ export class QuizzesController {
       // 리팩토링 필수입니다.
       let message: string, result: string;
 
+      // command mode
       if (execCommandDto.mode === MODE.COMMAND) {
         this.logger.log(
           'info',
@@ -137,20 +147,25 @@ export class QuizzesController {
           execCommandDto.message,
         ));
       } else if (execCommandDto.mode === MODE.EDITOR) {
+        // editor mode
         const { mode: recentMode, message: recentMessage } =
           await this.sessionService.getRecentLog(sessionId, id);
-        if (recentMode === MODE.EDITOR) {
-          throw new NotFoundException('편집기 명령 차례가 아닙니다');
-        }
 
-        const bodyPreview =
-          execCommandDto.message.length > 15
-            ? execCommandDto.message.slice(0, 20) + '...'
-            : execCommandDto.message;
+        // editor를 연속으로 사용했을 때
+        if (recentMode === MODE.EDITOR) {
+          response.status(HttpStatus.FORBIDDEN).send({
+            message: '편집기 명령 순서가 아닙니다',
+            error: 'Forbidden',
+            statusCode: 403,
+          });
+          return;
+        }
 
         this.logger.log(
           'info',
-          `running editor command "${recentMessage}" for container ${containerId} with body starts with "${bodyPreview}"`,
+          `running editor command "${recentMessage}" for container ${containerId} with body starts with "${preview(
+            execCommandDto.message,
+          )}"`,
         );
 
         ({ message, result } = await this.containerService.runEditorCommand(
@@ -164,7 +179,7 @@ export class QuizzesController {
         });
       }
 
-      // 일단 editor일 때도 message를 저장합니다.
+      // message를 저장합니다.
       this.sessionService.pushLogBySessionId(execCommandDto, sessionId, id);
 
       response.status(HttpStatus.OK).send({
