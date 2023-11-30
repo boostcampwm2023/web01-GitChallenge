@@ -60,6 +60,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
   useEffect(() => {
     setContentArray([]);
+    clearTextContent(terminalInputRef);
   }, [id]);
 
   useEffect(() => {
