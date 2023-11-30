@@ -27,11 +27,15 @@ export class QuizWizardService {
   }
 
   async checkCondition2(containerId: string): Promise<boolean> {
-    return !(
-      (await this.magic.getConfig(containerId, 'name')) === 'MergeMaster' ||
+    if ((await this.magic.getConfig(containerId, 'name')) === 'MergeMaster')
+      return false;
+    if (
       (await this.magic.getConfig(containerId, 'email')) ===
-        'mergemaster@gitchallenge.com'
-    );
+      'mergemaster@gitchallenge.com'
+    )
+      return false;
+
+    return true;
   }
 
   async checkCondition3(containerId: string): Promise<boolean> {
