@@ -78,6 +78,19 @@ export enum TerminalActionTypes {
   clearTerminal = "clearTerminal",
 }
 
+export const terminalActionTypeMap = {
+  command: {
+    success: TerminalActionTypes.commandToCommand,
+    fail: TerminalActionTypes.commandToCommand,
+    editor: TerminalActionTypes.commandToEditor,
+  },
+  editor: {
+    success: TerminalActionTypes.editorToCommand,
+    fail: TerminalActionTypes.editorToCommand,
+    editor: TerminalActionTypes.editorToEditor,
+  },
+};
+
 type TerminalAction =
   | CommandToCommand
   | CommandToEditor
