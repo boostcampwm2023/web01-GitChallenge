@@ -122,17 +122,6 @@ index e69de29..3b18e51 100644
         return false;
       }
 
-      const commitHashSecond = await this.magic.getCommitHashByMessage(
-        containerId,
-        '회원가입 기능 구현',
-      );
-      if (
-        (await this.magic.getTreeHead(containerId, `${commitHashSecond}`)) !==
-        'eeee188ee95190bf884e106326de84f1051b9ea1'
-      ) {
-        return false;
-      }
-
       return true;
     } catch {
       return false;
