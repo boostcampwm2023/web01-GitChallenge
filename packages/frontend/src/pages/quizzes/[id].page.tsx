@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useReducer, useRef } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
@@ -9,65 +9,26 @@ import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
+import {
+  TerminalActionTypes,
+  initialTerminalState,
+  terminalReducer,
+} from "../../reducers/terminalReducer";
 import { Categories, Command, Quiz } from "../../types/quiz";
-import { TerminalContentType } from "../../types/terminalType";
 import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./quiz.css";
 
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
-  const [terminalMode, setTerminalMode] = useState<"command" | "editor">(
-    "command",
-  );
-  const [editorFile, setEditorFile] = useState("");
+  const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
+    useReducer(terminalReducer, initialTerminalState);
 
-  const [contentArray, setContentArray] = useState<TerminalContentType[]>([]);
   const {
     query: { id },
   } = useRouter();
 
   const terminalInputRef = useRef<HTMLSpanElement>(null);
-
-  const handlePostCommandSuccess = ({
-    data: { message, result },
-    input,
-  }: {
-    data: Command;
-    input: string;
-  }) => {
-    const requestResponseType = [
-      terminalMode,
-      isEditorResponse(result) ? "editor" : "command",
-    ].join(" ");
-
-    switch (requestResponseType) {
-      case "command command":
-        setContentArray([
-          ...contentArray,
-          { type: "stdin", content: input },
-          { type: "stdout", content: message },
-        ]);
-        break;
-      case "command editor":
-        setTerminalMode("editor");
-        setContentArray([...contentArray, { type: "stdin", content: input }]);
-        setEditorFile(message);
-        break;
-      case "editor command":
-        setTerminalMode("command");
-        setContentArray([
-          ...contentArray,
-          { type: "stdout", content: message },
-        ]);
-        break;
-      case "editor editor":
-        setEditorFile(message);
-        break;
-      default:
-        throw new Error();
-    }
-  };
 
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
@@ -75,16 +36,54 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     }
 
     try {
-      const data = await quizAPI.postCommand({
+      const { result, message } = await quizAPI.postCommand({
         id: +id,
         mode: terminalMode,
         message: input,
       });
-      handlePostCommandSuccess({ data, input });
+
+      const dispatchType = isEditorResponse(result)
+        ? TerminalActionTypes.commandToEditor
+        : TerminalActionTypes.commandToCommand;
+
+      terminalDispatch({
+        type: dispatchType,
+        input,
+        message,
+      });
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 403) {
         toast.error("지원하지 않는 명령어입니다.");
+        return;
       }
+
+      toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }
+  };
+
+  const handleEditor = async (file: string) => {
+    if (!isString(id)) {
+      return;
+    }
+
+    try {
+      const { result, message } = await quizAPI.postCommand({
+        id: +id,
+        mode: terminalMode,
+        message: file,
+      });
+
+      const dispatchType = isEditorResponse(result)
+        ? TerminalActionTypes.editorToEditor
+        : TerminalActionTypes.editorToCommand;
+
+      terminalDispatch({
+        type: dispatchType,
+        input: file,
+        message,
+      });
+    } catch (error) {
+      toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
     }
   };
 
@@ -95,7 +94,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
     try {
       await quizAPI.resetQuizById(+id);
-      setContentArray([]);
+      terminalDispatch({ type: TerminalActionTypes.clearTerminal });
       clearTextContent(terminalInputRef);
       terminalInputRef.current?.focus();
       toast.success("문제가 성공적으로 초기화되었습니다!");
@@ -107,7 +106,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   };
 
   useEffect(() => {
-    setContentArray([]);
+    terminalDispatch({ type: TerminalActionTypes.clearTerminal });
     clearTextContent(terminalInputRef);
   }, [id]);
 
@@ -133,21 +132,16 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           aria-label="divider"
           onMouseDown={handleBarHover}
         />
-        <Terminal
-          contentArray={contentArray}
-          onTerminal={handleTerminal}
-          ref={terminalInputRef}
-        />
+        {terminalMode === "editor" ? (
+          <Editor initialFile={editorFile} onSubmit={handleEditor} />
+        ) : (
+          <Terminal
+            contentArray={contentArray}
+            onTerminal={handleTerminal}
+            ref={terminalInputRef}
+          />
+        )}
       </div>
-      {terminalMode === "editor" ? (
-        <Editor initialFile={editorFile} onSubmit={handleTerminal} />
-      ) : (
-        <Terminal
-          contentArray={contentArray}
-          onTerminal={handleTerminal}
-          ref={terminalInputRef}
-        />
-      )}
       <div className={styles.buttonGroup}>
         <Button variant="secondaryLine" onClick={handleReset}>
           문제 다시 풀기
