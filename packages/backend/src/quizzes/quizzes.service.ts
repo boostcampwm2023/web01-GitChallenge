@@ -11,6 +11,7 @@ import fs from 'fs';
 import * as Papa from 'papaparse';
 import { Keyword } from './entity/keyword.entity';
 import { Logger } from 'winston';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class QuizzesService {
@@ -22,9 +23,12 @@ export class QuizzesService {
     @InjectRepository(Keyword)
     private keywordRepository: Repository<Keyword>,
     private containerService: ContainersService,
+    private configService: ConfigService,
     @Inject('winston') private readonly logger: Logger,
   ) {
-    this.initQiuzzes();
+    if (configService.get<string>('NODE_ENV') !== 'test') {
+      this.initQiuzzes();
+    }
   }
 
   private async initQiuzzes() {
