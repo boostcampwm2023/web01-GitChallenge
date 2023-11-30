@@ -23,9 +23,12 @@ export class ContainersService {
       `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} /usr/local/bin/restricted-shell ${command}`,
     );
 
-    if (stdoutData.endsWith('# CREATED_BY_OUTPUT.SH\n')) {
+    const patternIndex = stdoutData.indexOf('# CREATED_BY_OUTPUT.SH\n');
+
+    if (patternIndex !== -1) {
+      const message = stdoutData.slice(0, patternIndex);
       return {
-        message: stdoutData.slice(0, -'# CREATED_BY_OUTPUT.SH\n'.length),
+        message,
         result: 'editor',
       };
     }
