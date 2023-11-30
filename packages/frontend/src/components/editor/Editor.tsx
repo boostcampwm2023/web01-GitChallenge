@@ -25,6 +25,13 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const toCommandMode = (nextInputValue: string) => {
+    setMode("command");
+    setInputValue(nextInputValue);
+    setInputReadonly(true);
+    textareaRef.current?.focus();
+  };
+
   const handleTextareaOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
     event,
   ) => {
@@ -52,9 +59,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     const { key } = event;
     if (isInsertMode(mode)) {
       if (key === "Escape") {
-        setMode("command");
-        setInputValue("");
-        setInputReadonly(true);
+        toCommandMode("");
       }
     }
   };
@@ -69,10 +74,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     const currentFile = textareaRef.current?.value;
 
     if (key === "Escape") {
-      setMode("command");
-      setInputValue("");
-      setInputReadonly(true);
-      textareaRef.current?.focus();
+      toCommandMode("");
       return;
     }
 
@@ -80,11 +82,8 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
       const changedFile = initialFile !== currentFile;
       if (value === ":q") {
         if (changedFile) {
-          setInputValue("E37: No write since last change (add ! to override)");
-          setInputReadonly(true);
-          setMode("command");
           event.preventDefault();
-          textareaRef.current?.focus();
+          toCommandMode("E37: No write since last change (add ! to override)");
           return;
         }
         onSubmit(initialFile);
@@ -103,11 +102,8 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         return;
       }
 
-      setInputValue(`E492: Not an editor command: ${value.substring(1)}`);
-      setInputReadonly(true);
-      setMode("command");
       event.preventDefault();
-      textareaRef.current?.focus();
+      toCommandMode(`E492: Not an editor command: ${value.substring(1)}`);
     }
   };
 
