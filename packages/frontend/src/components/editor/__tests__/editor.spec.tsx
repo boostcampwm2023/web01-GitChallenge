@@ -93,7 +93,7 @@ describe("Editor", () => {
       const $textarea = screen.getByTestId("textarea");
       await user.type($textarea, "i");
 
-      expect(document.activeElement).toEqual($textarea);
+      expect($textarea).toHaveFocus();
     });
 
     it('편집기는 입력모드로 input에는 "-- INSERT --" 이 입력 된다.', async () => {
@@ -155,7 +155,7 @@ describe("Editor", () => {
       const $input = screen.getByTestId("input");
       await user.type($textarea, ":");
 
-      expect(document.activeElement).toEqual($input);
+      expect($input).toHaveFocus();
     });
   });
 
@@ -183,7 +183,7 @@ describe("Editor", () => {
       await user.type($textarea, "i");
 
       await user.keyboard("{Escape}");
-      expect(document.activeElement).toEqual($textarea);
+      expect($textarea).toHaveFocus();
     });
 
     it("편집기는 명령모드로 textarea에 입력이 되지 않는다.", async () => {
@@ -223,7 +223,7 @@ describe("Editor", () => {
       expect($input).toHaveValue(
         "E37: No write since last change (add ! to override)",
       );
-      expect(document.activeElement).toEqual($textarea);
+      expect($textarea).toHaveFocus();
       expect($input).toHaveAttribute("readonly");
     });
 
@@ -386,11 +386,10 @@ describe("Editor", () => {
       const $textarea = screen.getByTestId("textarea");
 
       await user.type($textarea, ":");
-      expect(document.activeElement).not.toEqual($textarea);
+      expect($textarea).not.toHaveFocus();
 
       await user.keyboard("{Escape}");
-
-      expect(document.activeElement).toEqual($textarea);
+      expect($textarea).toHaveFocus();
     });
 
     it("input은 값이 비워진다.", async () => {
