@@ -1,14 +1,15 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { RefObject, useEffect, useRef, useState } from "react";
 
 import { quizAPI } from "../../apis/quiz";
+import { Editor } from "../../components/editor";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
-import { Categories, Quiz } from "../../types/quiz";
+import { Categories, Command, Quiz } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
 import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
@@ -16,6 +17,11 @@ import { isString } from "../../utils/typeGuard";
 import * as styles from "./quiz.css";
 
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
+  const [terminalMode, setTerminalMode] = useState<"command" | "editor">(
+    "command",
+  );
+  const [editorFile, setEditorFile] = useState("");
+
   const [contentArray, setContentArray] = useState<TerminalContentType[]>([]);
   const {
     query: { id },
@@ -23,22 +29,63 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
   const terminalInputRef = useRef<HTMLSpanElement>(null);
 
+  const handlePostCommandSuccess = ({
+    data: { message, result },
+    input,
+  }: {
+    data: Command;
+    input: string;
+  }) => {
+    const requestResponseType = [
+      terminalMode,
+      isEditorResponse(result) ? "editor" : "command",
+    ].join(" ");
+
+    switch (requestResponseType) {
+      case "command command":
+        setContentArray([
+          ...contentArray,
+          { type: "stdin", content: input },
+          { type: "stdout", content: message },
+        ]);
+        break;
+      case "command editor":
+        setTerminalMode("editor");
+        setContentArray([...contentArray, { type: "stdin", content: input }]);
+        setEditorFile(message);
+        break;
+      case "editor command":
+        setTerminalMode("command");
+        setContentArray([
+          ...contentArray,
+          { type: "stdout", content: message },
+        ]);
+        break;
+      case "editor editor":
+        setEditorFile(message);
+        break;
+      default:
+        throw new Error();
+    }
+  };
+
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
       return;
     }
 
-    const data = await quizAPI.postCommand({
-      id: +id,
-      mode: "command",
-      message: input,
-    });
-    setContentArray([
-      ...contentArray,
-      { type: "stdin", content: input },
-      { type: "stdout", content: data.message },
-    ]);
-    clearTextContent(terminalInputRef);
+    try {
+      const data = await quizAPI.postCommand({
+        id: +id,
+        mode: terminalMode,
+        message: input,
+      });
+      handlePostCommandSuccess({ data, input });
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 403) {
+        toast.error("지원하지 않는 명령어입니다.");
+      }
+    }
   };
 
   const handleReset = async () => {
@@ -66,6 +113,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
   useEffect(() => {
     scrollIntoView(terminalInputRef);
+    clearTextContent(terminalInputRef);
   }, [contentArray]);
 
   const { barRef, topRef, handleBarHover } = useResizableSplitView();
@@ -91,6 +139,15 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           ref={terminalInputRef}
         />
       </div>
+      {terminalMode === "editor" ? (
+        <Editor initialFile={editorFile} onSubmit={handleTerminal} />
+      ) : (
+        <Terminal
+          contentArray={contentArray}
+          onTerminal={handleTerminal}
+          ref={terminalInputRef}
+        />
+      )}
       <div className={styles.buttonGroup}>
         <Button variant="secondaryLine" onClick={handleReset}>
           문제 다시 풀기
@@ -134,4 +191,8 @@ function clearTextContent<T extends Element>(ref: RefObject<T>) {
   }
 
   $element.textContent = "";
+}
+
+function isEditorResponse(result: Command["result"]): result is "editor" {
+  return result === "editor";
 }
