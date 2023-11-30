@@ -12,7 +12,7 @@ import * as styles from "./Editor.css";
 
 type ModeType = "insert" | "command";
 
-interface EditorProps {
+export interface EditorProps {
   initialFile: string;
   onSubmit: (file: string) => void;
 }
@@ -119,7 +119,6 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
           value={textareaValue}
           onChange={handleTextareaOnChange}
           onKeyUp={handleTextareaKeyUp}
-          defaultValue={initialFile}
           ref={textareaRef}
           data-testid="textarea"
         />
