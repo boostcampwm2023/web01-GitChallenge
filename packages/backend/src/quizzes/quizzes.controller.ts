@@ -141,6 +141,9 @@ export class QuizzesController {
           id,
           containerId,
         );
+        await this.containerService.restoreContainer(
+          await this.sessionService.getLogObject(sessionId, id),
+        );
       }
 
       // 리팩토링 필수입니다.
@@ -274,18 +277,29 @@ export class QuizzesController {
   ): Promise<SubmitDto> {
     if (!sessionId) return new Fail();
     try {
-      const containerId = await this.sessionService.getContainerIdBySessionId(
+      let containerId = await this.sessionService.getContainerIdBySessionId(
         sessionId,
         id,
       );
 
-      if (!containerId) {
-        return;
-      }
-
-      if (!(await this.containerService.isValidateContainerId(containerId))) {
+      if (
+        !containerId ||
+        !(await this.containerService.isValidateContainerId(containerId))
+      ) {
         // 재현해서 컨테이너 발급하기
-        return;
+        this.logger.log(
+          'info',
+          'no docker container or invalid container Id. creating container..',
+        );
+        containerId = await this.containerService.getContainer(id);
+        await this.sessionService.setContainerBySessionId(
+          sessionId,
+          id,
+          containerId,
+        );
+        await this.containerService.restoreContainer(
+          await this.sessionService.getLogObject(sessionId, id),
+        );
       }
 
       const result: boolean = await this.quizWizardService.submit(

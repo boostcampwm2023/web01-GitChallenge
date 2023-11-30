@@ -5,6 +5,7 @@ import { CommandResponseDto } from '../quizzes/dto/command-response.dto';
 import shellEscape from 'shell-escape';
 import { v4 as uuidv4 } from 'uuid';
 import { SshService } from '../ssh/ssh.service';
+import { ActionType } from '../session/schema/session.schema';
 
 @Injectable()
 export class ContainersService {
@@ -104,6 +105,30 @@ export class ContainersService {
 
     if (stderrData) {
       throw new Error(stderrData);
+    }
+  }
+
+  async restoreContainer(logObject: {
+    status: string;
+    logs: {
+      mode: ActionType;
+      message: string;
+    }[];
+    containerId: string;
+  }): Promise<void> {
+    this.logger.log('info', 'restoring container...');
+    const { logs, containerId } = logObject;
+
+    let recentMessage = '';
+    for (const log of logs) {
+      if (log.mode === 'command') {
+        await this.runGitCommand(containerId, log.message);
+      } else if (log.mode === 'editor') {
+        await this.runEditorCommand(containerId, recentMessage, log.message);
+      } else {
+        throw new Error('Invalid log mode');
+      }
+      recentMessage = log.message;
     }
   }
 }
