@@ -334,6 +334,30 @@ describe("Editor", () => {
     );
   });
 
+  describe("라인 모드에서", () => {
+    it.each([["wwq"], ["w"], ["ㅈㅂ"], ["ㅂ"], ["wq!!"], [":"]])(
+      "지원하지 않는 명령어 %s를 입력하면 에러 메시지가 표시되고 명령 모드로 전환된다.",
+      async (input) => {
+        renderComponent({
+          initialFile: mockInitialFileData,
+          onSubmit: mockSubmitHandler,
+        });
+        const $textarea = screen.getByTestId("textarea");
+        const $input = screen.getByTestId("input");
+
+        await user.type($textarea, ":");
+
+        await user.type($input, input);
+        await user.keyboard("{Enter}");
+
+        expect($input).toHaveValue(`E492: Not an editor command: ${input}`);
+        expect($input).toHaveAttribute("readonly");
+        expect(document.activeElement).toEqual($textarea);
+        expect(mockSubmitHandler).toHaveBeenCalledTimes(0);
+      },
+    );
+  });
+
   describe("라인 모드에서 명령 모드로 전환했을 때", () => {
     it("textarea에 커서가 맞춰진다.", async () => {
       renderComponent({ initialFile: "", onSubmit: mockSubmitHandler });
