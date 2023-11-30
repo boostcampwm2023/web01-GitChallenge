@@ -30,7 +30,8 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
     const data = await quizAPI.postCommand({
       id: +id,
-      command: input,
+      mode: "command",
+      message: input,
     });
     setContentArray([
       ...contentArray,

@@ -4,10 +4,10 @@ import { Categories, Command, Quiz, QuizSolve } from "../types/quiz";
 import { instance } from "./base";
 
 export const quizAPI = {
-  postCommand: async ({ id, command }: PostCommandRequest) => {
+  postCommand: async ({ id, mode, message }: PostCommandRequest) => {
     const { data } = await instance.post<Command>(
       `${API_PATH.QUIZZES}/${id}/command`,
-      { command },
+      { mode, message },
     );
     return data;
   },
@@ -33,5 +33,6 @@ export const quizAPI = {
 
 type PostCommandRequest = {
   id: number;
-  command: string;
+  mode: "command" | "editor";
+  message: string;
 };
