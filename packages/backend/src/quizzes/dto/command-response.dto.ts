@@ -27,3 +27,22 @@ export class CommandResponseDto {
   })
   graph?: string;
 }
+export class ForbiddenResponseDto {
+  @ApiProperty({
+    description: '금지된 명령이거나, editor를 연속으로 사용했을때',
+    example: '금지된 명령입니다',
+  })
+  message: string;
+
+  @ApiProperty({
+    description: `Forbidden`,
+    example: 'Forbidden',
+  })
+  error: string;
+
+  @ApiProperty({
+    description: `statusCode`,
+    example: 403,
+  })
+  statusCode: number;
+}
