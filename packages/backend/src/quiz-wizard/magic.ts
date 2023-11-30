@@ -47,4 +47,15 @@ export class Magic {
 
     return stdoutData.trim();
   }
+
+  async getCommitHashByMessage(
+    container: string,
+    message: string,
+  ): Promise<string> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git log --grep='^${message}$' --oneline --reverse | awk '{print \\\$1}'"`,
+    );
+
+    return stdoutData.trim();
+  }
 }
