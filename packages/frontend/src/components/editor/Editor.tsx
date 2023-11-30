@@ -7,7 +7,6 @@ import {
 import { FaInfoCircle } from "react-icons/fa";
 
 import { ENTER_KEY, ESC_KEY } from "../../constants/event";
-import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./Editor.css";
 
@@ -72,7 +71,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
       key,
       currentTarget: { value },
     } = event;
-    const currentFile = textareaRef.current?.value;
+    const currentFile = textareaValue;
 
     if (key === ESC_KEY) {
       toCommandMode("");
@@ -97,9 +96,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
       }
 
       if (value === ":wq" || value === ":wq!") {
-        if (isString(currentFile)) {
-          onSubmit(currentFile);
-        }
+        onSubmit(currentFile);
         return;
       }
 
