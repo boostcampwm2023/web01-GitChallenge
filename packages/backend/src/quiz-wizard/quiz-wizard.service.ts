@@ -11,6 +11,7 @@ export class QuizWizardService {
     3: (containerId: string) => this.checkCondition3(containerId),
     4: (containerId: string) => this.checkCondition4(containerId),
     5: (containerId: string) => this.checkCondition5(containerId),
+    6: (containerId: string) => this.checkCondition6(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -26,10 +27,10 @@ export class QuizWizardService {
   }
 
   async checkCondition2(containerId: string): Promise<boolean> {
-    return (
-      (await this.magic.getConfig(containerId, 'name')) !== 'MergeMaster' &&
-      (await this.magic.getConfig(containerId, 'email')) !==
-        'mergemaster@gitChallenge.com'
+    return !(
+      (await this.magic.getConfig(containerId, 'name')) === 'MergeMaster' ||
+      (await this.magic.getConfig(containerId, 'email')) ===
+        'mergemaster@gitchallenge.com'
     );
   }
 
@@ -57,6 +58,10 @@ index e69de29..3b18e51 100644
   }
 
   async checkCondition5(containerId: string): Promise<boolean> {
+    return (await this.magic.isBranchExist(containerId, 'dev')) === true;
+  }
+
+  async checkCondition6(containerId: string): Promise<boolean> {
     return (await this.magic.isBranchExist(containerId, 'dev')) === true;
   }
 }
