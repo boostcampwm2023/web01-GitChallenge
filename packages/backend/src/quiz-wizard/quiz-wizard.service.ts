@@ -15,6 +15,7 @@ export class QuizWizardService {
     7: (containerId: string) => this.checkCondition7(containerId),
     8: (containerId: string) => this.checkCondition8(containerId),
     9: (containerId: string) => this.checkCondition9(containerId),
+    10: (containerId: string) => this.checkCondition10(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -145,5 +146,19 @@ index e69de29..3b18e51 100644
       (await this.magic.getHashObject(containerId, 'important.js')) ===
       'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391'
     );
+  }
+
+  async checkCondition10(containerId: string): Promise<boolean> {
+    if (await this.magic.isFileExist(containerId, 'tmp.js')) {
+      return false;
+    }
+    if (await this.magic.isFileExist(containerId, 'tmptmp.js')) {
+      return false;
+    }
+    if (await this.magic.isFileExist(containerId, 'tmptmptmp.js')) {
+      return false;
+    }
+
+    return true;
   }
 }
