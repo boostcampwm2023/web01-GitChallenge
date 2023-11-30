@@ -352,7 +352,7 @@ describe("Editor", () => {
 
         expect($input).toHaveValue(`E492: Not an editor command: ${input}`);
         expect($input).toHaveAttribute("readonly");
-        expect(document.activeElement).toEqual($textarea);
+        expect($textarea).toHaveFocus();
         expect(mockSubmitHandler).toHaveBeenCalledTimes(0);
       },
     );
@@ -374,7 +374,7 @@ describe("Editor", () => {
 
         expect($input).toHaveValue(":");
         expect($input).toHaveAttribute("readonly");
-        expect(document.activeElement).toEqual($textarea);
+        expect($textarea).toHaveFocus();
         expect(mockSubmitHandler).toHaveBeenCalledTimes(0);
       },
     );
