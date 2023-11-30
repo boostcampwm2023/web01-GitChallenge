@@ -122,4 +122,12 @@ export class SessionService {
     session.save();
     this.logger.log('info', `session ${session._id as ObjectId} deleted`);
   }
+
+  async getLogObject(sessionId: string, problemId: number): Promise<any> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    return session.problems.get(problemId);
+  }
 }
