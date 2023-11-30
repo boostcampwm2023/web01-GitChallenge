@@ -37,6 +37,7 @@ import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
 import { preview } from '../common/util';
+import { QuizGuard } from './quiz.guard';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
@@ -50,15 +51,16 @@ export class QuizzesController {
   ) {}
 
   @Get(':id')
+  @UseGuards(QuizGuard)
+  @ApiNotFoundResponse({
+    description: '해당 문제가 존재하지 않습니다.',
+    type: NotFoundResponseDto,
+  })
   @ApiOperation({ summary: 'ID를 통해 문제 정보를 가져올 수 있습니다.' })
   @ApiResponse({
     status: 200,
     description: 'Returns the quiz details',
     type: QuizDto,
-  })
-  @ApiNotFoundResponse({
-    description: '문제가 없습니다.',
-    type: NotFoundResponseDto,
   })
   @ApiParam({ name: 'id', description: '문제 ID' })
   async getProblemById(@Param('id') id: number): Promise<QuizDto> {
@@ -81,7 +83,11 @@ export class QuizzesController {
   }
 
   @Post(':id/command')
-  @UseGuards(CommandGuard)
+  @UseGuards(CommandGuard, QuizGuard)
+  @ApiNotFoundResponse({
+    description: '해당 문제가 존재하지 않습니다.',
+    type: NotFoundResponseDto,
+  })
   @ApiOperation({ summary: 'Git 명령을 실행합니다.' })
   @ApiResponse({
     status: 200,
@@ -205,6 +211,11 @@ export class QuizzesController {
   }
 
   @Delete(':id/command')
+  @UseGuards(QuizGuard)
+  @ApiNotFoundResponse({
+    description: '해당 문제가 존재하지 않습니다.',
+    type: NotFoundResponseDto,
+  })
   @ApiOperation({ summary: 'Git 명령기록과, 할당된 컨테이너를 삭제합니다' })
   @ApiResponse({
     status: 200,
@@ -243,6 +254,11 @@ export class QuizzesController {
   }
 
   @Post(':id/submit')
+  @UseGuards(QuizGuard)
+  @ApiNotFoundResponse({
+    description: '해당 문제가 존재하지 않습니다.',
+    type: NotFoundResponseDto,
+  })
   @ApiOperation({ summary: '채점을 요청합니다.' })
   @ApiResponse({
     status: 200,

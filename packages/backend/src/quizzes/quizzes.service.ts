@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Quiz } from './entity/quiz.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -94,15 +94,14 @@ export class QuizzesService {
       });
     });
   }
+  async isQuizExist(id: number): Promise<boolean> {
+    return await this.quizRepository.exist({ where: { id } });
+  }
   async getQuizById(id: number): Promise<QuizDto> {
     const quiz = await this.quizRepository.findOne({
       where: { id },
       relations: ['keywords', 'category'],
     });
-
-    if (!quiz) {
-      throw new NotFoundException(`Quiz ${id} not found`);
-    }
 
     const quizDto: QuizDto = {
       id: quiz.id,
