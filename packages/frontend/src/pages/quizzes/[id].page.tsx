@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
@@ -9,6 +9,7 @@ import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
 import { Categories, Quiz } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
+import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./quiz.css";
@@ -19,9 +20,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     query: { id },
   } = useRouter();
 
-  useEffect(() => {
-    setContentArray([]);
-  }, [id]);
+  const terminalInputRef = useRef<HTMLSpanElement>(null);
 
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
@@ -38,6 +37,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       { type: "stdin", content: input },
       { type: "stdout", content: data.message },
     ]);
+    clearTextContent(terminalInputRef);
   };
 
   const handleReset = async () => {
@@ -47,6 +47,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
     try {
       await quizAPI.resetQuizById(+id);
+      setContentArray([]);
+      clearTextContent(terminalInputRef);
+      terminalInputRef.current?.focus();
       toast.success("문제가 성공적으로 초기화되었습니다!");
     } catch (error) {
       toast.error(
@@ -55,6 +58,14 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     }
   };
 
+  useEffect(() => {
+    setContentArray([]);
+  }, [id]);
+
+  useEffect(() => {
+    scrollIntoView(terminalInputRef);
+  }, [contentArray]);
+
   if (!quiz) return null;
   return (
     <main className={styles.mainContainer}>
@@ -62,7 +73,11 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         <div style={{ width: "50%", display: "flex" }}>git graph</div>
         <QuizGuide quiz={quiz} />
       </div>
-      <Terminal contentArray={contentArray} onTerminal={handleTerminal} />
+      <Terminal
+        contentArray={contentArray}
+        onTerminal={handleTerminal}
+        ref={terminalInputRef}
+      />
       <div className={styles.buttonGroup}>
         <Button variant="secondaryLine" onClick={handleReset}>
           문제 다시 풀기
@@ -98,3 +113,12 @@ export const getStaticPaths = (async () => {
 
   return { paths, fallback: "blocking" };
 }) satisfies GetStaticPaths;
+
+function clearTextContent<T extends Element>(ref: RefObject<T>) {
+  const $element = ref.current;
+  if (!$element) {
+    return;
+  }
+
+  $element.textContent = "";
+}
