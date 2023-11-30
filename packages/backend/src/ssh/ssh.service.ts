@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SSHConnectionPoolService } from './ssh.connection-pool.service';
+import { processCarriageReturns } from '../common/util';
 
 @Injectable()
 export class SshService {
@@ -26,7 +27,10 @@ export class SshService {
         stream
           .on('close', () => {
             this.sshPool.returnConnection(sshConnection);
-            resolve({ stdoutData, stderrData });
+            resolve({
+              stdoutData: processCarriageReturns(stdoutData),
+              stderrData: processCarriageReturns(stderrData),
+            });
           })
           .on('data', (data) => {
             stdoutData += data.toString();
