@@ -12,9 +12,10 @@ import useResizableSplitView from "../../hooks/useResizableSplitView";
 import {
   TerminalActionTypes,
   initialTerminalState,
+  terminalActionTypeMap,
   terminalReducer,
 } from "../../reducers/terminalReducer";
-import { Categories, Command, Quiz } from "../../types/quiz";
+import { Categories, Quiz } from "../../types/quiz";
 import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
 
@@ -41,50 +42,27 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         mode: terminalMode,
         message: input,
       });
-
-      const dispatchType = isEditorResponse(result)
-        ? TerminalActionTypes.commandToEditor
-        : TerminalActionTypes.commandToCommand;
-
       terminalDispatch({
-        type: dispatchType,
+        type: terminalActionTypeMap[terminalMode][result],
         input,
         message,
       });
     } catch (error) {
-      if (isAxiosError(error) && error.response?.status === 403) {
-        toast.error("지원하지 않는 명령어입니다.");
-        return;
-      }
-
-      toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+      handleResponseError(error);
     }
   };
 
-  const handleEditor = async (file: string) => {
-    if (!isString(id)) {
+  const handleResponseError = (error: unknown) => {
+    if (
+      isAxiosError(error) &&
+      error.response?.status === 403 &&
+      terminalMode === "command"
+    ) {
+      toast.error("지원하지 않는 명령어입니다.");
       return;
     }
 
-    try {
-      const { result, message } = await quizAPI.postCommand({
-        id: +id,
-        mode: terminalMode,
-        message: file,
-      });
-
-      const dispatchType = isEditorResponse(result)
-        ? TerminalActionTypes.editorToEditor
-        : TerminalActionTypes.editorToCommand;
-
-      terminalDispatch({
-        type: dispatchType,
-        input: file,
-        message,
-      });
-    } catch (error) {
-      toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
-    }
+    toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
   };
 
   const handleReset = async () => {
@@ -133,7 +111,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           onMouseDown={handleBarHover}
         />
         {terminalMode === "editor" ? (
-          <Editor initialFile={editorFile} onSubmit={handleEditor} />
+          <Editor initialFile={editorFile} onSubmit={handleTerminal} />
         ) : (
           <Terminal
             contentArray={contentArray}
@@ -185,8 +163,4 @@ function clearTextContent<T extends Element>(ref: RefObject<T>) {
   }
 
   $element.textContent = "";
-}
-
-function isEditorResponse(result: Command["result"]): result is "editor" {
-  return result === "editor";
 }
