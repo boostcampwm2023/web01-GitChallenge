@@ -13,6 +13,7 @@ export class QuizWizardService {
     5: (containerId: string) => this.checkCondition5(containerId),
     6: (containerId: string) => this.checkCondition6(containerId),
     7: (containerId: string) => this.checkCondition7(containerId),
+    8: (containerId: string) => this.checkCondition8(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -91,5 +92,39 @@ index e69de29..3b18e51 100644
     }
 
     return true;
+  }
+
+  async checkCondition8(containerId: string): Promise<boolean> {
+    try {
+      const commitHash = await this.magic.getCommitHashByMessage(
+        containerId,
+        '회원가입 테스트 코드 작성',
+      );
+      if (
+        !commitHash ||
+        (await this.magic.getTreeHead(containerId, commitHash)) !==
+          '3c363aeb69b28b176bf565dba6bb8a3a92d9fd5d'
+      ) {
+        return false;
+      }
+
+      if (
+        (await this.magic.getTreeHead(containerId, `${commitHash}~1`)) !==
+        'eeee188ee95190bf884e106326de84f1051b9ea1'
+      ) {
+        return false;
+      }
+
+      if (
+        (await this.magic.getTreeHead(containerId, `${commitHash}~2`)) !==
+        'bebe52f7d1c8440fb4b1af9aa70ad9523d56336b'
+      ) {
+        return false;
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
