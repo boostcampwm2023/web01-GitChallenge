@@ -11,7 +11,15 @@ export class Magic {
 
   async isDirectoryExist(container: string, path: string): Promise<boolean> {
     const { stdoutData } = await this.sshService.executeSSHCommand(
-      `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} ls -l ${path} | grep ^d`,
+      `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} ls -la | grep '^d.* ${path}$'`,
+    );
+
+    return stdoutData !== '';
+  }
+
+  async isFileExist(container: string, path: string): Promise<boolean> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} ls | grep '^${path}$'`,
     );
 
     return stdoutData !== '';
