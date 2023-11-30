@@ -32,7 +32,6 @@ import { SessionService } from '../session/session.service';
 import { Response } from 'express';
 import { ContainersService } from '../containers/containers.service';
 import { SessionId } from '../session/session.decorator';
-import { SessionGuard } from '../session/session.guard';
 import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
@@ -201,7 +200,6 @@ export class QuizzesController {
   }
 
   @Delete(':id/command')
-  @UseGuards(SessionGuard)
   @ApiOperation({ summary: 'Git 명령기록과, 할당된 컨테이너를 삭제합니다' })
   @ApiResponse({
     status: 200,
@@ -213,6 +211,8 @@ export class QuizzesController {
     @Param('id') id: number,
     @SessionId() sessionId: string,
   ): Promise<void> {
+    if (!sessionId) return;
+
     try {
       const containerId = await this.sessionService.getContainerIdBySessionId(
         sessionId,
@@ -238,7 +238,6 @@ export class QuizzesController {
   }
 
   @Post(':id/submit')
-  @UseGuards(SessionGuard)
   @ApiOperation({ summary: '채점을 요청합니다.' })
   @ApiResponse({
     status: 200,
@@ -250,6 +249,7 @@ export class QuizzesController {
     @Param('id') id: number,
     @SessionId() sessionId: string,
   ): Promise<SubmitDto> {
+    if (!sessionId) return new Fail();
     try {
       const containerId = await this.sessionService.getContainerIdBySessionId(
         sessionId,
