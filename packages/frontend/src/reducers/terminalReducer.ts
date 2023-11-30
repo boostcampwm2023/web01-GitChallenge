@@ -41,11 +41,8 @@ export function terminalReducer(
         editorFile: action.message,
       };
 
-    case TerminalActionTypes.clearTerminal:
-      return {
-        ...state,
-        contentArray: [],
-      };
+    case TerminalActionTypes.reset:
+      return initialTerminalState;
 
     default:
       throw new Error(`${action} not supported`);
@@ -75,7 +72,7 @@ export enum TerminalActionTypes {
   commandToEditor = "commandToEditor",
   editorToCommand = "editorToCommand",
   editorToEditor = "editorToEditor",
-  clearTerminal = "clearTerminal",
+  reset = "reset",
 }
 
 export const terminalActionTypeMap = {
@@ -102,7 +99,7 @@ type CommandToCommand = RequestToResponse<TerminalActionTypes.commandToCommand>;
 type CommandToEditor = RequestToResponse<TerminalActionTypes.commandToEditor>;
 type EditorToCommand = RequestToResponse<TerminalActionTypes.editorToCommand>;
 type EditorToEditor = RequestToResponse<TerminalActionTypes.editorToEditor>;
-type ClearTerminal = { type: TerminalActionTypes.clearTerminal };
+type ClearTerminal = { type: TerminalActionTypes.reset };
 
 type RequestToResponse<Type> = {
   type: Type;
