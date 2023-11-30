@@ -2,6 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsInt, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { NotFoundException } from '@nestjs/common';
 
 export class QuizDto {
   @IsInt()
@@ -48,4 +49,28 @@ export class QuizzesDto {
     ],
   })
   categories: CategoryQuizzesDto[];
+}
+
+export class NotFoundResponseDto extends NotFoundException {
+  constructor(message: string = '찾을 수 없는 리소스입니다.') {
+    super(message);
+  }
+
+  @ApiProperty({
+    description: '없는 문제를 조회했을때',
+    example: 'Quiz 1212 not found',
+  })
+  message: string;
+
+  @ApiProperty({
+    description: `Not Found`,
+    example: 'Not Found',
+  })
+  error: string;
+
+  @ApiProperty({
+    description: `statusCode`,
+    example: 404,
+  })
+  statusCode: number;
 }
