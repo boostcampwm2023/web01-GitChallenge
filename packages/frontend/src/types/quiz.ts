@@ -1,10 +1,10 @@
 export type CommandSuccess = "success";
 export type CommandFail = "fail";
-export type CommandVI = "vi";
+export type CommandEditor = "editor";
 
 export type Command = {
   message: string;
-  result: CommandSuccess | CommandFail | CommandVI;
+  result: CommandSuccess | CommandFail | CommandEditor;
   graph?: string;
 };
 
