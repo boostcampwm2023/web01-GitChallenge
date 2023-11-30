@@ -426,6 +426,199 @@ describe('QuizWizardController (e2e)', () => {
     });
   });
 
+  describe('8번 문제 채점 테스트', () => {
+    const id = 8;
+    afterEach(async () => {
+      await request(app.getHttpServer())
+        .delete(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie);
+    });
+
+    it('베스트 성공 케이스', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git reset HEAD~1',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git add signup.js',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit -m "회원가입 기능 구현"',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git add signup.test.js',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit -m "회원가입 테스트 코드 작성"',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', true);
+    });
+
+    it('에디터 적극 사용 성공 케이스', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git reset HEAD~1',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git add signup.js',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'editor',
+          message: '회원가입 기능 구현',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git add signup.test.js',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'editor',
+          message: '회원가입 테스트 코드 작성',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', true);
+    });
+
+    it('add, commit 순서 반대로', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git reset HEAD~1',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git add signup.test.js',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit -m "회원가입 테스트 코드 작성"',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git add signup.js',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit -m "회원가입 기능 구현"',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', false);
+    });
+
+    it('아무 것도 안 하고 채점', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git status',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', false);
+    });
+  });
+
   afterAll(async () => {
     await app.close();
   });
