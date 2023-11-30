@@ -72,7 +72,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
     try {
       await quizAPI.resetQuizById(+id);
-      terminalDispatch({ type: TerminalActionTypes.clearTerminal });
+      terminalDispatch({ type: TerminalActionTypes.reset });
       clearTextContent(terminalInputRef);
       terminalInputRef.current?.focus();
       toast.success("문제가 성공적으로 초기화되었습니다!");
@@ -84,7 +84,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   };
 
   useEffect(() => {
-    terminalDispatch({ type: TerminalActionTypes.clearTerminal });
+    terminalDispatch({ type: TerminalActionTypes.reset });
     clearTextContent(terminalInputRef);
   }, [id]);
 
