@@ -10,6 +10,7 @@ import {
   Inject,
   Delete,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -239,9 +240,9 @@ export class QuizzesController {
         return;
       }
 
-      this.containerService.deleteContainer(containerId);
+      await this.containerService.deleteContainer(containerId);
 
-      this.sessionService.deleteCommandHistory(sessionId, id);
+      await this.sessionService.deleteCommandHistory(sessionId, id);
     } catch (e) {
       throw new HttpException(
         {
@@ -254,6 +255,7 @@ export class QuizzesController {
   }
 
   @Post(':id/submit')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(QuizGuard)
   @ApiNotFoundResponse({
     description: '해당 문제가 존재하지 않습니다.',
