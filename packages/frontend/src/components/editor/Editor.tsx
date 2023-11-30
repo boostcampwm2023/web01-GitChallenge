@@ -100,7 +100,14 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         if (isString(currentFile)) {
           onSubmit(currentFile);
         }
+        return;
       }
+
+      setInputValue(`E492: Not an editor command: ${value.substring(1)}`);
+      setInputReadonly(true);
+      setMode("command");
+      event.preventDefault();
+      textareaRef.current?.focus();
     }
   };
 
