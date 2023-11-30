@@ -1,12 +1,13 @@
 import { style } from "@vanilla-extract/css";
 
 import color from "../../../design-system/tokens/color";
-import { flexColumn } from "../../../design-system/tokens/utils.css";
+import { baseLayer, flexColumn } from "../../../design-system/tokens/utils.css";
 
 const containerPadding = 23;
 
 export const quizContentContainer = style([
   flexColumn,
+  baseLayer,
   {
     position: "relative",
     width: "50%",

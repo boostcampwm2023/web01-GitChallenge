@@ -31,13 +31,9 @@ const Terminal = forwardRef<HTMLSpanElement, TerminalProps>(
     };
 
     return (
-      <div className={styles.container}>
-        <div className={styles.hr} />
-        <div className={styles.terminalContainer}>
-          <TerminalContent contentArray={contentArray} />
-
-          <CommandInput handleInput={handleStandardInput} ref={ref} />
-        </div>
+      <div className={styles.terminalContainer}>
+        <TerminalContent contentArray={contentArray} />
+        <CommandInput handleInput={handleStandardInput} ref={ref} />
       </div>
     );
   },
