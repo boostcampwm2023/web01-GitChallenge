@@ -6,6 +6,7 @@ import {
 } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 
+import { ENTER_KEY, ESC_KEY } from "../../constants/event";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./Editor.css";
@@ -58,7 +59,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const handleTextareaKeyUp: KeyboardEventHandler = (event) => {
     const { key } = event;
     if (isInsertMode(mode)) {
-      if (key === "Escape") {
+      if (key === ESC_KEY) {
         toCommandMode("");
       }
     }
@@ -73,12 +74,12 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     } = event;
     const currentFile = textareaRef.current?.value;
 
-    if (key === "Escape") {
+    if (key === ESC_KEY) {
       toCommandMode("");
       return;
     }
 
-    if (key === "Enter") {
+    if (key === ENTER_KEY) {
       const changedFile = initialFile !== currentFile;
       if (value === ":q") {
         if (changedFile) {
