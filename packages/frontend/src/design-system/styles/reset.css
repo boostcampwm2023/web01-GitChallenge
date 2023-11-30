@@ -14,10 +14,6 @@ h6,
 p,
 blockquote,
 pre,
-a {
-  color: inherit;
-  text-decoration: none;
-}
 abbr,
 acronym,
 address,
@@ -109,7 +105,10 @@ body {
   font-weight: 400;
   background-color: var(--mm-scale-color-grey-00);
 }
-
+a {
+  color: inherit;
+  text-decoration: none;
+}
 ol,
 ul {
   list-style: none;
