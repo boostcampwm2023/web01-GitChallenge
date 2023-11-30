@@ -19,7 +19,6 @@ export class Magic {
 
   async isBranchExist(container: string, branch: string): Promise<boolean> {
     const command = `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} git branch --list '${branch}'`;
-    this.logger.log('info', command);
     const { stdoutData } = await this.sshService.executeSSHCommand(command);
 
     return stdoutData !== '';
@@ -30,7 +29,7 @@ export class Magic {
       `docker exec -u quizzer -w /home/quizzer/quiz ${container} git -C /home/quizzer/quiz config user.${key}`,
     );
 
-    return stdoutData;
+    return stdoutData.trim();
   }
 
   async getCachedDiff(container: string): Promise<string> {
@@ -46,6 +45,6 @@ export class Magic {
       `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git cat-file -p \\\$(git rev-parse ${branch}) | grep tree | awk '{print \\\$2}'"`,
     );
 
-    return stdoutData;
+    return stdoutData.trim();
   }
 }
