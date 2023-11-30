@@ -122,6 +122,43 @@ describe("Editor", () => {
     });
   });
 
+  describe("명령 모드에서 :(콜론)을 누르면 편집기는 라인 모드로 전환되며", () => {
+    it("편집기의 textarea는 입력이 불가능하다.", async () => {
+      renderComponent({
+        initialFile: mockInitialFileData,
+        onSubmit: mockSubmitHandler,
+      });
+      const $textarea = screen.getByTestId("textarea");
+      await user.type($textarea, ":");
+
+      expect($textarea).toHaveValue(mockInitialFileData);
+    });
+
+    it("편집기의 input에는 초기값이 :(콜론)으로 들어간다.", async () => {
+      renderComponent({
+        initialFile: mockInitialFileData,
+        onSubmit: mockSubmitHandler,
+      });
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+      await user.type($textarea, ":");
+
+      expect($input).toHaveValue(":");
+    });
+
+    it("편집기의 input에 포커싱이 맞춰진다.", async () => {
+      renderComponent({
+        initialFile: mockInitialFileData,
+        onSubmit: mockSubmitHandler,
+      });
+      const $textarea = screen.getByTestId("textarea");
+      const $input = screen.getByTestId("input");
+      await user.type($textarea, ":");
+
+      expect(document.activeElement).toEqual($input);
+    });
+  });
+
   describe("입력 모드에서 esc를 누르면", () => {
     it("편집기는 명령모드로 input은 빈 값이다.", async () => {
       renderComponent({
@@ -161,43 +198,6 @@ describe("Editor", () => {
 
       await user.type($textarea, "테스트");
       expect($textarea).toHaveValue(mockInitialFileData);
-    });
-  });
-
-  describe("명령 모드에서 :(콜론)을 누르면 편집기는 라인 모드로 전환되며", () => {
-    it("편집기의 textarea는 입력이 불가능하다.", async () => {
-      renderComponent({
-        initialFile: mockInitialFileData,
-        onSubmit: mockSubmitHandler,
-      });
-      const $textarea = screen.getByTestId("textarea");
-      await user.type($textarea, ":");
-
-      expect($textarea).toHaveValue(mockInitialFileData);
-    });
-
-    it("편집기의 input에는 초기값이 :(콜론)으로 들어간다.", async () => {
-      renderComponent({
-        initialFile: mockInitialFileData,
-        onSubmit: mockSubmitHandler,
-      });
-      const $textarea = screen.getByTestId("textarea");
-      const $input = screen.getByTestId("input");
-      await user.type($textarea, ":");
-
-      expect($input).toHaveValue(":");
-    });
-
-    it("편집기의 input에 포커싱이 맞춰진다.", async () => {
-      renderComponent({
-        initialFile: mockInitialFileData,
-        onSubmit: mockSubmitHandler,
-      });
-      const $textarea = screen.getByTestId("textarea");
-      const $input = screen.getByTestId("input");
-      await user.type($textarea, ":");
-
-      expect(document.activeElement).toEqual($input);
     });
   });
 
