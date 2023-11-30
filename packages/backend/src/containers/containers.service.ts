@@ -100,7 +100,7 @@ export class ContainersService {
     const { stdoutData, stderrData } =
       await this.sshService.executeSSHCommand(command);
 
-    console.log(`container deleted : ${stdoutData}`);
+    this.logger.log('info', `container deleted : ${stdoutData.trim()}`);
 
     if (stderrData) {
       throw new Error(stderrData);
