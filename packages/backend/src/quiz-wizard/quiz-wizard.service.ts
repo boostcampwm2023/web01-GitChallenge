@@ -12,6 +12,7 @@ export class QuizWizardService {
     4: (containerId: string) => this.checkCondition4(containerId),
     5: (containerId: string) => this.checkCondition5(containerId),
     6: (containerId: string) => this.checkCondition6(containerId),
+    7: (containerId: string) => this.checkCondition7(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -67,5 +68,28 @@ index e69de29..3b18e51 100644
 
   async checkCondition6(containerId: string): Promise<boolean> {
     return (await this.magic.isBranchExist(containerId, 'dev')) === true;
+  }
+
+  async checkCondition7(containerId: string): Promise<boolean> {
+    const amendCommitHash = await this.magic.getCommitHashByMessage(
+      containerId,
+      '회원가입 기능 구현',
+    );
+    if (
+      !amendCommitHash ||
+      (await this.magic.getTreeHead(containerId, amendCommitHash)) !==
+        '3c363aeb69b28b176bf565dba6bb8a3a92d9fd5d'
+    ) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getTreeHead(containerId, `${amendCommitHash}~1`)) !==
+      'bebe52f7d1c8440fb4b1af9aa70ad9523d56336b'
+    ) {
+      return false;
+    }
+
+    return true;
   }
 }
