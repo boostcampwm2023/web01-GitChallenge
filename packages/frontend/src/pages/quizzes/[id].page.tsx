@@ -7,6 +7,7 @@ import { quizAPI } from "../../apis/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
+import useResizableSplitView from "../../hooks/useResizableSplitView";
 import { Categories, Quiz } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
 import { scrollIntoView } from "../../utils/scroll";
@@ -67,18 +68,29 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     scrollIntoView(terminalInputRef);
   }, [contentArray]);
 
+  const { barRef, topRef, handleBarHover } = useResizableSplitView();
   if (!quiz) return null;
   return (
     <main className={styles.mainContainer}>
-      <div className={styles.topContainer}>
-        <div style={{ width: "50%", display: "flex" }}>git graph</div>
-        <QuizGuide quiz={quiz} />
+      <div className={styles.mainInnerContainer}>
+        <div className={styles.topContainer} ref={topRef}>
+          <div style={{ width: "50%", display: "flex" }}>git graph</div>
+          <QuizGuide quiz={quiz} />
+        </div>
+        <div
+          className={styles.bar}
+          role="button"
+          tabIndex={0}
+          ref={barRef}
+          aria-label="divider"
+          onMouseDown={handleBarHover}
+        />
+        <Terminal
+          contentArray={contentArray}
+          onTerminal={handleTerminal}
+          ref={terminalInputRef}
+        />
       </div>
-      <Terminal
-        contentArray={contentArray}
-        onTerminal={handleTerminal}
-        ref={terminalInputRef}
-      />
       <div className={styles.buttonGroup}>
         <Button variant="secondaryLine" onClick={handleReset}>
           문제 다시 풀기

@@ -2,31 +2,21 @@ import { style } from "@vanilla-extract/css";
 
 import color from "../../design-system/tokens/color";
 import typography from "../../design-system/tokens/typography";
-import { border, flexAlignCenter } from "../../design-system/tokens/utils.css";
-
-const hrHeight = "20px";
-
-export const container = style([
-  typography.$semantic.code,
-  border.all,
-  {
-    height: 180,
-    width: "100%",
-  },
-]);
-
-export const hr = style({
-  height: hrHeight,
-  margin: 0,
-  border: "none",
-  borderBottom: `1px solid ${color.$semantic.border}`,
-  backgroundColor: color.$scale.grey100,
-});
+import {
+  border,
+  flexAlignCenter,
+  middleLayer,
+} from "../../design-system/tokens/utils.css";
+import { barHeight } from "../../pages/quizzes/quiz.css";
 
 export const terminalContainer = style([
-  typography.$semantic.caption1Regular,
+  typography.$semantic.code,
+  middleLayer,
+  border.all,
   {
-    height: `calc(100% - ${hrHeight})`,
+    flex: 1,
+    minHeight: `calc(180px - ${barHeight})`,
+    width: "100%",
     padding: "10px 10px",
     overflowY: "auto",
     color: color.$scale.grey900,
