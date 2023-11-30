@@ -18,11 +18,12 @@ import {
   ApiParam,
   ApiBody,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
 import { Logger } from 'winston';
 import { QuizDto } from './dto/quiz.dto';
 import { QuizzesService } from './quizzes.service';
-import { QuizzesDto } from './dto/quizzes.dto';
+import { NotFoundResponseDto, QuizzesDto } from './dto/quizzes.dto';
 import { CommandRequestDto, MODE } from './dto/command-request.dto';
 import {
   CommandResponseDto,
@@ -54,6 +55,10 @@ export class QuizzesController {
     status: 200,
     description: 'Returns the quiz details',
     type: QuizDto,
+  })
+  @ApiNotFoundResponse({
+    description: '문제가 없습니다.',
+    type: NotFoundResponseDto,
   })
   @ApiParam({ name: 'id', description: '문제 ID' })
   async getProblemById(@Param('id') id: number): Promise<QuizDto> {
