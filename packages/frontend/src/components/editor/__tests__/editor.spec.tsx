@@ -356,6 +356,28 @@ describe("Editor", () => {
         expect(mockSubmitHandler).toHaveBeenCalledTimes(0);
       },
     );
+
+    it.each([[" ", "  "]])(
+      "빈 값을 입력하면 명령 모드로 전환된다.",
+      async (input) => {
+        renderComponent({
+          initialFile: mockInitialFileData,
+          onSubmit: mockSubmitHandler,
+        });
+        const $textarea = screen.getByTestId("textarea");
+        const $input = screen.getByTestId("input");
+
+        await user.type($textarea, ":");
+
+        await user.type($input, input);
+        await user.keyboard("{Enter}");
+
+        expect($input).toHaveValue(":");
+        expect($input).toHaveAttribute("readonly");
+        expect(document.activeElement).toEqual($textarea);
+        expect(mockSubmitHandler).toHaveBeenCalledTimes(0);
+      },
+    );
   });
 
   describe("라인 모드에서 명령 모드로 전환했을 때", () => {

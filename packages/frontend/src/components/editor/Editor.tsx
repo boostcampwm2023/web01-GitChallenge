@@ -69,8 +69,9 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   ) => {
     const {
       key,
-      currentTarget: { value },
+      currentTarget: { value: valueBeforeTrim },
     } = event;
+    const value = valueBeforeTrim.trim();
     const currentFile = textareaValue;
 
     if (key === ESC_KEY) {
@@ -80,6 +81,12 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
 
     if (key === ENTER_KEY) {
       const changedFile = initialFile !== currentFile;
+
+      if (value === ":") {
+        toCommandMode(":");
+        return;
+      }
+
       if (value === ":q") {
         if (changedFile) {
           event.preventDefault();
