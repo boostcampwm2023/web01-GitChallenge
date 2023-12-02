@@ -75,4 +75,12 @@ export class Magic {
 
     return stdoutData.trim();
   }
+
+  async getRemotes(container: string): Promise<string> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git remote -v"`,
+    );
+
+    return stdoutData;
+  }
 }
