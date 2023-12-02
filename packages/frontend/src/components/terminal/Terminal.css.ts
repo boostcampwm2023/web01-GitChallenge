@@ -2,12 +2,13 @@ import { style } from "@vanilla-extract/css";
 
 import color from "../../design-system/tokens/color";
 import typography from "../../design-system/tokens/typography";
-import { flexAlignCenter } from "../../design-system/tokens/utils.css";
+import { border, flexAlignCenter } from "../../design-system/tokens/utils.css";
 
 const hrHeight = "20px";
 
 export const container = style([
   typography.$semantic.code,
+  border.all,
   {
     height: 180,
     width: "100%",
@@ -18,7 +19,6 @@ export const hr = style({
   height: hrHeight,
   margin: 0,
   border: "none",
-  borderTop: `1px solid ${color.$semantic.border}`,
   borderBottom: `1px solid ${color.$semantic.border}`,
   backgroundColor: color.$scale.grey100,
 });
