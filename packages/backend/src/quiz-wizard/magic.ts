@@ -83,4 +83,12 @@ export class Magic {
 
     return stdoutData;
   }
+
+  async getNowBranch(container: string): Promise<string> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git rev-parse --abbrev-ref HEAD"`,
+    );
+
+    return stdoutData.trim();
+  }
 }
