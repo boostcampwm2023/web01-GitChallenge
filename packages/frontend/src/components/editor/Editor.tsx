@@ -4,7 +4,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { FaInfoCircle } from "react-icons/fa";
 
 import { ENTER_KEY, ESC_KEY } from "../../constants/event";
 
@@ -119,42 +118,26 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   };
 
   return (
-    <>
-      <span>{isCommandMode(mode) ? "명령모드" : "입력모드"}</span>
-      <div className={styles.container}>
-        <textarea
-          className={styles.textarea}
-          value={textareaValue}
-          onChange={handleTextareaOnChange}
-          onKeyUp={handleTextareaKeyUp}
-          ref={textareaRef}
-          data-testid="textarea"
-        />
-        <input
-          className={styles.input}
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeydown}
-          ref={inputRef}
-          readOnly={inputReadonly}
-          data-testid="input"
-        />
-      </div>
-      <div className={styles.notice}>
-        {[
-          `명령 모드에서 입력 모드로 전환하려면 "i"를 눌러주세요.`,
-          `입력 모드에서 마지막 라인 모드로 전환하려면 ":"을 눌러주세요.`,
-          `마지막 라인 모드와 입력 모드에서 명령모드로 전환하려면 "ESC"를 눌러주세요.`,
-          `마지막 라인 모드에서는 "q", "q!", "wq", "wq!" 명령어만 지원합니다.`,
-        ].map((line) => (
-          <div key={line} className={styles.noticeItem}>
-            <FaInfoCircle />
-            {line}
-          </div>
-        ))}
-      </div>
-    </>
+    <div className={styles.container}>
+      <textarea
+        className={styles.textarea}
+        value={textareaValue}
+        onChange={handleTextareaOnChange}
+        onKeyUp={handleTextareaKeyUp}
+        ref={textareaRef}
+        data-testid="textarea"
+      />
+      <input
+        className={styles.input}
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleInputKeydown}
+        ref={inputRef}
+        readOnly={inputReadonly}
+        data-testid="input"
+      />
+    </div>
   );
 }
 
