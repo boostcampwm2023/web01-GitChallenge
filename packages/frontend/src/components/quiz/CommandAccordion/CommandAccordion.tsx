@@ -1,7 +1,11 @@
 import Link from "next/link";
 
 import { GIT_BOOK_URL } from "../../../constants/path";
-import { Accordion, Badge , badgeVariantList } from "../../../design-system/components/common";
+import {
+  Accordion,
+  Badge,
+  badgeVariantList,
+} from "../../../design-system/components/common";
 
 import badgeGroupLayout from "./CommandAccordion.css";
 
