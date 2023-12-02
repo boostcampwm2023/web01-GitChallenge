@@ -1164,76 +1164,121 @@ describe('QuizWizardController (e2e)', () => {
 
       expect(response.body).toHaveProperty('solved', false);
     });
+  });
 
-    describe('16번 문제 채점 테스트', () => {
-      const id = 16;
-      afterEach(async () => {
-        await request(app.getHttpServer())
-          .delete(`/api/v1/quizzes/${id}/command`)
-          .set('Cookie', cookie);
-      });
+  describe('16번 문제 채점 테스트', () => {
+    const id = 16;
+    afterEach(async () => {
+      await request(app.getHttpServer())
+        .delete(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie);
+    });
 
-      it('베스트 성공 케이스', async () => {
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/command`)
-          .send({
-            mode: 'command',
-            message: 'git switch -c feat/somethingA',
-          });
+    it('베스트 성공 케이스', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git switch -c feat/somethingA',
+        });
 
-        cookie = response.headers['set-cookie'][0].split(';')[0];
+      cookie = response.headers['set-cookie'][0].split(';')[0];
 
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/submit`)
-          .set('Cookie', cookie)
-          .expect(200);
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
 
-        expect(response.body).toHaveProperty('solved', true);
-      });
+      expect(response.body).toHaveProperty('solved', true);
+    });
 
-      it('괜히 다시 main으로 돌아옴', async () => {
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/command`)
-          .send({
-            mode: 'command',
-            message: 'git switch -c feat/somethingA',
-          });
+    it('괜히 다시 main으로 돌아옴', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git switch -c feat/somethingA',
+        });
 
-        cookie = response.headers['set-cookie'][0].split(';')[0];
+      cookie = response.headers['set-cookie'][0].split(';')[0];
 
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/command`)
-          .set('Cookie', cookie)
-          .send({
-            mode: 'command',
-            message: 'git checkout main',
-          });
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git checkout main',
+        });
 
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/submit`)
-          .set('Cookie', cookie)
-          .expect(200);
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
 
-        expect(response.body).toHaveProperty('solved', false);
-      });
+      expect(response.body).toHaveProperty('solved', false);
+    });
 
-      it('아무것도 안 함', async () => {
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/command`)
-          .send({
-            mode: 'command',
-            message: 'git status',
-          });
+    it('아무것도 안 함', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git status',
+        });
 
-        cookie = response.headers['set-cookie'][0].split(';')[0];
+      cookie = response.headers['set-cookie'][0].split(';')[0];
 
-        response = await request(app.getHttpServer())
-          .post(`/api/v1/quizzes/${id}/submit`)
-          .set('Cookie', cookie)
-          .expect(200);
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
 
-        expect(response.body).toHaveProperty('solved', false);
-      });
+      expect(response.body).toHaveProperty('solved', false);
+    });
+  });
+
+  describe('17번 문제 채점 테스트', () => {
+    const id = 17;
+    afterEach(async () => {
+      await request(app.getHttpServer())
+        .delete(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie);
+    });
+
+    it('베스트 성공 케이스', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git pull origin main',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', true);
+    });
+
+    it('아무것도 안 함', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git status',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', false);
     });
   });
 
