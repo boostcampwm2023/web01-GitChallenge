@@ -19,6 +19,7 @@ export class QuizWizardService {
     12: (containerId: string) => this.checkCondition12(containerId),
     13: (containerId: string) => this.checkCondition13(containerId),
     15: (containerId: string) => this.checkCondition15(containerId),
+    16: (containerId: string) => this.checkCondition16(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -250,5 +251,9 @@ upstream	/upstream (push)
     }
 
     return true;
+  }
+
+  async checkCondition16(containerId: string): Promise<boolean> {
+    return (await this.magic.getNowBranch(containerId)) === 'feat/somethingA';
   }
 }
