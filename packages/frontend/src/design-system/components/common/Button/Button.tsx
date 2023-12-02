@@ -15,6 +15,7 @@ export interface ButtonProps
   full?: boolean;
   variant: ButtonVariantType;
   children: ReactNode;
+  className?: string;
 }
 
 export function Button({
@@ -24,11 +25,13 @@ export function Button({
   type = "button",
   disabled = false,
   onClick,
+  className = "",
 }: ButtonProps) {
   const buttonStyle = classnames(
     styles.buttonBase,
     styles.buttonVariants[variant],
     full ? widthFull : "",
+    className,
   );
 
   return (
