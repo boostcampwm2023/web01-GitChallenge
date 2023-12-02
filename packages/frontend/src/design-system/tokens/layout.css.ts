@@ -37,15 +37,19 @@ export const sideBar = style([
   flexColumn,
   scrollBarHidden,
   {
+    maxHeight: "100vh",
     width: 250,
     padding: "30px 0px",
     gap: 24,
   },
 ]);
 
-export const container = style({
-  width: 1030,
-});
+export const container = style([
+  flexColumn,
+  {
+    width: 1030,
+  },
+]);
 
 export const footer = style([
   widthMax,
