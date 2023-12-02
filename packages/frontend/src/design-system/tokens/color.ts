@@ -35,8 +35,10 @@ const $scale = {
 };
 
 const $semantic = {
-  textWhite: "var(--mm-semantic-color-text-white-default)",
-  bgWhite: "var(--mm-semantic-color-bg-white-default)",
+  textWhite: "var(--mm-semantic-color-text-white)",
+  bgWhite: "var(--mm-semantic-color-background-white)",
+  bgDefault: "var(--mm-semantic-color-background-default)",
+  bgAlt: "var(--mm-semantic-color-background-alt)",
   textDisabled: "var(--mm-semantic-color-text-disabled)",
   bgDisabled: "var(--mm-semantic-color-bg-disabled)",
   primary: "var(--mm-semantic-color-primary)",
