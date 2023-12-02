@@ -91,4 +91,12 @@ export class Magic {
 
     return stdoutData.trim();
   }
+
+  async getAllBranch(container: string): Promise<string> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git branch | cut -c 3-"`,
+    );
+
+    return stdoutData;
+  }
 }
