@@ -11,6 +11,6 @@ export const container = style([
   {
     height: "100%",
     margin: "0 auto",
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
   },
 ]);

@@ -19,7 +19,7 @@ export const terminalContainer = style([
     padding: "10px 10px",
     overflowY: "auto",
     color: color.$scale.grey900,
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
     whiteSpace: "break-spaces",
   },
 ]);

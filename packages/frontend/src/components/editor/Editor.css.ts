@@ -36,7 +36,7 @@ export const textarea = style([
     padding: editorPadding,
     border: "none",
     outline: "none",
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
     color: color.$scale.grey900,
   },
 ]);
@@ -49,7 +49,7 @@ export const input = style([
     bottom: "0",
     padding: `0px ${editorPadding}px`,
     border: "none",
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
     color: color.$scale.grey900,
     outline: "none",
   },

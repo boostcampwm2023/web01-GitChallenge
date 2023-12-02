@@ -18,7 +18,7 @@ export const linkItemStyle = style({
   selectors: {
     "&:hover": {
       borderRadius: 8,
-      backgroundColor: color.$scale.grey50,
+      backgroundColor: color.$semantic.bgAlt,
     },
   },
 });
