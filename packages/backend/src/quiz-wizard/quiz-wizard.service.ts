@@ -78,6 +78,7 @@ index e69de29..3b18e51 100644
   async checkCondition7(containerId: string): Promise<boolean> {
     const amendCommitHash = await this.magic.getCommitHashByMessage(
       containerId,
+      'feat/somethingB',
       '회원가입 기능 구현',
     );
     if (
@@ -102,6 +103,7 @@ index e69de29..3b18e51 100644
     try {
       const commitHash = await this.magic.getCommitHashByMessage(
         containerId,
+        'feat/somethingB',
         '회원가입 테스트 코드 작성',
       );
       if (
@@ -128,6 +130,7 @@ index e69de29..3b18e51 100644
 
       const commitHashSecond = await this.magic.getCommitHashByMessage(
         containerId,
+        'feat/somethingB',
         '회원가입 기능 구현',
       );
       if (
@@ -187,5 +190,43 @@ index e69de29..3b18e51 100644
     }
 
     return true;
+  }
+
+  async checkCondition13(containerId: string): Promise<boolean> {
+    try {
+      const messages = [
+        '회원탈퇴 기능 구현',
+        '로그인 테스트 코드 작성',
+        '로그인 기능 구현',
+      ];
+      const hashes = [
+        'ad5fe01b96edeab9ebd213a4069ea9d6f313eec3',
+        '64d5e0c4675ca4b51d1e5e66bbcc703bc785308f',
+        '86eff1319c698fdd99b9c2289d4f66f0498ca040',
+        '3c363aeb69b28b176bf565dba6bb8a3a92d9fd5d',
+      ];
+
+      for (const [index, message] of messages.entries()) {
+        const commitHash = await this.magic.getCommitHashByMessage(
+          containerId,
+          'feat/somethingB',
+          message,
+        );
+
+        if (
+          !commitHash ||
+          (await this.magic.getTreeHead(containerId, commitHash)) !==
+            hashes[index] ||
+          (await this.magic.getTreeHead(containerId, `${commitHash}~1`)) !==
+            hashes[index + 1]
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
