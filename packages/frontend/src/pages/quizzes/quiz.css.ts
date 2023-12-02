@@ -9,13 +9,11 @@ import {
   widthFull,
 } from "../../design-system/tokens/utils.css";
 
-export const barHeight = "20px";
-
 export const bar = style([
   middleLayer,
   border.all,
   {
-    minHeight: barHeight,
+    minHeight: 20,
     borderBottom: "none",
     backgroundColor: color.$scale.grey100,
     cursor: "row-resize",

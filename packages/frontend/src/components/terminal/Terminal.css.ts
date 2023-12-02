@@ -7,7 +7,6 @@ import {
   flexAlignCenter,
   middleLayer,
 } from "../../design-system/tokens/utils.css";
-import { barHeight } from "../../pages/quizzes/quiz.css";
 
 export const terminalContainer = style([
   typography.$semantic.code,
@@ -15,7 +14,7 @@ export const terminalContainer = style([
   border.all,
   {
     flex: 1,
-    minHeight: `calc(180px - ${barHeight})`,
+    minHeight: 160,
     width: "100%",
     padding: "10px 10px",
     overflowY: "auto",
