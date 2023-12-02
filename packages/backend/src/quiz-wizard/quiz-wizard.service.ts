@@ -20,6 +20,7 @@ export class QuizWizardService {
     13: (containerId: string) => this.checkCondition13(containerId),
     15: (containerId: string) => this.checkCondition15(containerId),
     16: (containerId: string) => this.checkCondition16(containerId),
+    17: (containerId: string) => this.checkCondition17(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -255,5 +256,12 @@ upstream	/upstream (push)
 
   async checkCondition16(containerId: string): Promise<boolean> {
     return (await this.magic.getNowBranch(containerId)) === 'feat/somethingA';
+  }
+
+  async checkCondition17(containerId: string): Promise<boolean> {
+    return (
+      (await this.magic.getTreeHead(containerId, 'main')) ===
+      '3bd4e8ab14ecf1c7e1e85262ce241c4275080270'
+    );
   }
 }
