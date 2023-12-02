@@ -33,8 +33,8 @@
   --mm-static-color-teal-700: #0c8585;
   --mm-static-color-yellow-50: #fff9e7;
   --mm-static-color-yellow-700: #faa131;
-  --mm-semantic-color-text-white-default: var(--mm-static-color-white);
-  --mm-semantic-color-bg-white-default: var(--mm-static-color-white);
+  --mm-semantic-color-text-white: var(--mm-static-color-white);
+  --mm-semantic-color-background-white: var(--mm-static-color-white);
   --mm-semantic-color-text-disabled: var(--mm-static-color-grey-500);
   --mm-semantic-color-bg-disabled: var(--mm-static-color-grey-200);
   --mm-semantic-color-badge-blue-bg: var(--mm-static-color-blue-50);
@@ -119,6 +119,8 @@
   --mm-scale-color-grey-800: #393a40;
   --mm-scale-color-grey-900: #212124;
   --mm-semantic-color-border: var(--mm-scale-color-grey-300);
+  --mm-semantic-color-background-default: var(--mm-scale-color-grey-00);
+  --mm-semantic-color-background-alt: var(--mm-scale-color-grey-50);
 }
 
 :root[data-theme="dark"] {
@@ -156,6 +158,8 @@
   --mm-scale-color-grey-800: #f7f8fa;
   --mm-scale-color-grey-900: #ffffff;
   --mm-semantic-color-border: var(--mm-scale-color-grey-100);
+  --mm-semantic-color-background-default: var(--mm-scale-color-grey-00);
+  --mm-semantic-color-background-alt: var(--mm-scale-color-grey-50);
 }
 
 .mm-semantic-typography-h1 {
