@@ -5,6 +5,7 @@ import { RefObject, useEffect, useReducer, useRef } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
+import EditorInfo from "../../components/editor/EditorInfo";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
@@ -110,7 +111,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           aria-label="divider"
           onMouseDown={handleBarHover}
         />
-        {terminalMode === "editor" ? (
+        {isTerminalMode(terminalMode) ? (
           <Editor initialFile={editorFile} onSubmit={handleTerminal} />
         ) : (
           <Terminal
@@ -120,6 +121,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           />
         )}
       </div>
+      {isTerminalMode(terminalMode) && <EditorInfo />}
       <div className={styles.buttonGroup}>
         <Button variant="secondaryLine" onClick={handleReset}>
           문제 다시 풀기
@@ -163,4 +165,8 @@ function clearTextContent<T extends Element>(ref: RefObject<T>) {
   }
 
   $element.textContent = "";
+}
+
+function isTerminalMode(terminalMode: "editor" | "command") {
+  return terminalMode === "editor";
 }

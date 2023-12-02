@@ -34,6 +34,7 @@ export const topContainer = style([flex, border.verticalSide]);
 export const buttonGroup = style([
   flex,
   {
+    margin: "17px 0px",
     justifyContent: "space-between",
   },
 ]);
