@@ -36,6 +36,8 @@ export const textarea = style([
     padding: editorPadding,
     border: "none",
     outline: "none",
+    backgroundColor: color.$scale.grey00,
+    color: color.$scale.grey900,
   },
 ]);
 
@@ -47,6 +49,8 @@ export const input = style([
     bottom: "0",
     padding: `0px ${editorPadding}px`,
     border: "none",
+    backgroundColor: color.$scale.grey00,
+    color: color.$scale.grey900,
     outline: "none",
   },
 ]);
@@ -56,13 +60,13 @@ export const notice = style([
   flexJustifyCenter,
   widthFull,
   typography.$semantic.caption2Regular,
+  border.all,
   {
-    backgroundColor: color.$semantic.secondaryLow,
     borderRadius: 8,
     marginTop: 14,
     gap: 5,
     padding: 14,
-    color: color.$semantic.secondary,
+    color: color.$scale.grey600,
     whiteSpace: "break-spaces",
     lineHeight: "165%",
   },
