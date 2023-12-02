@@ -30,7 +30,7 @@ export const container = style([
     width: 427,
     borderRadius: 8,
     padding: 27,
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
   },
 ]);
 
