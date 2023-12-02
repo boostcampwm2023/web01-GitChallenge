@@ -18,6 +18,7 @@ export class QuizWizardService {
     10: (containerId: string) => this.checkCondition10(containerId),
     12: (containerId: string) => this.checkCondition12(containerId),
     13: (containerId: string) => this.checkCondition13(containerId),
+    15: (containerId: string) => this.checkCondition15(containerId),
   };
 
   async submit(containerId: string, quizId: number) {
@@ -228,5 +229,26 @@ index e69de29..3b18e51 100644
     } catch {
       return false;
     }
+  }
+
+  async checkCondition15(containerId: string): Promise<boolean> {
+    if (
+      (await this.magic.getTreeHead(containerId, 'main')) !==
+      '13a3ee29a5743442145beffa234ad373548d8c59'
+    )
+      return false;
+
+    if (
+      (await this.magic.getRemotes(containerId)) !==
+      `origin	/origin (fetch)
+origin	/origin (push)
+upstream	/upstream (fetch)
+upstream	/upstream (push)
+`
+    ) {
+      return false;
+    }
+
+    return true;
   }
 }
