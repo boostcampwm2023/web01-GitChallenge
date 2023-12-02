@@ -1,18 +1,17 @@
-import { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useRef } from "react";
 
 export default function useResizableSplitView() {
   const barRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
-
-  const [prevBarClientY, setPrevBarClientY] = useState(0);
-  const [prevUpHeight, setPrevUpHeight] = useState(0);
+  const prevBarClientY = useRef(0);
+  const prevUpHeight = useRef(0);
 
   const handleBarHover = (event: MouseEvent<HTMLDivElement>) => {
     if (!topRef.current) return;
-    setPrevBarClientY(event.clientY);
+    prevBarClientY.current = event.clientY;
 
     const { height } = topRef.current.getBoundingClientRect();
-    setPrevUpHeight(height);
+    prevUpHeight.current = height;
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
@@ -21,8 +20,8 @@ export default function useResizableSplitView() {
     if (!topRef.current) {
       return;
     }
-    const dClientY = clientY - prevBarClientY;
-    const nextHeight = prevUpHeight + dClientY;
+    const dClientY = clientY - prevBarClientY.current;
+    const nextHeight = prevUpHeight.current + dClientY;
     topRef.current.style.height = `${Math.max(nextHeight, 0)}px`;
   };
 
