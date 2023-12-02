@@ -407,6 +407,48 @@ describe('QuizWizardController (e2e)', () => {
       expect(response.body).toHaveProperty('solved', true);
     });
 
+    it('마지막에 브랜치만 switch', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git add signup.test.js',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit --amend',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'editor',
+          message: '회원가입 기능 구현',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git switch feat/somethingA',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', true);
+    });
+
     it('amend하는 커밋 메시지 오타', async () => {
       response = await request(app.getHttpServer())
         .post(`/api/v1/quizzes/${id}/command`)
@@ -958,6 +1000,83 @@ describe('QuizWizardController (e2e)', () => {
           mode: 'command',
           message: 'git reset --hard HEAD^',
         });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', false);
+    });
+  });
+
+  describe('13번 문제 채점 테스트', () => {
+    const id = 13;
+    afterEach(async () => {
+      await request(app.getHttpServer())
+        .delete(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie);
+    });
+
+    it('베스트 성공 케이스', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git rebase -i c01511a8d88b4355d754406ef6ec20aa49d69c5b',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'editor',
+          message: `reword 6a83279 로그인 기느 ㄱ후ㅕㄴ\npick 09dca00 로그인 테스트 코드 작성\npick d109f51 회원탈퇴 기능 구현\n\n# Rebase c01511a..d109f51 onto c01511a (3 commands)\n#\n# Commands:\n# p, pick <commit> = use commit\n# r, reword <commit> = use commit, but edit the commit message\n# e, edit <commit> = use commit, but stop for amending\n# s, squash <commit> = use commit, but meld into previous commit\n# f, fixup [-C | -c] <commit> = like \"squash\" but keep only the previous\n#                    commit's log message, unless -C is used, in which case\n#                    keep only this commit's message; -c is same as -C but\n#                    opens the editor\n# x, exec <command> = run command (the rest of the line) using shell\n# b, break = stop here (continue rebase later with 'git rebase --continue')\n# d, drop <commit> = remove commit\n# l, label <label> = label current HEAD with a name\n# t, reset <label> = reset HEAD to a label\n# m, merge [-C <commit> | -c <commit>] <label> [# <oneline>]\n#         create a merge commit using the original merge commit's\n#         message (or the oneline, if no original merge commit was\n#         specified); use -c <commit> to reword the commit message\n# u, update-ref <ref> = track a placeholder for the <ref> to be updated\n#                       to this position in the new commits. The <ref> is\n#                       updated at the end of the rebase\n#\n# These lines can be re-ordered; they are executed from top to bottom.\n#\n# If you remove a line here THAT COMMIT WILL BE LOST.\n#\n# However, if you remove everything, the rebase will be aborted.\n#\n`,
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git commit --amend',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'editor',
+          message: '로그인 기능 구현',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .set('Cookie', cookie)
+        .send({
+          mode: 'command',
+          message: 'git rebase --continue',
+        });
+
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/submit`)
+        .set('Cookie', cookie)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('solved', true);
+    });
+
+    it('아무것도 안 함', async () => {
+      response = await request(app.getHttpServer())
+        .post(`/api/v1/quizzes/${id}/command`)
+        .send({
+          mode: 'command',
+          message: 'git status',
+        });
+
+      cookie = response.headers['set-cookie'][0].split(';')[0];
 
       response = await request(app.getHttpServer())
         .post(`/api/v1/quizzes/${id}/submit`)
