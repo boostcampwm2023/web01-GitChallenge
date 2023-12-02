@@ -58,10 +58,11 @@ export class Magic {
 
   async getCommitHashByMessage(
     container: string,
+    branch: string,
     message: string,
   ): Promise<string> {
     const { stdoutData } = await this.sshService.executeSSHCommand(
-      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git log --grep='^${message}$' --oneline --reverse | awk '{print \\\$1}'"`,
+      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git log --grep='^${message}$' --oneline --reverse ${branch} | awk '{print \\\$1}'"`,
     );
 
     return stdoutData.trim();
