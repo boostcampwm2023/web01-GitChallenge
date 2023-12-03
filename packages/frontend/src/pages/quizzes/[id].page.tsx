@@ -1,14 +1,16 @@
 import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { RefObject, useEffect, useReducer, useRef } from "react";
+import { RefObject, useEffect, useReducer, useRef, useState } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
 import EditorInfo from "../../components/editor/EditorInfo";
+import { SolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
+import useModal from "../../hooks/useModal";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
 import {
   TerminalActionTypes,
@@ -25,6 +27,8 @@ import * as styles from "./quiz.css";
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
     useReducer(terminalReducer, initialTerminalState);
+  const [shareLink, setShareLink] = useState("");
+  const solvedModal = useModal();
 
   const {
     query: { id },
@@ -48,6 +52,24 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         input,
         message,
       });
+    } catch (error) {
+      handleResponseError(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!isString(id)) {
+      return;
+    }
+
+    try {
+      const response = await quizAPI.submit(+id);
+      if (response.solved) {
+        setShareLink(response.link);
+        solvedModal.openModal();
+        return;
+      }
+      toast.error("다시 풀어보세요!");
     } catch (error) {
       handleResponseError(error);
     }
@@ -97,38 +119,49 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const { barRef, topRef, handleBarHover } = useResizableSplitView();
   if (!quiz) return null;
   return (
-    <main className={styles.mainContainer}>
-      <div className={styles.mainInnerContainer}>
-        <div className={styles.topContainer} ref={topRef}>
-          <div style={{ width: "50%", display: "flex" }}>git graph</div>
-          <QuizGuide quiz={quiz} />
-        </div>
-        <div
-          className={styles.bar}
-          role="button"
-          tabIndex={0}
-          ref={barRef}
-          aria-label="divider"
-          onMouseDown={handleBarHover}
-        />
-        {isEditorMode(terminalMode) ? (
-          <Editor initialFile={editorFile} onSubmit={handleTerminal} />
-        ) : (
-          <Terminal
-            contentArray={contentArray}
-            onTerminal={handleTerminal}
-            ref={terminalInputRef}
+    <>
+      <main className={styles.mainContainer}>
+        <div className={styles.mainInnerContainer}>
+          <div className={styles.topContainer} ref={topRef}>
+            <div style={{ width: "50%", display: "flex" }}>git graph</div>
+            <QuizGuide quiz={quiz} />
+          </div>
+          <div
+            className={styles.bar}
+            role="button"
+            tabIndex={0}
+            ref={barRef}
+            aria-label="divider"
+            onMouseDown={handleBarHover}
           />
-        )}
-      </div>
-      {isEditorMode(terminalMode) && <EditorInfo />}
-      <div className={styles.buttonGroup}>
-        <Button variant="secondaryLine" onClick={handleReset}>
-          문제 다시 풀기
-        </Button>
-        <Button variant="primaryFill">제출 후 채점하기</Button>
-      </div>
-    </main>
+          {isEditorMode(terminalMode) ? (
+            <Editor initialFile={editorFile} onSubmit={handleTerminal} />
+          ) : (
+            <Terminal
+              contentArray={contentArray}
+              onTerminal={handleTerminal}
+              ref={terminalInputRef}
+            />
+          )}
+        </div>
+        {isEditorMode(terminalMode) && <EditorInfo />}
+        <div className={styles.buttonGroup}>
+          <Button variant="secondaryLine" onClick={handleReset}>
+            문제 다시 풀기
+          </Button>
+          <Button variant="primaryFill" onClick={handleSubmit}>
+            제출 후 채점하기
+          </Button>
+        </div>
+      </main>
+      {solvedModal.modalOpen && (
+        <SolvedModal
+          link={shareLink}
+          onClose={solvedModal.closeModal}
+          onNextQuiz={console.log}
+        />
+      )}
+    </>
   );
 }
 
