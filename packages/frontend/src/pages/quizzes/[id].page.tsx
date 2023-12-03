@@ -111,7 +111,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           aria-label="divider"
           onMouseDown={handleBarHover}
         />
-        {isTerminalMode(terminalMode) ? (
+        {isEditorMode(terminalMode) ? (
           <Editor initialFile={editorFile} onSubmit={handleTerminal} />
         ) : (
           <Terminal
@@ -121,7 +121,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           />
         )}
       </div>
-      {isTerminalMode(terminalMode) && <EditorInfo />}
+      {isEditorMode(terminalMode) && <EditorInfo />}
       <div className={styles.buttonGroup}>
         <Button variant="secondaryLine" onClick={handleReset}>
           문제 다시 풀기
@@ -167,6 +167,6 @@ function clearTextContent<T extends Element>(ref: RefObject<T>) {
   $element.textContent = "";
 }
 
-function isTerminalMode(terminalMode: "editor" | "command") {
+function isEditorMode(terminalMode: "editor" | "command") {
   return terminalMode === "editor";
 }
