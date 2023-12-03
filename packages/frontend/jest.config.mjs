@@ -1,18 +1,24 @@
-import nextJest from 'next/jest.js'
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
-    // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-    dir: './',
-})
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: "./",
+});
 
-// Add any custom config to be passed to Jest
-/** @type {import('jest').Config} */
-const config = {
-    // Add more setup options before each test is run
-    // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+const customJestConfig = {
+  testEnvironment: "jsdom",
+};
 
-    testEnvironment: 'jsdom',
+export default async function config() {
+  const nextJestConfig = await createJestConfig(customJestConfig)();
+
+  delete nextJestConfig.moduleNameMapper["^.+\\.(css|sass|scss)$"]; // Next.js 기본 설정 삭제
+
+  return {
+    ...nextJestConfig,
+    transform: {
+      "\\.css\\.ts$": "@vanilla-extract/jest-transform", // Jest transform 설정
+      ...nextJestConfig.transform,
+    },
+  };
 }
-
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-export default createJestConfig(config)
