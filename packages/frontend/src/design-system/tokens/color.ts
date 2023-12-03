@@ -40,7 +40,7 @@ const $semantic = {
   bgDefault: "var(--mm-semantic-color-background-default)",
   bgAlt: "var(--mm-semantic-color-background-alt)",
   textDisabled: "var(--mm-semantic-color-text-disabled)",
-  bgDisabled: "var(--mm-semantic-color-bg-disabled)",
+  bgDisabled: "var(--mm-semantic-color-background-disabled)",
   primary: "var(--mm-semantic-color-primary)",
   primaryHover: "var(--mm-semantic-color-primary-hover)",
   primaryLow: "var(--mm-semantic-color-primary-low)",
