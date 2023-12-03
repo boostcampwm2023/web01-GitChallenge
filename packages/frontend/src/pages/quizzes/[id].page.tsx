@@ -155,6 +155,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       {solvedModal.modalOpen && (
         <SolvedModal
           link={solvedModal.shareLink}
+          lastQuiz={false}
           onClose={solvedModal.closeModal}
           onNextQuiz={console.log}
         />

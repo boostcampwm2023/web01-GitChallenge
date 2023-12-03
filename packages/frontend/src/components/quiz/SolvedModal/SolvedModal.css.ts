@@ -58,13 +58,37 @@ export const linkCopyButton = style([
   border.all,
   typography.$semantic.body2Regular,
   {
+    position: "relative",
     borderLeft: "none",
     borderTopRightRadius: BORDER_RADIUS,
     borderBottomRightRadius: BORDER_RADIUS,
     padding: "9px 19px",
     color: "inherit",
     backgroundColor: color.$scale.grey50,
+
+    selectors: {
+      "&.visible::after": {
+        display: "inline-block",
+      },
+    },
+
+    "::after": {
+      content: "✅",
+      display: "none",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    },
   },
 ]);
 
 export const buttonGroup = style([flexCenter, { gap: 4 }]);
+
+export const linkCopyButtonText = style({
+  selectors: {
+    [`${linkCopyButton}.visible &`]: {
+      visibility: "hidden",
+    },
+  },
+});
