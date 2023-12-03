@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { RefObject, useEffect, useReducer, useRef, useState } from "react";
+import { RefObject, useEffect, useReducer, useRef } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
@@ -10,8 +10,8 @@ import { SolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { Button, toast } from "../../design-system/components/common";
-import useModal from "../../hooks/useModal";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
+import { useSolvedModal } from "../../hooks/useSolvedModal";
 import {
   TerminalActionTypes,
   initialTerminalState,
@@ -27,8 +27,7 @@ import * as styles from "./quiz.css";
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
     useReducer(terminalReducer, initialTerminalState);
-  const [shareLink, setShareLink] = useState("");
-  const solvedModal = useModal();
+  const solvedModal = useSolvedModal();
 
   const {
     query: { id },
@@ -65,8 +64,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     try {
       const response = await quizAPI.submit(+id);
       if (response.solved) {
-        setShareLink(response.link);
-        solvedModal.openModal();
+        solvedModal.onSolved(response.link);
         return;
       }
       toast.error("다시 풀어보세요!");
@@ -156,7 +154,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       </main>
       {solvedModal.modalOpen && (
         <SolvedModal
-          link={shareLink}
+          link={solvedModal.shareLink}
           onClose={solvedModal.closeModal}
           onNextQuiz={console.log}
         />
