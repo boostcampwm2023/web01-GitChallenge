@@ -46,6 +46,7 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
+    "@vanilla-extract/jest-transform": "^1.1.1",
     "@vanilla-extract/next-plugin": "^2.3.2",
     "@vanilla-extract/webpack-plugin": "^2.3.1",
     "css-loader": "^6.8.1",

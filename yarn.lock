@@ -5769,7 +5769,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vanilla-extract/integration@npm:^6.0.0":
+"@vanilla-extract/integration@npm:^6.0.0, @vanilla-extract/integration@npm:^6.2.0":
   version: 6.2.4
   resolution: "@vanilla-extract/integration@npm:6.2.4"
   dependencies:
@@ -5787,6 +5787,16 @@ __metadata:
     vite: "npm:^4.1.4"
     vite-node: "npm:^0.28.5"
   checksum: 19cf40f8b721ee731fdcaff5cededde821b554ea44b4f57167d77769f7b381d7a71a3beba63c1daed02695b95b391ebedca47887138d8c760f4151570b1ef634
+  languageName: node
+  linkType: hard
+
+"@vanilla-extract/jest-transform@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@vanilla-extract/jest-transform@npm:1.1.1"
+  dependencies:
+    "@vanilla-extract/integration": "npm:^6.2.0"
+    esbuild: "npm:0.17.6"
+  checksum: 07d3140d1454657532d6a6c686bf849fb6a4c505fd12834991640582c5071626f31cf10dd2e1202406788572f040cde6cd5918392da90359a909500cdfe3da0f
   languageName: node
   linkType: hard
 
@@ -10334,6 +10344,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.11.0"
     "@typescript-eslint/parser": "npm:^6.11.0"
     "@vanilla-extract/css": "npm:^1.14.0"
+    "@vanilla-extract/jest-transform": "npm:^1.1.1"
     "@vanilla-extract/next-plugin": "npm:^2.3.2"
     "@vanilla-extract/webpack-plugin": "npm:^2.3.1"
     axios: "npm:^1.6.2"
