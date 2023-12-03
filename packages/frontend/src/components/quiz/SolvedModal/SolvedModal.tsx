@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { Button, Modal } from "../../../design-system/components/common";
+import { Button, Modal, toast } from "../../../design-system/components/common";
 
 import * as styles from "./SolvedModal.css";
 
@@ -22,6 +22,15 @@ export function SolvedModal({
     router.push(link);
   };
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success("링크를 클립보드에 복사했습니다.");
+    } catch (error) {
+      toast.error("링크 복사를 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    }
+  };
+
   return (
     <Modal onClose={onClose}>
       <div className={styles.container}>
@@ -34,7 +43,11 @@ export function SolvedModal({
             defaultValue={link}
             readOnly
           />
-          <button type="button" className={styles.linkCopyButton}>
+          <button
+            type="button"
+            className={styles.linkCopyButton}
+            onClick={handleCopy}
+          >
             URL 복사
           </button>
         </div>
