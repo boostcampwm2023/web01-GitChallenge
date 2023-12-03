@@ -51,14 +51,6 @@
   --mm-semantic-color-badge-teal: var(--mm-static-color-teal-700);
   --mm-semantic-color-badge-yellow-bg: var(--mm-static-color-yellow-50);
   --mm-semantic-color-badge-yellow: var(--mm-static-color-yellow-700);
-  --mm-semantic-color-primary-hover: var(--mm-scale-color-coral-400);
-  --mm-semantic-color-primary-low-hover: var(--mm-scale-color-coral-100);
-  --mm-semantic-color-primary-low: var(--mm-scale-color-coral-50);
-  --mm-semantic-color-primary: var(--mm-scale-color-coral-500);
-  --mm-semantic-color-secondary-hover: var(--mm-static-color-brown-400);
-  --mm-semantic-color-secondary-low-hover: var(--mm-static-color-brown-100);
-  --mm-semantic-color-secondary-low: var(--mm-static-color-brown-50);
-  --mm-semantic-color-secondary: var(--mm-static-color-brown-500);
   --mm-semantic-color-success: var(--mm-static-color-blue-700);
   --mm-semantic-color-danger: var(--mm-static-color-red-700);
   /* Font Size */
@@ -121,20 +113,28 @@
   --mm-semantic-color-border: var(--mm-scale-color-grey-300);
   --mm-semantic-color-background-default: var(--mm-scale-color-grey-00);
   --mm-semantic-color-background-alt: var(--mm-scale-color-grey-50);
+  --mm-semantic-color-primary: var(--mm-scale-color-coral-500);
+  --mm-semantic-color-primary-hover: var(--mm-scale-color-coral-400);
+  --mm-semantic-color-primary-low: var(--mm-scale-color-coral-50);
+  --mm-semantic-color-primary-low-hover: var(--mm-scale-color-coral-100);
+  --mm-semantic-color-secondary: var(--mm-scale-color-brown-500);
+  --mm-semantic-color-secondary-hover: var(--mm-scale-color-brown-400);
+  --mm-semantic-color-secondary-low: var(--mm-scale-color-brown-50);
+  --mm-semantic-color-secondary-low-hover: var(--mm-scale-color-brown-100);
 }
 
 :root[data-theme="dark"] {
-  --mm-scale-color-brown-50: #413932;
-  --mm-scale-color-brown-100: #4a3c39;
-  --mm-scale-color-brown-200: #5a4b48;
-  --mm-scale-color-brown-300: #675552;
-  --mm-scale-color-brown-400: #76605c;
-  --mm-scale-color-brown-500: #917974;
-  --mm-scale-color-brown-600: #b19792;
-  --mm-scale-color-brown-700: #c4b0ad;
-  --mm-scale-color-brown-800: #cfc0be;
-  --mm-scale-color-brown-900: #ded5d4;
-  --mm-scale-color-brown-950: #f4efee;
+  --mm-scale-color-brown-50: #37302a;
+  --mm-scale-color-brown-100: #3f3330;
+  --mm-scale-color-brown-200: #504340;
+  --mm-scale-color-brown-300: #594a48;
+  --mm-scale-color-brown-400: #65514e;
+  --mm-scale-color-brown-500: #7e6964;
+  --mm-scale-color-brown-600: #9f8884;
+  --mm-scale-color-brown-700: #b5a3a0;
+  --mm-scale-color-brown-800: #bfb1af;
+  --mm-scale-color-brown-900: #d1c7c5;
+  --mm-scale-color-brown-950: #e1d8d6;
   --mm-scale-color-coral-50: #8e3c27;
   --mm-scale-color-coral-100: #af4b32;
   --mm-scale-color-coral-200: #d35030;
@@ -160,6 +160,14 @@
   --mm-semantic-color-border: var(--mm-scale-color-grey-100);
   --mm-semantic-color-background-default: var(--mm-scale-color-grey-00);
   --mm-semantic-color-background-alt: var(--mm-scale-color-grey-50);
+  --mm-semantic-color-primary: var(--mm-scale-color-coral-500);
+  --mm-semantic-color-primary-hover: var(--mm-scale-color-coral-600);
+  --mm-semantic-color-primary-low: var(--mm-scale-color-coral-950);
+  --mm-semantic-color-primary-low-hover: var(--mm-scale-color-coral-900);
+  --mm-semantic-color-secondary: var(--mm-scale-color-brown-500);
+  --mm-semantic-color-secondary-hover: var(--mm-scale-color-brown-600);
+  --mm-semantic-color-secondary-low: var(--mm-scale-color-brown-950);
+  --mm-semantic-color-secondary-low-hover: var(--mm-scale-color-brown-900);
 }
 
 .mm-semantic-typography-h1 {
