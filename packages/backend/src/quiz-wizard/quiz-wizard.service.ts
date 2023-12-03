@@ -163,4 +163,29 @@ index e69de29..3b18e51 100644
 
     return true;
   }
+
+  async checkCondition12(containerId: string): Promise<boolean> {
+    if (
+      (await this.magic.getTreeHead(containerId, 'main')) !==
+      'b9671d4553366d5609ae74fcc11f9f737fc859bd'
+    ) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getTreeHead(containerId, 'hotfix/fixA')) !==
+      'b9671d4553366d5609ae74fcc11f9f737fc859bd'
+    ) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getTreeHead(containerId, 'feat/somethingB')) !==
+      '3c363aeb69b28b176bf565dba6bb8a3a92d9fd5d'
+    ) {
+      return false;
+    }
+
+    return true;
+  }
 }
