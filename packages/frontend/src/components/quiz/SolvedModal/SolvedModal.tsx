@@ -47,7 +47,7 @@ export function SolvedModal({
     <Modal onClose={onClose}>
       <div className={styles.container}>
         <h3 className={styles.title}>정답입니다 🥳</h3>
-        <strong className={styles.strong}>내 답안을 공유해볼까요?</strong>
+        <span className={styles.strong}>내 답안을 공유해볼까요?</span>
         <div className={styles.linkContainer}>
           <input
             className={styles.linkInput}
