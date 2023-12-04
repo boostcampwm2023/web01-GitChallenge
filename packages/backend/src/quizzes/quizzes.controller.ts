@@ -38,7 +38,7 @@ import { SessionId } from '../session/session.decorator';
 import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
-import { preview } from '../common/util';
+import { encryptObject, preview } from '../common/util';
 import { QuizGuard } from './quiz.guard';
 import { SessionUpdateInterceptor } from '../session/session-save.intercepter';
 
@@ -314,9 +314,19 @@ export class QuizzesController {
         return new Fail();
       }
 
-      //create link
-      return new Success('notImplemented');
+      const commands = (
+        await this.sessionService.getLogObject(sessionId, id)
+      ).logs
+        .filter((log) => log.mode === 'command')
+        .map((log) => log.message);
+      const encodedCommands = encryptObject({
+        id,
+        commands,
+      });
+
+      return new Success(encodedCommands);
     } catch (e) {
+      this.logger.log('error', e);
       throw new HttpException(
         {
           message: 'Internal Server Error',
