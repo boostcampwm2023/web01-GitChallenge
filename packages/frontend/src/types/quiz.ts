@@ -33,7 +33,7 @@ export type QuizSolve = QuizSolveCorrect | QuizSolveWrong;
 
 export type QuizSolveCorrect = {
   solved: true;
-  link: string;
+  slug: string;
 };
 
 export type QuizSolveWrong = {
