@@ -48,17 +48,8 @@ export function decryptObject(encrypted: string): any {
   return JSON.parse(decrypted.toString());
 }
 
-function isStringArray(obj: unknown): obj is string[] {
+export function isStringArray(obj: unknown): obj is string[] {
   return (
     Array.isArray(obj) && obj.every((element) => typeof element === 'string')
   );
-}
-
-export function checkIfStringArray(obj: unknown): string[] | null {
-  if (isStringArray(obj)) {
-    return obj;
-  } else {
-    console.error('Provided object is not a string array.');
-    return null;
-  }
 }
