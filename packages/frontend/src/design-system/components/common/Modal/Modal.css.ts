@@ -2,6 +2,7 @@ import { style } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
 import {
+  borderRadius,
   boxShadow,
   flexAlignCenter,
   flexCenter,
@@ -26,9 +27,9 @@ export const container = style([
   boxShadow,
   flexColumn,
   flexAlignCenter,
+  borderRadius,
   {
     width: 427,
-    borderRadius: 8,
     padding: 27,
     backgroundColor: color.$semantic.bgDefault,
   },
