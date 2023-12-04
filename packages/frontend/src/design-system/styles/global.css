@@ -156,15 +156,15 @@
   /* grey color scale [dark] */
   --mm-scale-color-grey-00: #17171a;
   --mm-scale-color-grey-50: #212124;
-  --mm-scale-color-grey-100: #2b2e33;
-  --mm-scale-color-grey-200: #34373d;
-  --mm-scale-color-grey-300: #43474f;
-  --mm-scale-color-grey-400: #50545c;
-  --mm-scale-color-grey-500: #6d717a;
-  --mm-scale-color-grey-600: #868b94;
-  --mm-scale-color-grey-700: #adb1ba;
-  --mm-scale-color-grey-800: #ced3de;
-  --mm-scale-color-grey-900: #eaebee;
+  --mm-scale-color-grey-100: #34373d;
+  --mm-scale-color-grey-200: #43474f;
+  --mm-scale-color-grey-300: #50545c;
+  --mm-scale-color-grey-400: #6d717a;
+  --mm-scale-color-grey-500: #868b94;
+  --mm-scale-color-grey-600: #adb1ba;
+  --mm-scale-color-grey-700: #ced3de;
+  --mm-scale-color-grey-800: #eaebee;
+  --mm-scale-color-grey-900: #f2f3f6;
   /* badge color scale [dark] */
   --mm-scale-color-blue-50: #c2cad2;
   --mm-scale-color-blue-700: #164ea8;
