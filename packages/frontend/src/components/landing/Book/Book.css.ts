@@ -12,7 +12,7 @@ export const container = style([
   flexColumn,
   {
     marginBottom: 30,
-    transition: "100px 2s linear 1s",
+    whiteSpace: "break-spaces",
   },
 ]);
 export const h1 = style([
@@ -52,6 +52,7 @@ export const linkWrapper = style([
     color: color.$scale.grey600,
     textDecoration: "underline",
     gap: 5,
+    marginBottom: 29,
     selectors: {
       "&:hover": {
         fontWeight: 500,
