@@ -7,15 +7,11 @@ import { ObjectId } from 'typeorm';
 
 @Injectable()
 export class SessionService {
+  private readonly sessionMap: Map<string, Session> = new Map();
   constructor(
     @InjectModel(Session.name) private sessionModel: Model<Session>,
     @Inject('winston') private readonly logger: Logger,
-  ) {
-    const testSession = new this.sessionModel({
-      problems: {},
-    });
-    testSession.save();
-  }
+  ) {}
 
   async createSession(): Promise<string> {
     const session = new this.sessionModel({
@@ -23,7 +19,9 @@ export class SessionService {
     });
     return await session.save().then((session) => {
       this.logger.log('info', `session ${session._id as ObjectId} created`);
-      return (session._id as ObjectId).toString('hex');
+      const sessionId = (session._id as ObjectId).toString('hex');
+      this.sessionMap.set(sessionId, session);
+      return sessionId;
     });
   }
 
@@ -44,7 +42,6 @@ export class SessionService {
         'info',
         `session's new quizId: ${problemId}, document created`,
       );
-      await session.save();
     } else {
       this.logger.log(
         'info',
@@ -68,7 +65,6 @@ export class SessionService {
       `setting ${sessionId}'s containerId as ${containerId}`,
     );
     session.problems.get(problemId).containerId = containerId;
-    session.save();
   }
 
   async getRecentLog(
@@ -95,7 +91,6 @@ export class SessionService {
       throw new Error('problem not found');
     }
     session.problems.get(problemId).logs.push(log);
-    session.save();
   }
 
   async deleteCommandHistory(
@@ -108,18 +103,33 @@ export class SessionService {
     }
     session.problems.get(problemId).logs = [];
     session.problems.get(problemId).containerId = '';
-    session.save();
   }
 
   private async getSessionById(id: string): Promise<Session> {
-    return await this.sessionModel.findById(id);
+    let session = this.sessionMap.get(id);
+    if (!session) {
+      session = await this.sessionModel.findById(id);
+      if (!session) {
+        throw new Error('session not found');
+      }
+      this.sessionMap.set(id, session);
+    }
+    return session;
+  }
+
+  async saveSession(sessionId: string): Promise<void> {
+    // 세션 조회 및 저장 로직
+    const session = this.sessionMap.get(sessionId);
+    if (session) {
+      this.sessionMap.delete(sessionId);
+      await session.save();
+    }
   }
 
   async deleteSession(sessionId: string): Promise<void> {
     //soft delete
     const session = await this.getSessionById(sessionId);
     session.deletedAt = new Date();
-    session.save();
     this.logger.log('info', `session ${session._id as ObjectId} deleted`);
   }
 

@@ -11,6 +11,7 @@ import {
   Delete,
   UseGuards,
   HttpCode,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -39,9 +40,11 @@ import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
 import { preview } from '../common/util';
 import { QuizGuard } from './quiz.guard';
+import { SessionUpdateInterceptor } from '../session/session-save.intercepter';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
+@UseInterceptors(SessionUpdateInterceptor)
 export class QuizzesController {
   constructor(
     private readonly quizService: QuizzesService,
