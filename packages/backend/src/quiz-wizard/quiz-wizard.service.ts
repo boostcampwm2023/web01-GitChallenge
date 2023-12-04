@@ -8,7 +8,7 @@ export class QuizWizardService {
   async submit(containerId: string, quizId: number) {
     const checker = this[`checkCondition${quizId}`];
     if (checker) {
-      return await checker(containerId);
+      return await checker.call(this, containerId);
     }
     return false;
   }
