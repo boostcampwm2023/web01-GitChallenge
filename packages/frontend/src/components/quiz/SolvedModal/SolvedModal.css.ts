@@ -49,7 +49,7 @@ export const linkInput = style([
     borderBottomLeftRadius: BORDER_RADIUS,
     padding: "9px 13px",
     color: "inherit",
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
     outline: "none",
   },
 ]);
@@ -64,7 +64,7 @@ export const linkCopyButton = style([
     borderBottomRightRadius: BORDER_RADIUS,
     padding: "9px 19px",
     color: "inherit",
-    backgroundColor: color.$scale.grey50,
+    backgroundColor: color.$semantic.bgAlt,
 
     selectors: {
       "&.visible::after": {
@@ -83,7 +83,7 @@ export const linkCopyButton = style([
   },
 ]);
 
-export const buttonGroup = style([flexCenter, { gap: 4 }]);
+export const buttonGroup = style([flexCenter, { gap: 7 }]);
 
 export const linkCopyButtonText = style({
   selectors: {
