@@ -38,7 +38,7 @@
   --mm-semantic-color-badge-yellow-bg: var(--mm-scale-color-yellow-50);
   --mm-semantic-color-badge-yellow: var(--mm-scale-color-yellow-700);
   /* success, danger color [light, dark] */
-  --mm-semantic-color-success: var(--mm-scale-color-blue-700);
+  --mm-semantic-color-success: var(--mm-scale-color-green-700);
   --mm-semantic-color-danger: var(--mm-scale-color-red-700);
   /* font size */
   --mm-scale-font-size-25: 11px;
