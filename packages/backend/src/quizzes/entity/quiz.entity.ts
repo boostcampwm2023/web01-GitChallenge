@@ -27,4 +27,7 @@ export class Quiz extends BaseEntity {
   @ManyToMany(() => Keyword, (keyword) => keyword.quizzes)
   @JoinTable()
   keywords: Keyword[];
+
+  @Column()
+  answer: string;
 }

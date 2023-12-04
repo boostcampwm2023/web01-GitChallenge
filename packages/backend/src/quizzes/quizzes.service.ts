@@ -70,6 +70,7 @@ export class QuizzesService {
       quiz.description = data.description;
       quiz.category = categories[data.category];
       quiz.id = data.id;
+      quiz.answer = data.answer || '';
 
       const keywordList = data.keyword.split(',').map((kw) => kw.trim());
       quiz.keywords = keywordList.map((kw) => keywords[kw]);
@@ -113,6 +114,7 @@ export class QuizzesService {
       description: quiz.description,
       keywords: quiz.keywords.map((keyword) => keyword.keyword),
       category: quiz.category.name,
+      answer: quiz.answer,
     };
 
     return quizDto;
