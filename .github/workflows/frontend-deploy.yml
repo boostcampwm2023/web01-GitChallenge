@@ -3,7 +3,7 @@ name: "frontend-docker-build"
 on:
   push:
     branches: [ "dev-fe" ]
-    
+
 jobs:
   build:
     name: Build and Test
@@ -25,7 +25,7 @@ jobs:
         run: yarn install
 
       - name: Build
-        run: | 
+        run: |
           cd packages/frontend
           yarn build
 
@@ -53,6 +53,8 @@ jobs:
           file: ./packages/frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-frontend:0.1
+          build-args: |
+            NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
 
   deploy:
     name: Deploy Frontend
