@@ -12,6 +12,7 @@ import {
   UseGuards,
   HttpCode,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -21,6 +22,8 @@ import {
   ApiBody,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
+  ApiQuery,
+  ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { Logger } from 'winston';
 import { QuizDto } from './dto/quiz.dto';
@@ -38,9 +41,14 @@ import { SessionId } from '../session/session.decorator';
 import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
-import { encryptObject, preview } from '../common/util';
+import { decryptObject, encryptObject, preview } from '../common/util';
 import { QuizGuard } from './quiz.guard';
 import { SessionUpdateInterceptor } from '../session/session-save.intercepter';
+import {
+  BadRequestResponseDto,
+  SharedDto,
+  isEncryptedDto,
+} from './dto/shared.dto';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
@@ -53,25 +61,6 @@ export class QuizzesController {
     private readonly quizWizardService: QuizWizardService,
     @Inject('winston') private readonly logger: Logger,
   ) {}
-
-  @Get(':id')
-  @UseGuards(QuizGuard)
-  @ApiNotFoundResponse({
-    description: '해당 문제가 존재하지 않습니다.',
-    type: NotFoundResponseDto,
-  })
-  @ApiOperation({ summary: 'ID를 통해 문제 정보를 가져올 수 있습니다.' })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns the quiz details',
-    type: QuizDto,
-  })
-  @ApiParam({ name: 'id', description: '문제 ID' })
-  async getProblemById(@Param('id') id: number): Promise<QuizDto> {
-    const quizDto = await this.quizService.getQuizById(id);
-
-    return quizDto;
-  }
 
   @Get('/')
   @ApiOperation({
@@ -335,5 +324,72 @@ export class QuizzesController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @Get('shared')
+  @HttpCode(HttpStatus.OK)
+  @ApiBadRequestResponse({
+    description:
+      '제공된 암호화된 문자열이 유효하지 않거나, 복호화에 실패했습니다.',
+    type: BadRequestResponseDto,
+  })
+  @ApiOperation({ summary: '링크를 통해 공유받은 정답을 확인합니다.' })
+  @ApiResponse({
+    status: 200,
+    description: '문제와 문제의 정답을 리턴합니다.',
+    type: SharedDto,
+  })
+  @ApiQuery({
+    name: 'answer',
+    required: true,
+    description: '공유받은 암호화된 문자열',
+    type: String,
+  })
+  async shared(@Query('answer') answer: string): Promise<SharedDto> {
+    try {
+      console.log(answer);
+      const decrypted = decryptObject(answer);
+      console.log(decrypted);
+
+      if (!isEncryptedDto(decrypted)) {
+        throw new HttpException(
+          '공유된 문제가 올바르지 않습니다.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const quizDto = await this.quizService.getQuizById(
+        parseInt(decrypted.id, 10),
+      );
+      return new SharedDto(decrypted.commands, quizDto);
+    } catch (e) {
+      this.logger.log('error', e);
+      throw new HttpException(
+        {
+          message: '제공된 암호화된 문자열이 유효하지 않습니다.',
+          result: 'fail',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Get(':id')
+  @UseGuards(QuizGuard)
+  @ApiNotFoundResponse({
+    description: '해당 문제가 존재하지 않습니다.',
+    type: NotFoundResponseDto,
+  })
+  @ApiOperation({ summary: 'ID를 통해 문제 정보를 가져올 수 있습니다.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the quiz details',
+    type: QuizDto,
+  })
+  @ApiParam({ name: 'id', description: '문제 ID' })
+  async getProblemById(@Param('id') id: number): Promise<QuizDto> {
+    const quizDto = await this.quizService.getQuizById(id);
+
+    return quizDto;
   }
 }
