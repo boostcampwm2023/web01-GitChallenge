@@ -4,11 +4,10 @@ import color from "../../../design-system/tokens/color";
 import typography from "../../../design-system/tokens/typography";
 import {
   border,
+  borderRadius,
   flexAlignCenter,
   flexCenter,
 } from "../../../design-system/tokens/utils.css";
-
-const BORDER_RADIUS = 8;
 
 export const container = style({
   width: 336,
@@ -42,11 +41,12 @@ export const linkContainer = style([
 
 export const linkInput = style([
   border.all,
+  borderRadius,
   typography.$semantic.body2Regular,
   {
     flex: "1 0",
-    borderTopLeftRadius: BORDER_RADIUS,
-    borderBottomLeftRadius: BORDER_RADIUS,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     padding: "9px 13px",
     color: "inherit",
     backgroundColor: color.$semantic.bgDefault,
@@ -56,12 +56,13 @@ export const linkInput = style([
 
 export const linkCopyButton = style([
   border.all,
+  borderRadius,
   typography.$semantic.body2Regular,
   {
     position: "relative",
     borderLeft: "none",
-    borderTopRightRadius: BORDER_RADIUS,
-    borderBottomRightRadius: BORDER_RADIUS,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
     padding: "9px 19px",
     color: "inherit",
     backgroundColor: color.$semantic.bgAlt,

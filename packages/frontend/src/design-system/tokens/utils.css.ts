@@ -71,3 +71,7 @@ export const border = {
     border: `1px solid ${color.$semantic.border}`,
   }),
 };
+
+export const borderRadius = style({
+  borderRadius: 8,
+});

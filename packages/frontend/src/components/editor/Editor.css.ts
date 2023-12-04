@@ -4,6 +4,7 @@ import color from "../../design-system/tokens/color";
 import typography from "../../design-system/tokens/typography";
 import {
   border,
+  borderRadius,
   flexAlignCenter,
   flexColumn,
   flexJustifyCenter,
@@ -61,8 +62,8 @@ export const notice = style([
   widthFull,
   typography.$semantic.caption2Regular,
   border.all,
+  borderRadius,
   {
-    borderRadius: 8,
     marginTop: 14,
     gap: 5,
     padding: 14,
