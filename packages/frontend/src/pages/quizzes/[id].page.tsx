@@ -6,13 +6,12 @@ import { RefObject, useEffect, useReducer, useRef } from "react";
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
 import EditorInfo from "../../components/editor/EditorInfo";
-import { SolvedModal } from "../../components/quiz";
+import { SolvedModal, useSolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { BROWSWER_PATH } from "../../constants/path";
 import { Button, toast } from "../../design-system/components/common";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
-import { useSolvedModal } from "../../hooks/useSolvedModal";
 import {
   TerminalActionTypes,
   initialTerminalState,
