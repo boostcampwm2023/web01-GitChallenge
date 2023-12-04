@@ -4,7 +4,7 @@ import color from "../../../design-system/tokens/color";
 import typography from "../../../design-system/tokens/typography";
 import { noticeItem } from "../../editor/Editor.css";
 
-export const title = style([
+export const h3 = style([
   typography.$semantic.h3,
   { color: color.$scale.grey700, marginBottom: 20 },
 ]);

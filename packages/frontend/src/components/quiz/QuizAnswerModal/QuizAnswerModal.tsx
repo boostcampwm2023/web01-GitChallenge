@@ -16,7 +16,7 @@ export default function QuizAnswerModal({
 }: QuizModalProps) {
   return (
     <Modal onClose={closeModal}>
-      <div className={styles.title}>모범 답안</div>
+      <h3 className={styles.h3}>모범 답안</h3>
       <p
         className={styles.answerContainer}
         dangerouslySetInnerHTML={{
