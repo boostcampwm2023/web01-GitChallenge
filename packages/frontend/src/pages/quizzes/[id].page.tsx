@@ -9,6 +9,7 @@ import EditorInfo from "../../components/editor/EditorInfo";
 import { SolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
+import { BROWSWER_PATH } from "../../constants/path";
 import { Button, toast } from "../../design-system/components/common";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
 import { useSolvedModal } from "../../hooks/useSolvedModal";
@@ -25,9 +26,10 @@ import { isString } from "../../utils/typeGuard";
 import * as styles from "./quiz.css";
 
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
+  const router = useRouter();
   const {
     query: { id },
-  } = useRouter();
+  } = router;
 
   const solvedModal = useSolvedModal(isString(id) ? +id : -1);
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
@@ -71,6 +73,15 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     } catch (error) {
       handleResponseError(error);
     }
+  };
+
+  const handleNextQuizPage = () => {
+    if (!isString(id)) {
+      return;
+    }
+
+    solvedModal.closeModal();
+    router.push(`${BROWSWER_PATH.QUIZZES}/${+id + 1}`);
   };
 
   const handleResponseError = (error: unknown) => {
@@ -157,7 +168,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           link={solvedModal.shareLink}
           lastQuiz={solvedModal.lastQuiz}
           onClose={solvedModal.closeModal}
-          onNextQuiz={console.log}
+          onNextQuiz={handleNextQuizPage}
         />
       )}
     </>
