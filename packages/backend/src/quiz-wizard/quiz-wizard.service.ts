@@ -5,28 +5,8 @@ import { Magic } from './magic';
 export class QuizWizardService {
   constructor(private magic: Magic) {}
 
-  private conditionCheckers = {
-    1: (containerId: string) => this.checkCondition1(containerId),
-    2: (containerId: string) => this.checkCondition2(containerId),
-    3: (containerId: string) => this.checkCondition3(containerId),
-    4: (containerId: string) => this.checkCondition4(containerId),
-    5: (containerId: string) => this.checkCondition5(containerId),
-    6: (containerId: string) => this.checkCondition6(containerId),
-    7: (containerId: string) => this.checkCondition7(containerId),
-    8: (containerId: string) => this.checkCondition8(containerId),
-    9: (containerId: string) => this.checkCondition9(containerId),
-    10: (containerId: string) => this.checkCondition10(containerId),
-    11: (containerId: string) => this.checkCondition11(containerId),
-    12: (containerId: string) => this.checkCondition12(containerId),
-    13: (containerId: string) => this.checkCondition13(containerId),
-    15: (containerId: string) => this.checkCondition15(containerId),
-    16: (containerId: string) => this.checkCondition16(containerId),
-    17: (containerId: string) => this.checkCondition17(containerId),
-    19: (containerId: string) => this.checkCondition19(containerId),
-  };
-
   async submit(containerId: string, quizId: number) {
-    const checker = this.conditionCheckers[quizId];
+    const checker = this[`checkCondition${quizId}`];
     if (checker) {
       return await checker(containerId);
     }
