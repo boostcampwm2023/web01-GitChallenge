@@ -25,13 +25,13 @@ import { isString } from "../../utils/typeGuard";
 import * as styles from "./quiz.css";
 
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
-  const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
-    useReducer(terminalReducer, initialTerminalState);
-  const solvedModal = useSolvedModal();
-
   const {
     query: { id },
   } = useRouter();
+
+  const solvedModal = useSolvedModal(isString(id) ? +id : -1);
+  const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
+    useReducer(terminalReducer, initialTerminalState);
 
   const terminalInputRef = useRef<HTMLSpanElement>(null);
 
@@ -155,7 +155,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       {solvedModal.modalOpen && (
         <SolvedModal
           link={solvedModal.shareLink}
-          lastQuiz={false}
+          lastQuiz={solvedModal.lastQuiz}
           onClose={solvedModal.closeModal}
           onNextQuiz={console.log}
         />
