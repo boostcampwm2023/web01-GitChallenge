@@ -16,6 +16,7 @@ export class QuizWizardService {
     8: (containerId: string) => this.checkCondition8(containerId),
     9: (containerId: string) => this.checkCondition9(containerId),
     10: (containerId: string) => this.checkCondition10(containerId),
+    11: (containerId: string) => this.checkCondition11(containerId),
     12: (containerId: string) => this.checkCondition12(containerId),
     13: (containerId: string) => this.checkCondition13(containerId),
     15: (containerId: string) => this.checkCondition15(containerId),
@@ -165,6 +166,34 @@ index e69de29..3b18e51 100644
       return false;
     }
     if (await this.magic.isFileExist(containerId, 'tmptmptmp.js')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async checkCondition11(containerId: string): Promise<boolean> {
+    if (!(await this.magic.isBranchExist(containerId, 'hotfix/fixA'))) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getRecentStashPatch(containerId)) !==
+      `diff --git a/login.js b/login.js
+index e69de29..bf5c54f 100644
+--- a/login.js
++++ b/login.js
+@@ -0,0 +1 @@
++console.log("implementing login")
+`
+    ) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getTreeHead(containerId, 'hotfix/fixA')) !==
+      'bebe52f7d1c8440fb4b1af9aa70ad9523d56336b'
+    ) {
       return false;
     }
 

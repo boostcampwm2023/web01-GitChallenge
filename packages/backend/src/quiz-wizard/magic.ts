@@ -29,7 +29,7 @@ export class Magic {
     const command = `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} git branch --list '${branch}'`;
     const { stdoutData } = await this.sshService.executeSSHCommand(command);
 
-    return stdoutData !== '';
+    return stdoutData.trim() !== '';
   }
 
   async getConfig(container: string, key: string): Promise<string> {
@@ -95,6 +95,14 @@ export class Magic {
   async getAllBranch(container: string): Promise<string> {
     const { stdoutData } = await this.sshService.executeSSHCommand(
       `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git branch | cut -c 3-"`,
+    );
+
+    return stdoutData;
+  }
+
+  async getRecentStashPatch(container: string): Promise<string> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -u quizzer -w /home/quizzer/quiz ${container} sh -c "git stash show -p"`,
     );
 
     return stdoutData;
