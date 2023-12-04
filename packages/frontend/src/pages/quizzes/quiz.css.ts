@@ -13,10 +13,24 @@ export const bar = style([
   middleLayer,
   border.all,
   {
+    position: "relative",
     minHeight: 20,
     borderBottom: "none",
     backgroundColor: color.$scale.grey100,
     cursor: "row-resize",
+
+    "::before": {
+      content: "",
+      position: "absolute",
+      left: "50%",
+      transform: "translateX(-50%)",
+      display: "block",
+      width: 60,
+      height: 3,
+      borderRadius: 8,
+      backgroundColor: color.$scale.grey400,
+      top: -5,
+    },
   },
 ]);
 
