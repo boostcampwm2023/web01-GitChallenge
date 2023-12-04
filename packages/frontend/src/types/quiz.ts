@@ -14,6 +14,7 @@ export type Quiz = {
   description: string;
   keywords: string[];
   category: string;
+  answer: string[];
 };
 
 export type Quizzes = {
