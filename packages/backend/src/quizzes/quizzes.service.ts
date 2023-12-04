@@ -114,7 +114,7 @@ export class QuizzesService {
       description: quiz.description,
       keywords: quiz.keywords.map((keyword) => keyword.keyword),
       category: quiz.category.name,
-      answer: quiz.answer,
+      answer: quiz.answer.split('\\n'),
     };
 
     return quizDto;

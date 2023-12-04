@@ -30,7 +30,7 @@ export class QuizDto {
   @IsString()
   @ApiProperty({
     description: '모범 답안',
-    example: '`git` status\n`git` add README.md docs/plan.md',
+    example: ['`git` status', '`git` add README.md docs/plan.md'],
   })
-  readonly answer: string;
+  readonly answer: string[];
 }
