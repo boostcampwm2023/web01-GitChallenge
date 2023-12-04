@@ -73,8 +73,10 @@ export class ContainersService {
 --name ${containerId} mergemasters/alpine-git:0.2 /bin/sh`;
     const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
     const copyOriginCommand = `[ -d ~/origins/${quizId} ] && docker cp ~/origins/${quizId}/. ${containerId}:/origin/`;
-    const copyUpstreamCommand = `[ -d ~/upstreams/${quizId} ]docker cp ~/upstreams/${quizId}/. ${containerId}:/upstream/`;
+    const copyUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker cp ~/upstreams/${quizId}/. ${containerId}:/upstream/`;
     const chownCommand = `docker exec -u root ${containerId} chown -R ${user}:${user} /home/${user}`;
+    const chownOriginCommand = `[ -d ~/origins/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /origin`;
+    const chownUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /remote`;
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
     await this.sshService.executeSSHCommand(
       createContainerCommand,
@@ -82,6 +84,8 @@ export class ContainersService {
       copyOriginCommand,
       copyUpstreamCommand,
       chownCommand,
+      chownOriginCommand,
+      chownUpstreamCommand,
       coreEditorCommand,
     );
 
