@@ -1,11 +1,13 @@
-import { Controller, Delete, Res } from '@nestjs/common';
+import { Controller, Delete, Res, UseInterceptors } from '@nestjs/common';
 import { SessionService } from './session.service';
 import { SessionId } from './session.decorator';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { SessionUpdateInterceptor } from './session-save.intercepter';
 
 @ApiTags('session')
 @Controller('api/v1/session')
+@UseInterceptors(SessionUpdateInterceptor)
 export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
