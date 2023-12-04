@@ -8,7 +8,7 @@ export class QuizWizardService {
   async submit(containerId: string, quizId: number) {
     const checker = this[`checkCondition${quizId}`];
     if (checker) {
-      return await checker(containerId);
+      return await checker.call(this, containerId);
     }
     return false;
   }
@@ -273,6 +273,30 @@ upstream	/upstream (push)
       (await this.magic.getTreeHead(containerId, 'main')) ===
       '3bd4e8ab14ecf1c7e1e85262ce241c4275080270'
     );
+  }
+
+  async checkCondition18(containerId: string): Promise<boolean> {
+    if (
+      !(await this.magic.isBranchExistRemote(
+        containerId,
+        'origin',
+        'feat/merge-master',
+      ))
+    ) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getTreeHeadRemote(
+        containerId,
+        'origin',
+        'feat/merge-master',
+      )) !== 'd173eb2b7c6888bf77fce84b191a433f36c47a91'
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   async checkCondition19(containerId: string): Promise<boolean> {
