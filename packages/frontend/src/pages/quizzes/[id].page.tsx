@@ -65,7 +65,8 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     try {
       const response = await quizAPI.submit(+id);
       if (response.solved) {
-        solvedModal.onSolved(response.link);
+        const shareLink = `${process.env.NEXT_PUBLIC_BASE_URL}${BROWSWER_PATH.SHARE}/${response.slug}`;
+        solvedModal.onSolved(shareLink);
         return;
       }
       toast.error("다시 풀어보세요!");
