@@ -6,12 +6,15 @@ export class Success {
   @IsBoolean()
   solved = true;
 
-  @ApiProperty({ example: 'gitchallenge.com/api/v1/quizzes/shared?answer=””' })
+  @ApiProperty({
+    description: '인코딩된 문제 풀이 과정과 문제 번호',
+    example: '6251ee88d6e378b5d6b862447d151dab:aa88c19acf3da6(좀 더 길어요)',
+  })
   @IsString()
-  link: string;
+  slug: string;
 
-  constructor(link: string) {
-    this.link = link;
+  constructor(slug: string) {
+    this.slug = slug;
   }
 }
 
