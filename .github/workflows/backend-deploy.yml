@@ -76,4 +76,5 @@ jobs:
               -e CONTAINER_SSH_PASSWORD=${{ secrets.CONTAINER_SSH_PASSWORD }} \
               -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
               -e MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
+              -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
