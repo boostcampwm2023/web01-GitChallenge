@@ -5,6 +5,8 @@ import { Button, Modal, toast } from "../../../design-system/components/common";
 
 import * as styles from "./SolvedModal.css";
 
+const VISIBLE = "visible";
+
 interface SolvedModalProps {
   link: string;
   lastQuiz: boolean;
@@ -29,10 +31,10 @@ export function SolvedModal({
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(link);
-      copyButtonRef.current?.classList.add("visible");
+      copyButtonRef.current?.classList.add(VISIBLE);
 
       setTimeout(() => {
-        copyButtonRef.current?.classList.remove("visible");
+        copyButtonRef.current?.classList.remove(VISIBLE);
       }, 2000);
     } catch (error) {
       toast.error("링크 복사를 실패했습니다. 잠시 후 다시 시도해 주세요.");
@@ -64,11 +66,11 @@ export function SolvedModal({
           <Button full variant="primaryLow" onClick={handleShowAnswer}>
             내 답안 보러가기
           </Button>
-          {!lastQuiz ? (
+          {!lastQuiz && (
             <Button full variant="primaryFill" onClick={onNextQuiz}>
               다음 문제 풀래요
             </Button>
-          ) : null}
+          )}
         </div>
       </div>
     </Modal>
