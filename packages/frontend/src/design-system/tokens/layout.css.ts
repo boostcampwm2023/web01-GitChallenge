@@ -3,8 +3,8 @@ import { style } from "@vanilla-extract/css";
 import {
   flex,
   flexColumn,
-  middleLayer,
   scrollBarHidden,
+  topLayer,
   widthFull,
   widthMax,
 } from "./utils.css";
@@ -13,7 +13,7 @@ const headerHeight = "56px";
 const footerHeight = "250px";
 
 export const header = style([
-  middleLayer,
+  topLayer,
   widthFull,
   {
     height: headerHeight,
