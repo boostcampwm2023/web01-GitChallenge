@@ -24,7 +24,7 @@ export const title = style([
 ]);
 
 export const strong = style([
-  typography.$semantic.title3Bold,
+  typography.$semantic.title4Regular,
   {
     display: "block",
     marginBottom: 10,
