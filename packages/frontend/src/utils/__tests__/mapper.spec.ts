@@ -1,4 +1,4 @@
-import toCodeTag from "../mapper";
+import { toCodeTag } from "../mapper";
 
 describe("toCodeTag", () => {
   test.each([

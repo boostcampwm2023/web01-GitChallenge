@@ -1,4 +1,4 @@
-import toCodeTag from "../../../utils/mapper";
+import { toCodeTag } from "../../../utils/mapper";
 import QuizLocation from "../QuizLocation";
 
 import * as styles from "./QuizContent.css";
