@@ -1,3 +1,8 @@
+import * as crypto from 'crypto';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export function preview(message: string): string {
   return message.length > 15 ? message.slice(0, 20) + '...' : message;
 }
@@ -12,4 +17,48 @@ export function processCarriageReturns(data: string) {
         : line;
     })
     .join('\n');
+}
+
+const algorithm = 'aes-256-cbc';
+const secretKey = process.env.SECRET_KEY;
+const initializeVector = crypto.randomBytes(16);
+
+export function encryptObject(obj: any): string {
+  const cipher = crypto.createCipheriv(
+    algorithm,
+    Buffer.from(secretKey),
+    initializeVector,
+  );
+  let encrypted = cipher.update(JSON.stringify(obj));
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return `${initializeVector.toString('hex')}:${encrypted.toString('hex')}`;
+}
+
+export function decryptObject(encrypted: string): any {
+  const [iv, encryptedText] = encrypted
+    .split(':')
+    .map((part) => Buffer.from(part, 'hex'));
+  const decipher = crypto.createDecipheriv(
+    algorithm,
+    Buffer.from(secretKey),
+    iv,
+  );
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return JSON.parse(decrypted.toString());
+}
+
+function isStringArray(obj: unknown): obj is string[] {
+  return (
+    Array.isArray(obj) && obj.every((element) => typeof element === 'string')
+  );
+}
+
+export function checkIfStringArray(obj: unknown): string[] | null {
+  if (isStringArray(obj)) {
+    return obj;
+  } else {
+    console.error('Provided object is not a string array.');
+    return null;
+  }
 }
