@@ -7,6 +7,8 @@ import * as styles from "./SolvedModal.css";
 
 const VISIBLE = "visible";
 
+const COPY_SUCCESS_DURATION = 1000;
+
 interface SolvedModalProps {
   link: string;
   lastQuiz: boolean;
@@ -35,7 +37,7 @@ export function SolvedModal({
 
       setTimeout(() => {
         copyButtonRef.current?.classList.remove(VISIBLE);
-      }, 2000);
+      }, COPY_SUCCESS_DURATION);
     } catch (error) {
       toast.error("링크 복사를 실패했습니다. 잠시 후 다시 시도해 주세요.");
     }
