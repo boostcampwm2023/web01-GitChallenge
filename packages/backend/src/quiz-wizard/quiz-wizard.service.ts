@@ -275,6 +275,30 @@ upstream	/upstream (push)
     );
   }
 
+  async checkCondition18(containerId: string): Promise<boolean> {
+    if (
+      !(await this.magic.isBranchExistRemote(
+        containerId,
+        'origin',
+        'feat/merge-master',
+      ))
+    ) {
+      return false;
+    }
+
+    if (
+      (await this.magic.getTreeHeadRemote(
+        containerId,
+        'origin',
+        'feat/merge-master',
+      )) !== 'd173eb2b7c6888bf77fce84b191a433f36c47a91'
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   async checkCondition19(containerId: string): Promise<boolean> {
     return (
       (await this.magic.getAllBranch(containerId)) ===

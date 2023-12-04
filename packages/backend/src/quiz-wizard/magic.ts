@@ -107,4 +107,27 @@ export class Magic {
 
     return stdoutData;
   }
+
+  async isBranchExistRemote(
+    container: string,
+    remote: string,
+    branch: string,
+  ): Promise<boolean> {
+    const command = `docker exec  -u quizzer -w /${remote} ${container} git branch --list '${branch}'`;
+    const { stdoutData } = await this.sshService.executeSSHCommand(command);
+
+    return stdoutData.trim() !== '';
+  }
+
+  async getTreeHeadRemote(
+    container: string,
+    remote: string,
+    branch: string,
+  ): Promise<string> {
+    const { stdoutData } = await this.sshService.executeSSHCommand(
+      `docker exec -u quizzer -w /${remote} ${container} sh -c "git cat-file -p \\\$(git rev-parse ${branch}) | grep tree | awk '{print \\\$2}'"`,
+    );
+
+    return stdoutData.trim();
+  }
 }
