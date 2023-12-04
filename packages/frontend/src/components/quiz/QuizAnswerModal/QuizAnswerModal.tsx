@@ -20,7 +20,7 @@ export default function QuizAnswerModal({
       <p
         className={styles.answerContainer}
         dangerouslySetInnerHTML={{
-          __html: toCodeTag(answer.map((item) => item).join("\n")),
+          __html: toCodeTag(answer.join("\n")),
         }}
       />
       <div className={styles.answerNotice}>
