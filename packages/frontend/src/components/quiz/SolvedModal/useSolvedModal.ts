@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import useModal from "./useModal";
+import useModal from "../../../hooks/useModal";
 
 const LAST_QUIZ_ID = 19;
 
