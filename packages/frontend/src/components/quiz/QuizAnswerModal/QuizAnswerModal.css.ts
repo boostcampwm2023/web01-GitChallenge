@@ -12,7 +12,7 @@ export const title = style([
 export const answerContainer = style([
   typography.$semantic.body2Regular,
   {
-    backgroundColor: color.$scale.grey50,
+    backgroundColor: color.$semantic.bgAlt,
     borderRadius: 8,
     width: "100%",
     padding: "23px 25px",
