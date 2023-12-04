@@ -52,11 +52,9 @@ export default function Modal({ onClose, children }: ModalProps) {
         tabIndex={0}
         onKeyDown={onClose}
       >
-        <div className={styles.buttonContainer}>
-          <IconButton className={styles.close} onClick={onClose}>
-            <IoCloseOutline />
-          </IconButton>
-        </div>
+        <IconButton className={styles.close} onClick={onClose}>
+          <IoCloseOutline />
+        </IconButton>
         {children}
       </div>
     </div>,
