@@ -11,7 +11,6 @@ import { typeOrmConfig } from './configs/typeorm.config';
 import { QuizzesModule } from './quizzes/quizzes.module';
 import { LoggingInterceptor } from './common/logging.interceptor';
 import { QuizWizardModule } from './quiz-wizard/quiz-wizard.module';
-import { SshModule } from './ssh/ssh.module';
 import { AiModule } from './ai/ai.module';
 import { CommandModule } from './command/command.module';
 
@@ -43,7 +42,6 @@ import { CommandModule } from './command/command.module';
       ),
     }),
     QuizWizardModule,
-    SshModule,
     AiModule,
     CommandModule,
   ],

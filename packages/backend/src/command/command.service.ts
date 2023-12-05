@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { MeasureExecutionTime } from '../common/execution-time.interceptor';
+import { Logger } from 'winston';
+import { preview } from '../common/util';
 
 @Injectable()
 export class CommandService {
   private readonly host: string;
   private readonly instance;
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    @Inject('winston') private readonly logger: Logger,
+  ) {
     this.host = this.configService.get<string>('CONTAINER_SERVER_HOST');
     this.instance = axios.create({
       baseURL: this.host,
@@ -15,18 +19,16 @@ export class CommandService {
     });
   }
 
-  @MeasureExecutionTime()
   async executeCommand(
     ...commands: string[]
   ): Promise<{ stdoutData: string; stderrData: string }> {
     try {
       const command = commands.join('; ');
-      console.log('post command:', command);
+      this.logger.log('info', `command: ${preview(command, 40)}`);
       const response = await this.instance.post('/', { command });
-      console.log('response:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error:', error);
+      this.logger.log('info', error);
     }
   }
 }
