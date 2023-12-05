@@ -4,6 +4,10 @@ import request from 'supertest';
 import cookieParser from 'cookie-parser';
 import { AppModule } from '../src/app.module';
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 describe('QuizWizardController (e2e)', () => {
   let app: INestApplication;
   let response;
@@ -19,6 +23,8 @@ describe('QuizWizardController (e2e)', () => {
     app.use(cookieParser());
 
     await app.init();
+
+    await sleep(5000);
   });
 
   describe('1번 문제 채점 테스트', () => {
