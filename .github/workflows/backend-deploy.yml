@@ -77,7 +77,7 @@ jobs:
               -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
               -e MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
               -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
-              -e X-NCP-CLOVASTUDIO-API-KEY=${{ secrets.X-NCP-CLOVASTUDIO-API-KEY }} \
-              -e X-NCP-APIGW-API-KEY=${{ secrets.X-NCP-APIGW-API-KEY }} \
-              -e X-NCP-CLOVASTUDIO-REQUEST-ID=${{ secrets.X-NCP-CLOVASTUDIO-REQUEST-ID }} \
+              -e X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }} \
+              -e X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }} \
+              -e X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
