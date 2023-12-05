@@ -7,7 +7,7 @@ export class Decrypted {
   readonly commands: string[];
 }
 
-export function isEncryptedDto(obj: unknown): obj is Decrypted {
+export function isDecrypted(obj: unknown): obj is Decrypted {
   const isObject = (val: unknown): val is { [key: string]: unknown } =>
     typeof val === 'object' && val !== null;
 
