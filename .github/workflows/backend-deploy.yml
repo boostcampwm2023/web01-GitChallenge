@@ -80,4 +80,5 @@ jobs:
               -e X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }} \
               -e X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }} \
               -e X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }} \
+              -e CONTAINER_SERVER_HOST=${{ secrets.CONTAINER_SERVER_HOST }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
