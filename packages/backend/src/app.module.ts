@@ -12,6 +12,7 @@ import { QuizzesModule } from './quizzes/quizzes.module';
 import { LoggingInterceptor } from './common/logging.interceptor';
 import { QuizWizardModule } from './quiz-wizard/quiz-wizard.module';
 import { SshModule } from './ssh/ssh.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { SshModule } from './ssh/ssh.module';
     }),
     QuizWizardModule,
     SshModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [
