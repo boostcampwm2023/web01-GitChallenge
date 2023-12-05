@@ -347,9 +347,7 @@ export class QuizzesController {
   })
   async shared(@Query('answer') answer: string): Promise<SharedDto> {
     try {
-      console.log(answer);
       const decrypted = decryptObject(answer);
-      console.log(decrypted);
 
       if (!isEncryptedDto(decrypted)) {
         throw new HttpException(
