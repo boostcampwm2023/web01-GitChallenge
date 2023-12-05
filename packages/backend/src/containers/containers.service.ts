@@ -7,16 +7,39 @@ import { v4 as uuidv4 } from 'uuid';
 import { ActionType } from '../session/schema/session.schema';
 import { CommandService } from '../command/command.service';
 
+const DOCKER_QUIZZER_COMMAND = 'docker exec -w /home/quizzer/quiz/ -u quizzer';
+const RETRY_DELAY = 500;
+const MAX_RETRY = 3;
+
 @Injectable()
 export class ContainersService {
+  private availableContainers: Map<number, string[]> = new Map();
+
   constructor(
     private configService: ConfigService,
     @Inject('winston') private readonly logger: Logger,
     private commandService: CommandService,
-  ) {}
+  ) {
+    this.initializeContainers();
+  }
+
+  async initializeContainers() {
+    for (let i: number = 1; i < 20; i++) {
+      const maxContainers =
+        this.configService.get<number>('CONTAINER_POOL_MAX') || 1;
+      const containers = [];
+
+      for (let j = 0; j < maxContainers; j++) {
+        const containerId = await this.createContainer(i);
+        containers.push(containerId);
+      }
+
+      this.availableContainers.set(i, containers);
+    }
+  }
 
   private getGitCommand(container: string, command: string): string {
-    return `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} /usr/local/bin/restricted-shell ${command}`;
+    return `${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${command}`;
   }
   async runGitCommand(
     container: string,
@@ -43,15 +66,23 @@ export class ContainersService {
     return { message: stdoutData, result: 'success' };
   }
 
+  private buildEditorCommand(message: string, command: string) {
+    const escapedMessage = shellEscape([message]);
+
+    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}; git config --global core.editor /editor/output.sh`;
+  }
+
   private getEditorCommand(
     container: string,
     message: string,
     command: string,
   ): string {
-    const escapedMessage = shellEscape([message]);
-
-    return `docker exec -w /home/quizzer/quiz/ -u quizzer ${container} sh -c "git config --global core.editor /editor/input.sh && echo ${escapedMessage} | ${command}; git config --global core.editor /editor/output.sh"`;
+    return `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "${this.buildEditorCommand(
+      message,
+      command,
+    )}"`;
   }
+
   async runEditorCommand(
     container: string,
     command: string,
@@ -68,11 +99,7 @@ export class ContainersService {
     return { message: stdoutData, result: 'success' };
   }
 
-  async getContainer(quizId: number): Promise<string> {
-    // 일단은 컨테이너를 생성해 준다.
-    // 차후에는 준비된 컨테이너 중 하나를 선택해서 준다.
-    // quizId에 대한 유효성 검사는 이미 끝났다(이미 여기서는 DB 접근 불가)
-
+  async createContainer(quizId: number): Promise<string> {
     const user: string = this.configService.get<string>(
       'CONTAINER_GIT_USERNAME',
     );
@@ -102,6 +129,43 @@ export class ContainersService {
     return containerId;
   }
 
+  async getContainer(
+    quizIdParam: number | string,
+    maxRetries = MAX_RETRY,
+  ): Promise<string> {
+    const quizId =
+      typeof quizIdParam === 'string' ? parseInt(quizIdParam, 10) : quizIdParam;
+    if (this.availableContainers.get(quizId).length > 0) {
+      const containerId = this.availableContainers.get(quizId).shift();
+
+      this.commandService.executeCron(
+        `(sleep 1800; docker rm -f ${containerId} >/dev/null 2>&1) &`,
+      );
+
+      this.createContainer(quizId).then((containerId) => {
+        this.availableContainers.get(quizId).push(containerId);
+      });
+
+      return containerId;
+    }
+
+    if (maxRetries <= 0) {
+      throw new Error('No available containers after maximum retries');
+    }
+
+    // 재시도 로직
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        try {
+          const containerId = await this.getContainer(quizId, maxRetries - 1);
+          resolve(containerId);
+        } catch (error) {
+          reject(error);
+        }
+      }, RETRY_DELAY);
+    });
+  }
+
   async isValidateContainerId(containerId: string): Promise<boolean> {
     const command = `docker ps -a --filter "name=${containerId}" --format "{{.ID}}"`;
 
@@ -129,6 +193,11 @@ export class ContainersService {
     }
   }
 
+  private buildDockerCommand(container: string, ...commands: string[]): string {
+    const command = commands.join('; ');
+    return `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "${command}"`;
+  }
+
   async restoreContainer(logObject: {
     status: string;
     logs: {
@@ -145,14 +214,16 @@ export class ContainersService {
     const commands: string[] = logs.map((log) => {
       if (log.mode === 'command') {
         recentMessage = log.message;
-        return this.getGitCommand(containerId, log.message);
+        return log.message;
       } else if (log.mode === 'editor') {
-        return this.getEditorCommand(containerId, log.message, recentMessage);
+        return this.buildEditorCommand(log.message, recentMessage);
       } else {
         throw new Error('Invalid log mode');
       }
     });
 
-    await this.commandService.executeCommand(...commands);
+    await this.commandService.executeCommand(
+      this.buildDockerCommand(containerId, ...commands),
+    );
   }
 }
