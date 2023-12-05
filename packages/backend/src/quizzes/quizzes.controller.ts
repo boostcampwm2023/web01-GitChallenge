@@ -47,7 +47,7 @@ import { SessionUpdateInterceptor } from '../session/session-save.intercepter';
 import {
   BadRequestResponseDto,
   SharedDto,
-  isEncryptedDto,
+  isDecrypted,
 } from './dto/shared.dto';
 
 @ApiTags('quizzes')
@@ -349,7 +349,7 @@ export class QuizzesController {
     try {
       const decrypted = decryptObject(answer);
 
-      if (!isEncryptedDto(decrypted)) {
+      if (!isDecrypted(decrypted)) {
         throw new HttpException(
           '공유된 문제가 올바르지 않습니다.',
           HttpStatus.BAD_REQUEST,
