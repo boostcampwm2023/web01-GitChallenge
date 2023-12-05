@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { QuizWizardService } from './quiz-wizard.service';
 import { Magic } from './magic';
-import { SshModule } from '../ssh/ssh.module';
+import { CommandModule } from '../command/command.module';
 
 @Module({
-  imports: [SshModule],
+  imports: [CommandModule],
   providers: [QuizWizardService, Magic],
   exports: [QuizWizardService],
 })
