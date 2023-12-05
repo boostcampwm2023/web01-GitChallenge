@@ -154,16 +154,5 @@ export class ContainersService {
     });
 
     await this.commandService.executeCommand(...commands);
-
-    // for (const log of logs) {
-    //   if (log.mode === 'command') {
-    //     await this.runGitCommand(containerId, log.message);
-    //   } else if (log.mode === 'editor') {
-    //     await this.runEditorCommand(containerId, recentMessage, log.message);
-    //   } else {
-    //     throw new Error('Invalid log mode');
-    //   }
-    //   recentMessage = log.message;
-    // }
   }
 }
