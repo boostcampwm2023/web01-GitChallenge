@@ -31,4 +31,17 @@ export class CommandService {
       this.logger.log('info', error);
     }
   }
+
+  async executeCron(
+    ...commands: string[]
+  ): Promise<{ stdoutData: string; stderrData: string }> {
+    try {
+      const command = commands.join('; ');
+      this.logger.log('info', `command: ${preview(command, 40)}`);
+      const response = await this.instance.post('/cron', { command });
+      return response.data;
+    } catch (error) {
+      this.logger.log('info', error);
+    }
+  }
 }
