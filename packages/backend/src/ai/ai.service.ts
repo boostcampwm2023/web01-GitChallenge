@@ -24,13 +24,13 @@ export class AiService {
   ) {
     this.instance.interceptors.request.use((config) => {
       config.headers['X-NCP-CLOVASTUDIO-API-KEY'] = this.configService.get(
-        'X-NCP-CLOVASTUDIO-API-KEY',
+        'X_NCP_CLOVASTUDIO_API_KEY',
       );
       config.headers['X-NCP-APIGW-API-KEY'] = this.configService.get(
-        'X-NCP-APIGW-API-KEY',
+        'X_NCP_APIGW_API_KEY',
       );
       config.headers['X-NCP-CLOVASTUDIO-REQUEST-ID'] = this.configService.get(
-        'X-NCP-CLOVASTUDIO-REQUEST-ID',
+        'X_NCP_CLOVASTUDIO_REQUEST_ID',
       );
       return config;
     });
