@@ -142,7 +142,7 @@ export class SessionService {
     return session.problems.get(problemId);
   }
 
-  async setQuizSolve(sessionId: string, problemId: number): Promise<void> {
+  async setQuizSolved(sessionId: string, problemId: number): Promise<void> {
     const session = await this.getSessionById(sessionId);
     if (!session.problems.get(problemId)) {
       throw new Error('problem not found');
