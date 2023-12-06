@@ -9,7 +9,7 @@ import {
   widthMax,
 } from "./utils.css";
 
-const headerHeight = "56px";
+export const headerHeight = "56px";
 const footerHeight = "250px";
 
 export const header = style([

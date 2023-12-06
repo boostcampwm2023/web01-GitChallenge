@@ -2,6 +2,7 @@ const BROWSWER_PATH = {
   MAIN: "/",
   QUIZZES: "/quizzes",
   SHARE: "/share",
+  NOT_FOUND: "/404",
 } as const;
 
 const API_PATH = {
