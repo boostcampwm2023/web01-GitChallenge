@@ -28,6 +28,7 @@ export class Session extends Document {
         required: true,
       },
       containerId: { type: String, default: '' },
+      graph: { type: String, default: '' },
     },
   })
   problems: Map<
@@ -39,6 +40,7 @@ export class Session extends Document {
         message: string;
       }[];
       containerId: string;
+      graph: string;
     }
   >;
 }
