@@ -303,7 +303,7 @@ export class QuizzesController {
         return new Fail();
       }
 
-      await this.sessionService.setQuizSolve(sessionId, id);
+      await this.sessionService.setQuizSolved(sessionId, id);
 
       const commands = (
         await this.sessionService.getLogObject(sessionId, id)
