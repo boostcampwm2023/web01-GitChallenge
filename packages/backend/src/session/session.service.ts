@@ -150,6 +150,14 @@ export class SessionService {
     session.problems.get(problemId).status = 'solved';
   }
 
+  async setQuizSolving(sessionId: string, problemId: number): Promise<void> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    session.problems.get(problemId).status = 'solving';
+  }
+
   async getSolvedProblems(sessionId: string): Promise<SolvedDto> {
     const session = await this.getSessionById(sessionId);
     const solvedDto = new SolvedDto();

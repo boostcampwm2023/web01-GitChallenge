@@ -300,6 +300,7 @@ export class QuizzesController {
       );
 
       if (!result) {
+        await this.sessionService.setQuizSolving(sessionId, id);
         return new Fail();
       }
 
