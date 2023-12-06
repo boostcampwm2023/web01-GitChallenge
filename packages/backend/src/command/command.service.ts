@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Logger } from 'winston';
-import { preview } from '../common/util';
+import { preview, processCarriageReturns } from '../common/util';
 
 @Injectable()
 export class CommandService {
@@ -26,7 +26,10 @@ export class CommandService {
       const command = commands.join('; ');
       this.logger.log('info', `command: ${preview(command, 40)}`);
       const response = await this.instance.post('/', { command });
-      return response.data;
+      return {
+        stdoutData: processCarriageReturns(response.data.stdoutData),
+        stderrData: processCarriageReturns(response.data.stderrData),
+      };
     } catch (error) {
       this.logger.log('info', error);
     }
