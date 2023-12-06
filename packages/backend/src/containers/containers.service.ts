@@ -28,7 +28,7 @@ export class ContainersService {
   }
 
   async initializeContainers() {
-    for (let i: number = 1; i < 5; i++) {
+    for (let i: number = 1; i < 20; i++) {
       const maxContainers =
         this.configService.get<number>('CONTAINER_POOL_MAX') || 1;
       const containers = [];
