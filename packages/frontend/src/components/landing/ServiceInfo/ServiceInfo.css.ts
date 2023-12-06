@@ -20,6 +20,7 @@ export const serviceInfoContainer = style({
   whiteSpace: "break-spaces",
   marginBottom: 60,
 });
+
 export const landingTitle = style([
   {
     fontSize: 40,
@@ -27,6 +28,23 @@ export const landingTitle = style([
     margin: "48px 0px 40px 0px",
     position: "relative",
     lineHeight: "150%",
+  },
+]);
+export const fadeOut = style([
+  landingTitle,
+  {
+    transition: "opacity 1000ms 200ms, transform 1000ms 200ms",
+    transform: "translateY(2rem)",
+    opacity: 0,
+  },
+]);
+
+export const fadeIn = style([
+  landingTitle,
+  {
+    transition: "opacity 1000ms 200ms, transform 1000ms 200ms",
+    opacity: 1,
+    transform: "translateY(0)",
   },
 ]);
 
