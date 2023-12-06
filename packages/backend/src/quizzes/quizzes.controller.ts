@@ -152,6 +152,18 @@ export class QuizzesController {
           containerId,
           execCommandDto.message,
         ));
+
+        if (result === 'editor') {
+          containerId = await this.containerService.getContainer(id);
+          await this.sessionService.setContainerBySessionId(
+            sessionId,
+            id,
+            containerId,
+          );
+          this.containerService.restoreContainer(
+            await this.sessionService.getLogObject(sessionId, id),
+          );
+        }
       } else if (execCommandDto.mode === MODE.EDITOR) {
         // editor mode
         const { mode: recentMode, message: recentMessage } =
