@@ -20,7 +20,9 @@ export class ContainersService {
     @Inject('winston') private readonly logger: Logger,
     private commandService: CommandService,
   ) {
-    this.initializeContainers();
+    if (this.configService.get<string>('SERVER_MODE') !== 'dev') {
+      this.initializeContainers();
+    }
   }
 
   async initializeContainers() {
@@ -131,10 +133,15 @@ export class ContainersService {
 
   async getContainer(
     quizIdParam: number | string,
-    maxRetries = MAX_RETRY,
+    retry = MAX_RETRY,
   ): Promise<string> {
     const quizId =
       typeof quizIdParam === 'string' ? parseInt(quizIdParam, 10) : quizIdParam;
+
+    if (this.configService.get<string>('SERVER_MODE') === 'dev') {
+      return this.createContainer(quizId);
+    }
+
     if (this.availableContainers.get(quizId).length > 0) {
       const containerId = this.availableContainers.get(quizId).shift();
 
@@ -146,10 +153,14 @@ export class ContainersService {
         this.availableContainers.get(quizId).push(containerId);
       });
 
+      if (!(await this.isValidateContainerId(containerId))) {
+        return await this.createContainer(quizId);
+      }
+
       return containerId;
     }
 
-    if (maxRetries <= 0) {
+    if (retry <= 0) {
       throw new Error('No available containers after maximum retries');
     }
 
@@ -157,7 +168,7 @@ export class ContainersService {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         try {
-          const containerId = await this.getContainer(quizId, maxRetries - 1);
+          const containerId = await this.getContainer(quizId, retry - 1);
           resolve(containerId);
         } catch (error) {
           reject(error);
