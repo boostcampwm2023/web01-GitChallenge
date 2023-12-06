@@ -2,7 +2,7 @@ import { Button } from "../../../design-system/components/common";
 import useModal from "../../../hooks/useModal";
 import { Quiz } from "../../../types/quiz";
 import CommandAccordion from "../CommandAccordion";
-import QuizAnswerModal from "../QuizAnswerModal/QuizAnswerModal";
+import QuizAnswerModal from "../QuizAnswerModal";
 import QuizContent from "../QuizContent";
 
 import * as styles from "./QuizGuide.css";
