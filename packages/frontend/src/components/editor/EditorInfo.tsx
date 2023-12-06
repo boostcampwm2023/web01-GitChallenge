@@ -1,4 +1,4 @@
-import Info from "../../design-system/components/common/Info/Info";
+import { Info } from "../../design-system/components/common";
 
 import * as styles from "./Editor.css";
 
