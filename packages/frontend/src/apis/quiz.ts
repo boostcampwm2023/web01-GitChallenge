@@ -1,5 +1,11 @@
 import { API_PATH } from "../constants/path";
-import { Categories, Command, Quiz, QuizSolve } from "../types/quiz";
+import {
+  Categories,
+  Command,
+  Quiz,
+  QuizSolve,
+  SharedQuiz,
+} from "../types/quiz";
 
 import { instance } from "./base";
 
@@ -29,10 +35,21 @@ export const quizAPI = {
     const { data } = await instance.delete(`${API_PATH.QUIZZES}/${id}/command`);
     return data;
   },
+  getSharedAnswer: async (slug: string) => {
+    const { data } = await instance.get<GetSharedAnswerResponse>(
+      `${API_PATH.QUIZZES}/shared?answer=${slug}`,
+    );
+    return data;
+  },
 };
 
 type PostCommandRequest = {
   id: number;
   mode: "command" | "editor";
   message: string;
+};
+
+export type GetSharedAnswerResponse = {
+  answer: string[];
+  quiz: SharedQuiz;
 };
