@@ -37,6 +37,7 @@ export class SessionService {
         status: 'solving',
         logs: [],
         containerId: '',
+        graph: '',
       });
       this.logger.log('info', `session ${session._id as ObjectId} updated`);
       this.logger.log(
@@ -102,8 +103,7 @@ export class SessionService {
     if (!session.problems.get(problemId)) {
       throw new Error('problem not found');
     }
-    session.problems.get(problemId).logs = [];
-    session.problems.get(problemId).containerId = '';
+    session.problems.delete(problemId);
   }
 
   private async getSessionById(id: string): Promise<Session> {
@@ -167,5 +167,34 @@ export class SessionService {
       }
     });
     return solvedDto;
+  }
+
+  async getGraphById(sessionId: string, problemId: number): Promise<string> {
+    const session = await this.getSessionById(sessionId);
+    return session.problems.get(problemId)?.graph;
+  }
+
+  async isGraphUpdated(
+    sessionId: string,
+    problemId: number,
+    graph: string,
+  ): Promise<boolean> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    return session.problems.get(problemId).graph !== graph;
+  }
+
+  async updateGraph(
+    sessionId: string,
+    problemId: number,
+    graph: string,
+  ): Promise<void> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    session.problems.get(problemId).graph = graph;
   }
 }

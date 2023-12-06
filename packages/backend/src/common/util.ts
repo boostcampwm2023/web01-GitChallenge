@@ -55,3 +55,10 @@ export function isStringArray(obj: unknown): obj is string[] {
     Array.isArray(obj) && obj.every((element) => typeof element === 'string')
   );
 }
+
+export function graphParser(graph: string): string {
+  const graphParsed = JSON.parse(`[
+  ${graph.substring(0, graph.length - 1)}
+  ]`);
+  return graphParsed;
+}

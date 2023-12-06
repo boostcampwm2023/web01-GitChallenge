@@ -1,15 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from 'winston';
-import { CommandResponseDto } from '../quizzes/dto/command-response.dto';
 import shellEscape from 'shell-escape';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionType } from '../session/schema/session.schema';
 import { CommandService } from '../command/command.service';
+import { MeasureExecutionTime } from '../common/execution-time.interceptor';
 
 const DOCKER_QUIZZER_COMMAND = 'docker exec -w /home/quizzer/quiz/ -u quizzer';
 const RETRY_DELAY = 500;
 const MAX_RETRY = 3;
+const GRAPH_COMMAND = `git log --branches --pretty=format:'{"id":"%H","parentId":"%P","message":"%s","refs":"%D"},' --topo-order`;
+const GRAPH_ESCAPE = '89BDBC3136461-17189F6963D26-9F1BC6D53A3ED';
 
 @Injectable()
 export class ContainersService {
@@ -26,7 +28,7 @@ export class ContainersService {
   }
 
   async initializeContainers() {
-    for (let i: number = 1; i < 20; i++) {
+    for (let i: number = 1; i < 5; i++) {
       const maxContainers =
         this.configService.get<number>('CONTAINER_POOL_MAX') || 1;
       const containers = [];
@@ -46,13 +48,21 @@ export class ContainersService {
   async runGitCommand(
     container: string,
     command: string,
-  ): Promise<CommandResponseDto> {
-    const { stdoutData, stderrData } = await this.commandService.executeCommand(
+  ): Promise<{ message: string; result: string; graph?: string }> {
+    // eslint-disable-next-line prefer-const
+    let { stdoutData, stderrData } = await this.commandService.executeCommand(
       this.getGitCommand(container, command),
+      `echo "${GRAPH_ESCAPE}"`,
+      this.getGitCommand(container, GRAPH_COMMAND),
     );
 
-    const patternIndex = stdoutData.indexOf('# CREATED_BY_OUTPUT.SH\n');
+    const graphMessage = stdoutData
+      .slice(stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length)
+      .trim();
 
+    stdoutData = stdoutData.slice(0, stdoutData.indexOf(GRAPH_ESCAPE));
+
+    const patternIndex = stdoutData.indexOf('# CREATED_BY_OUTPUT.SH\n');
     if (patternIndex !== -1) {
       const message = stdoutData.slice(0, patternIndex);
       return {
@@ -62,10 +72,10 @@ export class ContainersService {
     }
 
     if (stderrData) {
-      return { message: stderrData, result: 'fail' };
+      return { message: stderrData, result: 'fail', graph: graphMessage };
     }
 
-    return { message: stdoutData, result: 'success' };
+    return { message: stdoutData, result: 'success', graph: graphMessage };
   }
 
   private buildEditorCommand(message: string, command: string) {
@@ -89,16 +99,25 @@ export class ContainersService {
     container: string,
     command: string,
     message: string,
-  ): Promise<CommandResponseDto> {
-    const { stdoutData, stderrData } = await this.commandService.executeCommand(
+  ): Promise<{ message: string; result: string; graph: string }> {
+    // eslint-disable-next-line prefer-const
+    let { stdoutData, stderrData } = await this.commandService.executeCommand(
       this.getEditorCommand(container, message, command),
+      `echo "${GRAPH_ESCAPE}"`,
+      this.getGitCommand(container, GRAPH_COMMAND),
     );
 
+    const graphMessage = stdoutData
+      .slice(stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length)
+      .trim();
+
+    stdoutData = stdoutData.slice(0, stdoutData.indexOf(GRAPH_ESCAPE));
+
     if (stderrData) {
-      return { message: stderrData, result: 'fail' };
+      return { message: stderrData, result: 'fail', graph: graphMessage };
     }
 
-    return { message: stdoutData, result: 'success' };
+    return { message: stdoutData, result: 'success', graph: graphMessage };
   }
 
   async createContainer(quizId: number): Promise<string> {
@@ -131,6 +150,7 @@ export class ContainersService {
     return containerId;
   }
 
+  @MeasureExecutionTime()
   async getContainer(
     quizIdParam: number | string,
     retry = MAX_RETRY,

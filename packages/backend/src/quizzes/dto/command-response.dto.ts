@@ -22,10 +22,20 @@ export class CommandResponseDto {
   result: ResultType;
 
   @ApiProperty({
-    description: 'git 그래프 상황(아직 미구현)',
-    example: '아직 미구현이에요',
+    description: 'git 그래프 상황',
+    example:
+      '{\n' +
+      '    "graph": [\n' +
+      '        {\n' +
+      '            "id": "0b6bb091c739e7aec2cb724378d50e486a914768",\n' +
+      '            "parentId": "",\n' +
+      '            "message": "docs: plan.md",\n' +
+      '            "refs": "HEAD -> main"\n' +
+      '        }\n' +
+      '    ]\n' +
+      '}',
   })
-  graph?: string;
+  graph?: object[];
 }
 export class ForbiddenResponseDto {
   @ApiProperty({
