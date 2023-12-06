@@ -68,6 +68,7 @@ export class QuizzesService {
       quiz.category = categories[data.category];
       quiz.id = data.id;
       quiz.answer = data.answer || '';
+      quiz.graph = data.graph || '';
 
       const keywordList = data.keyword.split(',').map((kw) => kw.trim());
       quiz.keywords = keywordList.map((kw) => keywords[kw]);
@@ -138,5 +139,13 @@ export class QuizzesService {
     const quizzesDtos: QuizzesDto = { categories: categoryQuizzesDtos };
 
     return quizzesDtos;
+  }
+
+  async getGraphById(id: number): Promise<string> {
+    const quiz = await this.quizRepository.findOne({
+      where: { id },
+    });
+
+    return quiz.graph;
   }
 }
