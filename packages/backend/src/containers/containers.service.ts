@@ -5,7 +5,6 @@ import shellEscape from 'shell-escape';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionType } from '../session/schema/session.schema';
 import { CommandService } from '../command/command.service';
-import { MeasureExecutionTime } from '../common/execution-time.interceptor';
 
 const DOCKER_QUIZZER_COMMAND = 'docker exec -w /home/quizzer/quiz/ -u quizzer';
 const RETRY_DELAY = 500;
@@ -150,7 +149,6 @@ export class ContainersService {
     return containerId;
   }
 
-  @MeasureExecutionTime()
   async getContainer(
     quizIdParam: number | string,
     retry = MAX_RETRY,
