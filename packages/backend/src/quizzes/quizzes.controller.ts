@@ -41,7 +41,12 @@ import { SessionId } from '../session/session.decorator';
 import { CommandGuard } from '../common/command.guard';
 import { QuizWizardService } from '../quiz-wizard/quiz-wizard.service';
 import { Fail, SubmitDto, Success } from './dto/submit.dto';
-import { decryptObject, encryptObject, preview } from '../common/util';
+import {
+  decryptObject,
+  encryptObject,
+  graphParser,
+  preview,
+} from '../common/util';
 import { QuizGuard } from './quiz.guard';
 import { SessionUpdateInterceptor } from '../session/session-save.intercepter';
 import {
@@ -49,6 +54,7 @@ import {
   SharedDto,
   isDecrypted,
 } from './dto/shared.dto';
+import { GraphDto } from './dto/graph.dto';
 
 @ApiTags('quizzes')
 @Controller('api/v1/quizzes')
@@ -139,7 +145,7 @@ export class QuizzesController {
       }
 
       // 리팩토링 필수입니다.
-      let message: string, result: string;
+      let message: string, result: string, graph: string;
 
       // command mode
       if (execCommandDto.mode === MODE.COMMAND) {
@@ -148,7 +154,7 @@ export class QuizzesController {
           `running command "${execCommandDto.message}" for container ${containerId}`,
         );
 
-        ({ message, result } = await this.containerService.runGitCommand(
+        ({ message, result, graph } = await this.containerService.runGitCommand(
           containerId,
           execCommandDto.message,
         ));
@@ -186,11 +192,12 @@ export class QuizzesController {
           )}"`,
         );
 
-        ({ message, result } = await this.containerService.runEditorCommand(
-          containerId,
-          recentMessage,
-          execCommandDto.message,
-        ));
+        ({ message, result, graph } =
+          await this.containerService.runEditorCommand(
+            containerId,
+            recentMessage,
+            execCommandDto.message,
+          ));
       } else {
         response.status(HttpStatus.BAD_REQUEST).send({
           message: '잘못된 요청입니다.',
@@ -200,11 +207,20 @@ export class QuizzesController {
       // message를 저장합니다.
       this.sessionService.pushLogBySessionId(execCommandDto, sessionId, id);
 
-      response.status(HttpStatus.OK).send({
-        message,
-        result,
-        // graph: 필요한 경우 여기에 추가
-      });
+      if (await this.sessionService.isGraphUpdated(sessionId, id, graph)) {
+        await this.sessionService.updateGraph(sessionId, id, graph);
+        response.status(HttpStatus.OK).send({
+          message,
+          result,
+          graph: graphParser(graph),
+        });
+      } else {
+        response.status(HttpStatus.OK).send({
+          message,
+          result,
+        });
+      }
+
       return;
     } catch (error) {
       this.logger.log('error', error);
@@ -404,5 +420,31 @@ export class QuizzesController {
     const quizDto = await this.quizService.getQuizById(id);
 
     return quizDto;
+  }
+
+  @Get('/:id/graph')
+  @UseGuards(QuizGuard)
+  @ApiNotFoundResponse({
+    description: '해당 문제가 존재하지 않습니다.',
+    type: NotFoundResponseDto,
+  })
+  @ApiOperation({
+    summary: 'ID를 통해 문제의 그래프 정보를 가져올 수 있습니다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the graph details',
+    type: GraphDto,
+  })
+  async getGraphById(
+    @Param('id') id: number,
+    @SessionId() sessionId: string,
+  ): Promise<any> {
+    if (!sessionId) return JSON.parse(await this.quizService.getGraphById(id));
+
+    const graph = await this.sessionService.getGraphById(sessionId, id);
+    if (!graph) return JSON.parse(await this.quizService.getGraphById(id));
+
+    return graphParser(graph);
   }
 }
