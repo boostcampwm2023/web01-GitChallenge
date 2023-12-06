@@ -159,7 +159,7 @@ export class QuizzesController {
           execCommandDto.message,
         ));
 
-        if (result === 'editor') {
+        if (result === MODE.EDITOR) {
           containerId = await this.containerService.getContainer(id);
           await this.sessionService.setContainerBySessionId(
             sessionId,
