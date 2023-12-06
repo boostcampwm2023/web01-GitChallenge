@@ -4,6 +4,7 @@ import { Logger } from 'winston';
 import { Model } from 'mongoose';
 import { ActionType, Session } from './schema/session.schema';
 import { ObjectId } from 'typeorm';
+import { SolvedDto } from './dto/solved.dto';
 
 @Injectable()
 export class SessionService {
@@ -139,5 +140,24 @@ export class SessionService {
       throw new Error('problem not found');
     }
     return session.problems.get(problemId);
+  }
+
+  async setQuizSolve(sessionId: string, problemId: number): Promise<void> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    session.problems.get(problemId).status = 'solved';
+  }
+
+  async getSolvedProblems(sessionId: string): Promise<SolvedDto> {
+    const session = await this.getSessionById(sessionId);
+    const solvedDto = new SolvedDto();
+    session.problems.forEach((value, key) => {
+      if (value.status === 'solved') {
+        solvedDto[key] = true;
+      }
+    });
+    return solvedDto;
   }
 }
