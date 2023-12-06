@@ -1,5 +1,4 @@
-import { Modal } from "../../../design-system/components/common";
-import Info from "../../../design-system/components/common/Info/Info";
+import { Info, Modal } from "../../../design-system/components/common";
 import { toCodeTag } from "../../../utils/mapper";
 
 import * as styles from "./QuizAnswerModal.css";
