@@ -243,6 +243,16 @@ index e69de29..bf5c54f 100644
     }
   }
 
+  async checkCondition14(containerId: string): Promise<boolean> {
+    if (
+      (await this.magic.getTreeHead(containerId, 'main')) !==
+      '2f3177d100b90c5a605e97c2fc546502cee2d4a6'
+    )
+      return false;
+
+    return true;
+  }
+
   async checkCondition15(containerId: string): Promise<boolean> {
     if (
       (await this.magic.getTreeHead(containerId, 'main')) !==
