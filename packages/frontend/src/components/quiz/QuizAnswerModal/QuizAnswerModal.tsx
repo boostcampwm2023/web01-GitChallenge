@@ -1,6 +1,5 @@
-import { FaInfoCircle } from "react-icons/fa";
-
 import { Modal } from "../../../design-system/components/common";
+import Info from "../../../design-system/components/common/Info/Info";
 import { toCodeTag } from "../../../utils/mapper";
 
 import * as styles from "./QuizAnswerModal.css";
@@ -23,10 +22,10 @@ export default function QuizAnswerModal({
           __html: toCodeTag(answer.join("\n")),
         }}
       />
-      <div className={styles.answerNotice}>
-        <FaInfoCircle />본 답안은 모범 답안으로 제공되었으며, 상황에 따라 다양한
-        해결책이 있을 수 있습니다.
-      </div>
+      <Info>
+        본 답안은 모범 답안으로 제공되었으며, 상황에 따라 다양한 해결책이 있을
+        수 있습니다.
+      </Info>
     </Modal>
   );
 }

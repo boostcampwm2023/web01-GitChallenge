@@ -1,11 +1,10 @@
-import { globalStyle, style } from "@vanilla-extract/css";
+import { style } from "@vanilla-extract/css";
 
 import color from "../../design-system/tokens/color";
 import typography from "../../design-system/tokens/typography";
 import {
   border,
   borderRadius,
-  flexAlignCenter,
   flexColumn,
   flexJustifyCenter,
   middleLayer,
@@ -67,19 +66,7 @@ export const notice = style([
     marginTop: 14,
     gap: 5,
     padding: 14,
-    color: color.$scale.grey600,
     whiteSpace: "break-spaces",
     lineHeight: "165%",
   },
 ]);
-
-export const noticeItem = style([
-  flexAlignCenter,
-  {
-    gap: 5,
-  },
-]);
-
-globalStyle(`${noticeItem} > svg`, {
-  fontSize: 14,
-});

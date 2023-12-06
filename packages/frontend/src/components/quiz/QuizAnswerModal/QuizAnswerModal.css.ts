@@ -2,7 +2,6 @@ import { globalStyle, style } from "@vanilla-extract/css";
 
 import color from "../../../design-system/tokens/color";
 import typography from "../../../design-system/tokens/typography";
-import { noticeItem } from "../../editor/Editor.css";
 
 export const h3 = style([
   typography.$semantic.h3,
@@ -19,14 +18,6 @@ export const answerContainer = style([
     marginBottom: 19,
     whiteSpace: "break-spaces",
     color: color.$scale.grey700,
-  },
-]);
-
-export const answerNotice = style([
-  noticeItem,
-  typography.$semantic.caption1Regular,
-  {
-    color: color.$scale.grey600,
   },
 ]);
 
