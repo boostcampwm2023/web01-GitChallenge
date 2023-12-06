@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { Button } from "../../../design-system/components/common";
 import { flex } from "../../../design-system/tokens/utils.css";
@@ -7,9 +8,15 @@ import { flex } from "../../../design-system/tokens/utils.css";
 import * as styles from "./ServiceInfo.css";
 
 export default function ServiceInfo() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <section className={styles.serviceInfoContainer}>
-      <h1 className={styles.landingTitle}>
+      <h1 className={mounted ? styles.fadeIn : styles.fadeOut}>
         <span className="highlight">Git</span>
         {`이 너무 어렵게만\n느껴진다면?`}
         <Image
