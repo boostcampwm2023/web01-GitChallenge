@@ -5,8 +5,6 @@ import { Repository } from 'typeorm';
 import { QuizDto } from './dto/quiz.dto';
 import { CategoryQuizzesDto, QuizzesDto } from './dto/quizzes.dto';
 import { Category } from './entity/category.entity';
-import { ContainersService } from '../containers/containers.service';
-import { CommandResponseDto } from './dto/command-response.dto';
 import fs from 'fs';
 import * as Papa from 'papaparse';
 import { Keyword } from './entity/keyword.entity';
@@ -22,7 +20,6 @@ export class QuizzesService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(Keyword)
     private keywordRepository: Repository<Keyword>,
-    private containerService: ContainersService,
     private configService: ConfigService,
     @Inject('winston') private readonly logger: Logger,
   ) {
@@ -141,17 +138,5 @@ export class QuizzesService {
     const quizzesDtos: QuizzesDto = { categories: categoryQuizzesDtos };
 
     return quizzesDtos;
-  }
-
-  async runGitCommand(command: string): Promise<CommandResponseDto> {
-    // 세션 검색
-
-    // 세션 없으면 or 세션에 할당된 컨테이너 없으면 컨테이너 생성
-    // await this.containerService.getContainer(quizId);
-
-    // 컨테이너 생성, 세션에 할당하고 DB 저장
-
-    // 최종 실행
-    return this.containerService.runGitCommand('testContainer', command);
   }
 }
