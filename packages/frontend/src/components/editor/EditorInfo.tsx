@@ -1,4 +1,4 @@
-import { FaInfoCircle } from "react-icons/fa";
+import Info from "../../design-system/components/common/Info/Info";
 
 import * as styles from "./Editor.css";
 
@@ -6,10 +6,7 @@ export default function EditorInfo() {
   return (
     <div className={styles.notice}>
       {NOTICE.map((line) => (
-        <div key={line} className={styles.noticeItem}>
-          <FaInfoCircle />
-          {line}
-        </div>
+        <Info key={line}>{line}</Info>
       ))}
     </div>
   );
