@@ -17,6 +17,8 @@ export type Quiz = {
   answer: string[];
 };
 
+export type SharedQuiz = Omit<Quiz, "answer">;
+
 export type Quizzes = {
   id: number;
   category: string;
