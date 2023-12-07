@@ -21,7 +21,7 @@ export class SessionUpdateInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(() => {
         sessionId =
-          sessionId || this.extractSessionId(response.getHeader('Set-Cookie')); // 세션 ID가 없으면 쿠키에서 추출
+          this.extractSessionId(response.getHeader('Set-Cookie')) || sessionId; // 세션 ID가 없으면 쿠키에서 추출
         // 세션 업데이트 로직
         this.sessionService.saveSession(sessionId);
       }),

@@ -105,7 +105,18 @@ export class QuizzesController {
     @Res() response: Response,
     @SessionId() sessionId: string,
   ): Promise<CommandResponseDto> {
-    await this.sessionService.checkLogLength(sessionId, id);
+    try {
+      await this.sessionService.checkLogLength(sessionId, id);
+    } catch (e) {
+      this.logger.log('info', 'session not found. creating session..');
+      response.cookie(
+        'sessionId',
+        (sessionId = await this.sessionService.createSession()),
+        {
+          httpOnly: true,
+        },
+      ); // 세션 아이디를 생성한다.
+    }
     try {
       if (!sessionId) {
         // 세션 아이디가 없다면
