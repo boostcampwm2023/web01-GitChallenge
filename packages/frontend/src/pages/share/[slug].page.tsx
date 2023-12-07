@@ -3,9 +3,14 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { GetSharedAnswerResponse, quizAPI } from "../../apis/quiz";
-import { AnswerCodeBlock, QuizContent } from "../../components/quiz";
+import { QuizContent } from "../../components/quiz";
 import { BROWSWER_PATH } from "../../constants/path";
-import { Button, toast } from "../../design-system/components/common";
+import {
+  Button,
+  CodeBlock,
+  toast,
+} from "../../design-system/components/common";
+import typography from "../../design-system/tokens/typography";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./slug.css";
@@ -77,7 +82,10 @@ export default function AnswerSharePage() {
       <section className={styles.answerContainer}>
         <h2 className={styles.h2}>공유된 답안</h2>
         <hr className={styles.hr} />
-        <AnswerCodeBlock answer={answer} />
+        <CodeBlock
+          code={answer}
+          className={typography.$semantic.body2Regular}
+        />
       </section>
     </main>
   );
