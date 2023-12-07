@@ -59,7 +59,7 @@ index e69de29..3b18e51 100644
   async checkCondition6(containerId: string): Promise<boolean> {
     if (
       (await this.magic.getTreeHead(containerId, 'dev')) !==
-      '2c347f65f96ed5817553d668c062f8bec792131d'
+      '4e66c710f89b80ee0424831c0d1257d329d6d1a3'
     )
       return false;
 
