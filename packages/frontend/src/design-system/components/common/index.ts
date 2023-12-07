@@ -8,3 +8,4 @@ export { Accordion, useAccordion } from "./Accordion";
 export { default as Footer } from "./Footer";
 export { default as Info } from "./Info";
 export { CodeBlock } from "./CodeBlock";
+export { default as LinkButton } from "./LinkButton";

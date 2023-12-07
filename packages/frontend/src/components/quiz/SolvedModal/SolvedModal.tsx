@@ -1,7 +1,11 @@
-import { useRouter } from "next/router";
 import { useRef } from "react";
 
-import { Button, Modal, toast } from "../../../design-system/components/common";
+import {
+  Button,
+  LinkButton,
+  Modal,
+  toast,
+} from "../../../design-system/components/common";
 
 import * as styles from "./SolvedModal.css";
 
@@ -22,13 +26,7 @@ export function SolvedModal({
   onClose,
   onNextQuiz,
 }: SolvedModalProps) {
-  const router = useRouter();
-
   const copyButtonRef = useRef<HTMLButtonElement>(null);
-
-  const handleShowAnswer = () => {
-    router.push(link);
-  };
 
   const handleCopy = async () => {
     try {
@@ -65,9 +63,9 @@ export function SolvedModal({
           </button>
         </div>
         <div className={styles.buttonGroup}>
-          <Button full variant="primaryLow" onClick={handleShowAnswer}>
+          <LinkButton full variant="primaryLow" path={link}>
             내 답안 보러가기
-          </Button>
+          </LinkButton>
           {!lastQuiz && (
             <Button full variant="primaryFill" onClick={onNextQuiz}>
               다음 문제 풀래요
