@@ -55,9 +55,6 @@ export class ContainersService {
       this.getGitCommand(container, GRAPH_COMMAND),
     );
 
-    console.log(stdoutData);
-    console.log(stderrData);
-
     const graphMessage = stdoutData
       .slice(stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length)
       .trim();
