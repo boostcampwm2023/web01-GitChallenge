@@ -161,15 +161,18 @@ export class QuizzesController {
         ));
 
         if (result === MODE.EDITOR) {
-          containerId = await this.containerService.getContainer(id);
-          await this.sessionService.setContainerBySessionId(
-            sessionId,
-            id,
-            containerId,
-          );
-          this.containerService.restoreContainer(
-            await this.sessionService.getLogObject(sessionId, id),
-          );
+          this.containerService.stashApplyContainer(containerId);
+          // containerId = await this.containerService.getContainer(id);
+          // await this.sessionService.setContainerBySessionId(
+          //   sessionId,
+          //   id,
+          //   containerId,
+          // );
+          // this.containerService.restoreContainer(
+          //   await this.sessionService.getLogObject(sessionId, id),
+          // );
+        } else {
+          this.containerService.stashContainer(containerId);
         }
       } else if (execCommandDto.mode === MODE.EDITOR) {
         // editor mode
@@ -208,7 +211,10 @@ export class QuizzesController {
       // message를 저장합니다.
       this.sessionService.pushLogBySessionId(execCommandDto, sessionId, id);
 
-      if (await this.sessionService.isGraphUpdated(sessionId, id, graph)) {
+      if (
+        result !== MODE.EDITOR ||
+        (await this.sessionService.isGraphUpdated(sessionId, id, graph))
+      ) {
         await this.sessionService.updateGraph(sessionId, id, graph);
         response.status(HttpStatus.OK).send({
           message,
