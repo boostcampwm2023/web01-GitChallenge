@@ -161,15 +161,18 @@ export class QuizzesController {
         ));
 
         if (result === MODE.EDITOR) {
-          containerId = await this.containerService.getContainer(id);
-          await this.sessionService.setContainerBySessionId(
-            sessionId,
-            id,
-            containerId,
-          );
-          this.containerService.restoreContainer(
-            await this.sessionService.getLogObject(sessionId, id),
-          );
+          await this.containerService.stashPopContainer(containerId);
+          // containerId = await this.containerService.getContainer(id);
+          // await this.sessionService.setContainerBySessionId(
+          //   sessionId,
+          //   id,
+          //   containerId,
+          // );
+          // this.containerService.restoreContainer(
+          //   await this.sessionService.getLogObject(sessionId, id),
+          // );
+        } else {
+          await this.containerService.stashContainer(containerId);
         }
       } else if (execCommandDto.mode === MODE.EDITOR) {
         // editor mode
@@ -445,12 +448,16 @@ export class QuizzesController {
   async getGraphById(
     @Param('id') id: number,
     @SessionId() sessionId: string,
-  ): Promise<any> {
+  ): Promise<GraphDto> {
     if (!sessionId) return JSON.parse(await this.quizService.getGraphById(id));
 
     const graph = await this.sessionService.getGraphById(sessionId, id);
-    if (!graph) return JSON.parse(await this.quizService.getGraphById(id));
-
-    return graphParser(graph);
+    if (!graph) {
+      return JSON.parse(await this.quizService.getGraphById(id));
+    } else {
+      return {
+        graph: graphParser(graph),
+      };
+    }
   }
 }
