@@ -9,6 +9,8 @@ import { InitialDataProps, parsingMultipleParents } from "./parsing";
 
 const { grey500 } = color.$scale;
 
+const DURATION = 200;
+
 type AddedLineType = {
   source: d3.HierarchyPointNode<InitialDataProps>;
   target: d3.HierarchyPointNode<InitialDataProps>;
@@ -47,13 +49,14 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .join(
       (enter) => enter.append("text").style("opacity", 0),
       (update) => update,
-      (exit) => exit.transition().duration(1000).style("opacity", 0).remove(),
+      (exit) =>
+        exit.transition().duration(DURATION).style("opacity", 0).remove(),
     )
     .text((d) => d.data.message)
     .attr("x", (d) => d.x + 20)
     .attr("y", (d) => d.y + 5)
     .transition()
-    .duration(1000)
+    .duration(DURATION)
     .style("opacity", 1);
 
   additionalLinks.forEach(({ id, parentId }) => {
@@ -76,7 +79,8 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .join(
       (enter) => enter.append("line").style("opacity", 0),
       (update) => update,
-      (exit) => exit.transition().duration(1000).style("opacity", 0).remove(),
+      (exit) =>
+        exit.transition().duration(DURATION).style("opacity", 0).remove(),
     )
     .attr("x1", (d) => d.source.x)
     .attr("y1", (d) => d.source.y)
@@ -85,7 +89,7 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .attr("stroke", grey500)
     .attr("stroke-width", 1)
     .transition()
-    .duration(1000)
+    .duration(DURATION)
     .style("opacity", 1);
 
   svg
@@ -95,7 +99,8 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .join(
       (enter) => enter.append("circle").style("opacity", 0),
       (update) => update,
-      (exit) => exit.transition().duration(1000).style("opacity", 0).remove(),
+      (exit) =>
+        exit.transition().duration(DURATION).style("opacity", 0).remove(),
     )
     .attr("cx", (d) => d.x)
     .attr("cy", (d) => d.y)
@@ -103,7 +108,7 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .attr("stroke", grey500)
     .attr("stroke-width", 1)
     .transition()
-    .duration(1000)
+    .duration(DURATION)
     .style("opacity", 1)
     .attr(
       "fill",

@@ -1,14 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import {
-  RefObject,
-  useCallback,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { RefObject, useEffect, useReducer, useRef, useState } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
@@ -46,16 +39,14 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
   const terminalInputRef = useRef<HTMLSpanElement>(null);
 
-  const fetchGitGraphData = useCallback(async (curId: number) => {
+  const fetchGitGraphDataRef = useRef(async (curId: number) => {
     try {
       const { graph: nextGraph } = await quizAPI.getGraph(curId);
       setGitGraphData(nextGraph);
     } catch (error) {
       handleResponseError(error);
     }
-  }, []);
-
-  const fetchGitGraphDataRef = useRef(fetchGitGraphData);
+  });
 
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
