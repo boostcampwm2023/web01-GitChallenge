@@ -9,7 +9,7 @@ import { CommandService } from '../command/command.service';
 const DOCKER_QUIZZER_COMMAND = 'docker exec -w /home/quizzer/quiz/ -u quizzer';
 const RETRY_DELAY = 500;
 const MAX_RETRY = 3;
-const GRAPH_COMMAND = `git log --branches --pretty=format:'{"id":"%H","parentId":"%P","message":"%s","refs":"%D"},' --topo-order`;
+const GRAPH_COMMAND = `git log --branches --pretty=format:'%H%n%P%n%s%n%D' --topo-order`;
 const GRAPH_ESCAPE = '89BDBC3136461-17189F6963D26-9F1BC6D53A3ED';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class ContainersService {
   }
 
   private getGitCommand(container: string, command: string): string {
-    return `git config --global core.editor /editor/output.sh; ${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${command}`;
+    return `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "git config --global core.editor /editor/output.sh; ${command}"`;
   }
   async runGitCommand(
     container: string,
@@ -52,7 +52,7 @@ export class ContainersService {
       this.getGitCommand(container, command),
       `echo "${GRAPH_ESCAPE}" 1>&2`,
       `echo "${GRAPH_ESCAPE}"`,
-      this.getGitCommand(container, GRAPH_COMMAND),
+      `${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${GRAPH_COMMAND}`,
     );
 
     const graphMessage = stdoutData
@@ -105,7 +105,7 @@ export class ContainersService {
       this.getEditorCommand(container, message, command),
       `echo "${GRAPH_ESCAPE}" 1>&2`,
       `echo "${GRAPH_ESCAPE}"`,
-      this.getGitCommand(container, GRAPH_COMMAND),
+      `${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${GRAPH_COMMAND}`,
     );
 
     const graphMessage = stdoutData

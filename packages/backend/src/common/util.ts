@@ -56,9 +56,15 @@ export function isStringArray(obj: unknown): obj is string[] {
   );
 }
 
-export function graphParser(graph: string): string {
-  const graphParsed = JSON.parse(`[
-  ${graph.substring(0, graph.length - 1)}
-  ]`);
+export function graphParser(graph: string) {
+  const lines = graph.split('\n');
+  const graphParsed: object[] = [];
+  for (let i = 0; i < lines.length; i += 4) {
+    const id = lines[i];
+    const parentId = lines[i + 1];
+    const message = lines[i + 2];
+    const refs = lines[i + 3];
+    graphParsed.push({ id, parentId, message, refs });
+  }
   return graphParsed;
 }
