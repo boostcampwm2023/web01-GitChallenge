@@ -219,10 +219,7 @@ export class ContainersService {
       await this.commandService.executeCommand(command);
 
     this.logger.log('info', `container deleted : ${stdoutData.trim()}`);
-
-    if (stderrData) {
-      throw new Error(stderrData);
-    }
+    this.logger.log('info', `container deleted error : ${stderrData.trim()}`);
   }
 
   private buildDockerCommand(container: string, ...commands: string[]): string {
