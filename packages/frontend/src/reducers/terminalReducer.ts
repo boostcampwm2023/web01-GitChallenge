@@ -58,7 +58,7 @@ function toStandardOutput(content: string) {
 }
 
 function toContentArrayItem(type: "stdin" | "stdout", content: string) {
-  return { type, content: content.trim() };
+  return { type, content };
 }
 
 type TerminalState = {
