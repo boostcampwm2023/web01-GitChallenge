@@ -37,6 +37,7 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
 
   // Add text next to each node
   svg
+    .select("#text")
     .selectAll("text")
     .data(treeData.descendants())
     .join(
@@ -65,6 +66,7 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
 
   // Draw edges (links) between nodes
   svg
+    .select("#link")
     .selectAll("line")
     .data([...treeData.links(), ...addedLine])
     .join(
@@ -83,6 +85,7 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .style("opacity", 1);
 
   svg
+    .select("#node")
     .selectAll("circle")
     .data(treeData.descendants())
     .join(
@@ -127,7 +130,11 @@ export function Graph({ className }: GraphProps) {
   return (
     <div className={className}>
       <svg width="100%">
-        <g ref={gRef} transform="translate(100,70)" />
+        <g ref={gRef} transform="translate(100,70)">
+          <g id="link" />
+          <g id="node" />
+          <g id="text" />
+        </g>
       </svg>
       <button type="button" onClick={handleNewData}>
         click
