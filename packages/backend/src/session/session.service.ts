@@ -197,4 +197,21 @@ export class SessionService {
     }
     session.problems.get(problemId).graph = graph;
   }
+
+  async checkLogLength(sessionId: string, problemId: number): Promise<boolean> {
+    const MAX_LOG_LENGTH = 100;
+    if (!sessionId) {
+      return;
+    }
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      return;
+    }
+    if (session.problems.get(problemId).logs.length > MAX_LOG_LENGTH) {
+      throw new ForbiddenException(
+        'Too many commands(너무 많은 명령어를 입력했습니다.)',
+      );
+    }
+    return;
+  }
 }
