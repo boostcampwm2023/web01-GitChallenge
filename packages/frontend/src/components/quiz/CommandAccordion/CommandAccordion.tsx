@@ -27,7 +27,9 @@ export default function CommandAccordion({
         <div className={badgeGroupLayout}>
           {items.map((item, index) => (
             <Badge key={item} variant={badgeVariantList[index % items.length]}>
-              <Link href={`${GIT_BOOK_URL}-${item}`}>{item}</Link>
+              <Link href={`${GIT_BOOK_URL}-${item}`} target="_blank">
+                {item}
+              </Link>
             </Badge>
           ))}
         </div>
