@@ -105,6 +105,7 @@ export class QuizzesController {
     @Res() response: Response,
     @SessionId() sessionId: string,
   ): Promise<CommandResponseDto> {
+    await this.sessionService.checkLogLength(sessionId, id);
     try {
       if (!sessionId) {
         // 세션 아이디가 없다면
