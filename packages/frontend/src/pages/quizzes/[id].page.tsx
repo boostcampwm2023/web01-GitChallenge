@@ -6,7 +6,7 @@ import { RefObject, useEffect, useReducer, useRef } from "react";
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
 import EditorInfo from "../../components/editor/EditorInfo";
-import Graph from "../../components/graph/Graph";
+import { Graph } from "../../components/graph";
 import { SolvedModal, useSolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
