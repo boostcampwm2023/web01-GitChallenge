@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "../../../design-system/components/common";
+import { BROWSWER_PATH } from "../../../constants/path";
+import { LinkButton } from "../../../design-system/components/common";
 import { flex } from "../../../design-system/tokens/utils.css";
 import useScrollClipPath from "../../../hooks/useScroll/useScrollClipPath";
 import useScrollFadeIn from "../../../hooks/useScroll/useScrollFadeIn";
@@ -47,13 +48,13 @@ export default function ServiceInfo() {
           </Link>
           또는 dbscogus4467@naver.com 으로 문의주세요 🙋🏻‍♀️
         </p>
-        <Button
+        <LinkButton
+          path={`${BROWSWER_PATH.QUIZZES}/1`}
           variant="primaryFill"
           className={styles.problemPageButton}
-          onClick={() => {}}
         >
           바로 문제 풀어보러 가기 💻
-        </Button>
+        </LinkButton>
       </div>
     </section>
   );
