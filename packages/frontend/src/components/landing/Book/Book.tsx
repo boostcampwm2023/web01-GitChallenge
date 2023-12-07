@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import toCodeTag from "../../../utils/mapper";
+import { toCodeTag } from "../../../utils/mapper";
 
 import * as styles from "./Book.css";
 import { data } from "./data";

@@ -30,23 +30,6 @@ export const landingTitle = style([
     lineHeight: "150%",
   },
 ]);
-export const fadeOut = style([
-  landingTitle,
-  {
-    transition: "opacity 1000ms 200ms, transform 1000ms 200ms",
-    transform: "translateY(2rem)",
-    opacity: 0,
-  },
-]);
-
-export const fadeIn = style([
-  landingTitle,
-  {
-    transition: "opacity 1000ms 200ms, transform 1000ms 200ms",
-    opacity: 1,
-    transform: "translateY(0)",
-  },
-]);
 
 globalStyle(`${landingTitle} > span`, {
   color: color.$scale.coral700,

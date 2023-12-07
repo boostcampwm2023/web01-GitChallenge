@@ -1,22 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import { Button } from "../../../design-system/components/common";
 import { flex } from "../../../design-system/tokens/utils.css";
+import useScrollClipPath from "../../../hooks/useScroll/useScrollClipPath";
+import useScrollFadeIn from "../../../hooks/useScroll/useScrollFadeIn";
 
 import * as styles from "./ServiceInfo.css";
 
 export default function ServiceInfo() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const headingAnimation = useScrollFadeIn<HTMLHeadingElement>("up");
+  const ImgAnimation = useScrollClipPath<HTMLImageElement>("right");
 
   return (
     <section className={styles.serviceInfoContainer}>
-      <h1 className={mounted ? styles.fadeIn : styles.fadeOut}>
+      <h1 className={styles.landingTitle} {...headingAnimation}>
         <span className="highlight">Git</span>
         {`이 너무 어렵게만\n느껴진다면?`}
         <Image
@@ -27,7 +25,7 @@ export default function ServiceInfo() {
           className={styles.folderImg}
         />
       </h1>
-      <div className={styles.serviceInfo}>
+      <div className={styles.serviceInfo} {...ImgAnimation}>
         {[
           "안녕하세요! 저희는 팀 MergeMasters입니다. (만든 이들 : 박용준, 박정제, 박유현, 윤채현)",
           "Git Challenge는 Git에 대한 문제를 실제 상황처럼 구현된 환경에서 학습할 수 있는 서비스입니다.",
