@@ -368,10 +368,10 @@ id,title,description,category,keyword,answer,graph
 3. `origin`에서 branch를 생성하여 작업한다.
 4. 당신은 `origin`으로 push할 수 있으며, 필요에 따라 `upstream`으로 PR을 생성할 수 있다.
 
-`origin` 저장소 github 주소: https://github.com/flydog98/git-challenge-remote-upstream.git  
-`upstream` 저장소 github 주소: https://github.com/flydog98/git-challenge-remote-origin.git
+`origin` 저장소 디렉터리: /origin  
+`upstream` 저장소 디렉터리: /upstream
 
-위 정보에 맞추어 `origin` 저장소를 로컬 저장소로 가져오고, `upstream` 저장소를 등록해주세요. (각각의 저장소의 이름도 동일해야 합니다.)
+위 정보에 맞추어 `origin` 저장소를 로컬 저장소로 가져오고, `upstream` 저장소를 등록해주세요.
 
 * 저장소를 가져올 때 현재 디렉터리로 가져와주세요.('.' 표현을 이용해야 합니다)",Remote Start,"clone, remote",`git` clone /origin .\n`git` remote add upstream /upstream,"{
     ""graph"": []
@@ -396,10 +396,9 @@ id,title,description,category,keyword,answer,graph
 17,브랜치 최신화하기,"당신이 개발한 기능을 포함한 모든 기능들이 `origin` 저장소의 `main` branch에 합쳐졌습니다.  
 그리고 당신은 `origin` 저장소의 `main` branch에서의 구현 결과를 다른 사람들에게 공유하고자 합니다. 
 
-로컬 저장소에는 다음과 같은 설정이 있습니다.
-
-`origin` 저장소 github 주소: https://github.com/flydog98/git-challenge-remote-upstream.git  
-`upstream` 저장소 github 주소: https://github.com/flydog98/git-challenge-remote-origin.git
+당신의 원격 저장소는 다음과 같습니다.
+`origin` 저장소 디렉터리: /origin  
+`upstream` 저장소 디렉터리: /upstream
 
 현재 당신의 로컬 저장소의 코드는 `origin` 저장소의 버전에 비해 뒤쳐져 있습니다. 로컬 저장소의 코드를 최신화 해 주세요.",Remote Start,"pull, fetch, rebase",`git` pull origin main\n#or\n`git` fetch origin main\n`git` rebase origin/mainzx,"{
     ""graph"": [
@@ -419,9 +418,12 @@ id,title,description,category,keyword,answer,graph
 3. `origin`에서 branch를 생성하여 작업한다.
 4. 당신은 `origin`으로 push할 수 있으며, 필요에 따라 `upstream`으로 PR을 생성할 수 있다.
 
-당신은 `origin` 저장소를 복제한 뒤 `feat/merge-master`라는 branch에서 기능 개발을 완료했습니다.  
+`origin` 저장소 디렉터리: /origin  
+`upstream` 저장소 디렉터리: /upstream
+
+당신은 `origin` 저장소를 복제한 뒤 `feat/merge-master`라는 branch를 생성하여 기능 개발을 완료했습니다.  
 당신은 `mergeMaster.js` 라는 파일을 새로 생성하였으며, 기존에 있던 `MergeMasters.md` 파일을 수정했습니다.
-위 정보에 맞추어 `origin`저장소에 `feat/merge-master` branch의 정보를 최신화하고자 한다면 어떤 명령을 수행해야 할까요?",Remote Start,"push, pull","`git` add .\n`git` commit -m ""feat: mergemaster 구현""\n`git` push -u origin feat/merge-master","{
+위 정보에 맞추어 `origin`저장소에 `feat/merge-master` branch의 정보를 최신화 해 주세요.",Remote Start,"push, pull","`git` add .\n`git` commit -m ""feat: mergemaster 구현""\n`git` push -u origin feat/merge-master","{
     ""graph"": [
         {
             ""id"": ""adc6a7e763d52bf82a64617cb7a739c82d3af2ca"",
