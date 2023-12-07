@@ -43,14 +43,14 @@ export default function Modal({ onClose, children }: ModalProps) {
       onClick={onClose}
       role="button"
       tabIndex={0}
-      onKeyDown={onClose}
+      onKeyDown={preventBubbling}
     >
       <div
         className={styles.container}
         onClick={preventBubbling}
         role="button"
         tabIndex={0}
-        onKeyDown={onClose}
+        onKeyDown={preventBubbling}
       >
         <IconButton className={styles.close} onClick={onClose}>
           <IoCloseOutline />
