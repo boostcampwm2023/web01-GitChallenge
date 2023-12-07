@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { globalStyle, style } from "@vanilla-extract/css";
 
 import { flex } from "../../../design-system/tokens/utils.css";
 
@@ -10,4 +10,7 @@ const badgeGroupLayout = style([
   },
 ]);
 
+globalStyle(`${badgeGroupLayout} a`, {
+  textDecoration: "underline",
+});
 export default badgeGroupLayout;
