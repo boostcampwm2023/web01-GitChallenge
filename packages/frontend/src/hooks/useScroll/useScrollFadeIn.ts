@@ -6,14 +6,15 @@ function useScrollFadeIn<T extends HTMLElement>(
   direction: DirectionType = "up",
   duration = 1000,
   delay = 200,
+  threshold = 0.7,
 ) {
   const element = useRef<T>(null);
 
   const handleDirection: Direction = {
-    up: "translate3d(0, 50%, 0)",
-    down: "translate3d(0, -50%, 0)",
-    left: "translate3d(50%, 0, 0)",
-    right: "translate3d(-50%, 0, 0)",
+    up: "translate3d(0, 25%, 0)",
+    down: "translate3d(0, -25%, 0)",
+    left: "translate3d(25%, 0, 0)",
+    right: "translate3d(-25%, 0, 0)",
   };
 
   const onScroll = useCallback(
@@ -33,7 +34,7 @@ function useScrollFadeIn<T extends HTMLElement>(
     let observer: IntersectionObserver;
 
     if (element.current) {
-      observer = new IntersectionObserver(onScroll, { threshold: 0.7 });
+      observer = new IntersectionObserver(onScroll, { threshold });
       observer.observe(element.current);
     }
 
