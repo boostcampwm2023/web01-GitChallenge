@@ -61,9 +61,9 @@ export function graphParser(graph: string) {
   const graphParsed: object[] = [];
   for (let i = 0; i < lines.length; i += 4) {
     const id = lines[i];
-    const parentId = lines[i + 1];
-    const message = lines[i + 2];
-    const refs = lines[i + 3];
+    const parentId = lines[i + 1] || '';
+    const message = lines[i + 2] || '';
+    const refs = lines[i + 3] || '';
     graphParsed.push({ id, parentId, message, refs });
   }
   return graphParsed;
