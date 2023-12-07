@@ -464,8 +464,12 @@ export class QuizzesController {
     @SessionId() sessionId: string,
   ): Promise<GraphDto> {
     if (!sessionId) return JSON.parse(await this.quizService.getGraphById(id));
-
-    const graph = await this.sessionService.getGraphById(sessionId, id);
+    let graph;
+    try {
+      graph = await this.sessionService.getGraphById(sessionId, id);
+    } catch (e) {
+      return JSON.parse(await this.quizService.getGraphById(id));
+    }
     if (!graph) {
       return JSON.parse(await this.quizService.getGraphById(id));
     } else {

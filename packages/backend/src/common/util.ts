@@ -59,6 +59,9 @@ export function isStringArray(obj: unknown): obj is string[] {
 export function graphParser(graph: string) {
   const lines = graph.split('\n');
   const graphParsed: object[] = [];
+  if (!graph) {
+    return graphParsed;
+  }
   for (let i = 0; i < lines.length; i += 4) {
     const id = lines[i];
     const parentId = lines[i + 1] || '';
