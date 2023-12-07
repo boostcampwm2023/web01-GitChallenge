@@ -42,24 +42,28 @@ export class ContainersService {
   }
 
   private getGitCommand(container: string, command: string): string {
-    return `${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${command}`;
+    return `git config --global core.editor /editor/output.sh; ${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${command}`;
   }
   async runGitCommand(
     container: string,
     command: string,
   ): Promise<{ message: string; result: string; graph?: string }> {
-    // eslint-disable-next-line prefer-const
     let { stdoutData, stderrData } = await this.commandService.executeCommand(
       this.getGitCommand(container, command),
+      `echo "${GRAPH_ESCAPE}" 1>&2`,
       `echo "${GRAPH_ESCAPE}"`,
       this.getGitCommand(container, GRAPH_COMMAND),
     );
+
+    console.log(stdoutData);
+    console.log(stderrData);
 
     const graphMessage = stdoutData
       .slice(stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length)
       .trim();
 
     stdoutData = stdoutData.slice(0, stdoutData.indexOf(GRAPH_ESCAPE));
+    stderrData = stderrData.slice(0, stderrData.indexOf(GRAPH_ESCAPE));
 
     const patternIndex = stdoutData.indexOf('# CREATED_BY_OUTPUT.SH\n');
     if (patternIndex !== -1) {
@@ -67,6 +71,7 @@ export class ContainersService {
       return {
         message,
         result: 'editor',
+        graph: graphMessage,
       };
     }
 
@@ -80,7 +85,7 @@ export class ContainersService {
   private buildEditorCommand(message: string, command: string) {
     const escapedMessage = shellEscape([message]);
 
-    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}; git config --global core.editor /editor/output.sh`;
+    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}`;
   }
 
   private getEditorCommand(
@@ -99,9 +104,9 @@ export class ContainersService {
     command: string,
     message: string,
   ): Promise<{ message: string; result: string; graph: string }> {
-    // eslint-disable-next-line prefer-const
     let { stdoutData, stderrData } = await this.commandService.executeCommand(
       this.getEditorCommand(container, message, command),
+      `echo "${GRAPH_ESCAPE}" 1>&2`,
       `echo "${GRAPH_ESCAPE}"`,
       this.getGitCommand(container, GRAPH_COMMAND),
     );
@@ -111,6 +116,7 @@ export class ContainersService {
       .trim();
 
     stdoutData = stdoutData.slice(0, stdoutData.indexOf(GRAPH_ESCAPE));
+    stderrData = stderrData.slice(0, stderrData.indexOf(GRAPH_ESCAPE));
 
     if (stderrData) {
       return { message: stderrData, result: 'fail', graph: graphMessage };

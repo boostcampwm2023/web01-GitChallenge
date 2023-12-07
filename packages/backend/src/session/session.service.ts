@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Logger } from 'winston';
 import { Model } from 'mongoose';
@@ -103,7 +103,10 @@ export class SessionService {
     if (!session.problems.get(problemId)) {
       throw new Error('problem not found');
     }
-    session.problems.delete(problemId);
+    session.problems.get(problemId).logs = [];
+    session.problems.get(problemId).status = 'solving';
+    session.problems.get(problemId).graph = '';
+    session.problems.get(problemId).containerId = '';
   }
 
   private async getSessionById(id: string): Promise<Session> {
