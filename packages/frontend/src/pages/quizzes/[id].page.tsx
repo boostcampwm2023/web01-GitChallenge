@@ -6,6 +6,7 @@ import { RefObject, useEffect, useReducer, useRef } from "react";
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
 import EditorInfo from "../../components/editor/EditorInfo";
+import Graph from "../../components/graph/Graph";
 import { SolvedModal, useSolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
@@ -132,7 +133,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       <main className={styles.mainContainer}>
         <div className={styles.mainInnerContainer}>
           <div className={styles.topContainer} ref={topRef}>
-            <div style={{ width: "50%", display: "flex" }}>git graph</div>
+            <Graph className={styles.graph} />
             <QuizGuide quiz={quiz} />
           </div>
           <div
