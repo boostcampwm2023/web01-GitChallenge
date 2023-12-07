@@ -57,7 +57,15 @@ index e69de29..3b18e51 100644
   }
 
   async checkCondition6(containerId: string): Promise<boolean> {
-    return (await this.magic.isBranchExist(containerId, 'dev')) === true;
+    if (
+      (await this.magic.getTreeHead(containerId, 'dev')) !==
+      '2c347f65f96ed5817553d668c062f8bec792131d'
+    )
+      return false;
+
+    if ((await this.magic.getNowBranch(containerId)) !== 'main') return false;
+
+    return true;
   }
 
   async checkCondition7(containerId: string): Promise<boolean> {
