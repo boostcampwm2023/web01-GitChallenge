@@ -7,3 +7,4 @@ export { toast, ToastContainer } from "./Toast";
 export { Accordion, useAccordion } from "./Accordion";
 export { default as Footer } from "./Footer";
 export { default as Info } from "./Info";
+export { CodeBlock } from "./CodeBlock";

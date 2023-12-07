@@ -1,13 +1,12 @@
 import { globalStyle, style } from "@vanilla-extract/css";
 
-import color from "../../../design-system/tokens/color";
-import typography from "../../../design-system/tokens/typography";
+import color from "../../../tokens/color";
+import { borderRadius } from "../../../tokens/utils.css";
 
-export const answerContainer = style([
-  typography.$semantic.body2Regular,
+export const container = style([
+  borderRadius,
   {
     backgroundColor: color.$semantic.bgAlt,
-    borderRadius: 8,
     width: "100%",
     padding: "23px 25px",
     marginBottom: 19,
@@ -16,6 +15,6 @@ export const answerContainer = style([
   },
 ]);
 
-globalStyle(`${answerContainer} code`, {
+globalStyle(`${container} code`, {
   color: color.$scale.coral500,
 });
