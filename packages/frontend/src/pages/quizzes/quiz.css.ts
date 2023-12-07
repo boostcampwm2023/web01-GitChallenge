@@ -43,6 +43,8 @@ export const mainInnerContainer = style([
   },
 ]);
 
+export const graph = style([flex, { width: "50%" }]);
+
 export const topContainer = style([flex, border.verticalSide]);
 
 export const buttonGroup = style([

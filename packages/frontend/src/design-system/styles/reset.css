@@ -129,6 +129,11 @@ table {
   border-spacing: 0;
 }
 
+text {
+  font-size: 12px;
+  fill: var(--mm-scale-color-grey-700);
+}
+
 button {
   cursor: pointer;
 }
