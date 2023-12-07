@@ -36,13 +36,15 @@ export const prompt = style({
   position: "absolute",
   top: 1,
   left: 0,
+  color: color.$semantic.primary,
+  fontWeight: 700,
 });
 
 export const stdinContainer = style({ position: "relative" });
 
 export const stdin = style({
   display: "block",
-  textIndent: 16,
+  textIndent: 22,
 });
 
 export const commandInput = style({
