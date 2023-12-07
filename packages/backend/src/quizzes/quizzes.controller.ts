@@ -339,7 +339,12 @@ export class QuizzesController {
         await this.sessionService.getLogObject(sessionId, id)
       ).logs
         .filter((log) => log.mode === 'command')
-        .map((log) => log.message);
+        .map((log) => {
+          if (log.message.startsWith('git')) {
+            return log.message.replace('git', '`git`');
+          }
+          return log.message;
+        });
       const encodedCommands = encryptObject({
         id,
         commands,
