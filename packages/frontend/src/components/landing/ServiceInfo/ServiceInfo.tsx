@@ -15,7 +15,7 @@ export default function ServiceInfo() {
 
   return (
     <section className={styles.serviceInfoContainer}>
-      <h1 className={styles.landingTitle} {...headingAnimation}>
+      <h2 className={styles.landingTitle} {...headingAnimation}>
         <span className="highlight">Git</span>
         {`이 너무 어렵게만\n느껴진다면?`}
         <Image
@@ -25,7 +25,7 @@ export default function ServiceInfo() {
           height={41}
           className={styles.folderImg}
         />
-      </h1>
+      </h2>
       <div className={styles.serviceInfo} {...ImgAnimation}>
         {[
           "안녕하세요! 저희는 팀 MergeMasters입니다. (만든 이들 : 박용준, 박정제, 박유현, 윤채현)",

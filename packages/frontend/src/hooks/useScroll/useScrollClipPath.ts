@@ -6,6 +6,7 @@ function useScrollClipPath<T extends HTMLElement>(
   direction = "left",
   duration = 1,
   delay = 0,
+  threshold = 0.7,
 ) {
   const element = useRef<T>(null);
 
@@ -35,7 +36,7 @@ function useScrollClipPath<T extends HTMLElement>(
     let observer: IntersectionObserver;
 
     if (element.current) {
-      observer = new IntersectionObserver(onScroll, { threshold: 0.7 });
+      observer = new IntersectionObserver(onScroll, { threshold });
       observer.observe(<T>element.current.parentNode);
     }
 

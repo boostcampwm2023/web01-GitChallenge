@@ -1,24 +1,33 @@
+/* eslint-disable */
+
 import Image from "next/image";
 import Link from "next/link";
 
+import useScrollFadeIn from "../../../hooks/useScroll/useScrollFadeIn";
 import { toCodeTag } from "../../../utils/mapper";
 
 import * as styles from "./Book.css";
 import { data } from "./data";
 
 export default function Book() {
+  const thresholds = [0.1, 0.5, 0.5, 0.1];
+
   return (
     <section>
-      {data.map((item) => (
-        <div key={item.title} className={styles.container}>
-          <h1 className={styles.h1}>{item.title}</h1>
+      {data.map((item, index) => (
+        <div
+          key={item.title}
+          className={styles.container}
+          {...useScrollFadeIn("up", 1000, 200, thresholds[index])}
+        >
+          <h2 className={styles.h1}>{item.title}</h2>
           {item.description && (
             <div className={styles.description}>{item.description}</div>
           )}
           {item.subItems &&
             item.subItems.map((list) => (
               <>
-                <h2
+                <h3
                   className={styles.h2}
                   dangerouslySetInnerHTML={{ __html: toCodeTag(list.subtitle) }}
                 />
