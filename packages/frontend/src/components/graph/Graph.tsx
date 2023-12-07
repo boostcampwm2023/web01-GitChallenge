@@ -40,14 +40,11 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .selectAll("text")
     .data(treeData.descendants())
     .join(
-      (enter) =>
-        enter
-          .append("text")
-          .style("opacity", 0)
-          .text((d) => d.data.message),
-      (update) => update.attr("x", (d) => d.x + 15).attr("y", (d) => d.y),
+      (enter) => enter.append("text").style("opacity", 0),
+      (update) => update,
       (exit) => exit.transition().duration(1000).style("opacity", 0).remove(),
     )
+    .text((d) => d.data.message)
     .attr("x", (d) => d.x + 20)
     .attr("y", (d) => d.y + 5)
     .transition()
