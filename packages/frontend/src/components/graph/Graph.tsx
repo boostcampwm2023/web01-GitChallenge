@@ -1,9 +1,9 @@
 import * as d3 from "d3";
-import React, { RefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef } from "react";
 
 import color from "../../design-system/tokens/color";
+import { QuizGitGraphCommit } from "../../types/quiz";
 
-import { deletedData, initialData, newMockData } from "./data";
 import fillColor from "./fillColor";
 import { InitialDataProps, parsingMultipleParents } from "./parsing";
 
@@ -15,6 +15,10 @@ type AddedLineType = {
 };
 
 function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
+  if (!data.length) {
+    return;
+  }
+
   const { parsedData, additionalLinks } = parsingMultipleParents(data);
   const addedLine: AddedLineType[] = [];
 
@@ -108,24 +112,16 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
 }
 
 interface GraphProps {
+  data: QuizGitGraphCommit[];
   className?: string;
 }
 
-export function Graph({ className }: GraphProps) {
-  const [data, setData] = useState(initialData);
+export function Graph({ data, className = "" }: GraphProps) {
   const gRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
     renderD3(gRef, data);
   }, [data]);
-
-  const handleNewData = () => {
-    setData(newMockData);
-  };
-
-  const handleDelete = () => {
-    setData(deletedData);
-  };
 
   return (
     <div className={className}>
@@ -136,12 +132,6 @@ export function Graph({ className }: GraphProps) {
           <g id="text" />
         </g>
       </svg>
-      <button type="button" onClick={handleNewData}>
-        click
-      </button>
-      <button type="button" onClick={handleDelete}>
-        delete
-      </button>
     </div>
   ); // Replace with your actual JSX
 }
