@@ -15,12 +15,7 @@ export default function Header() {
       <div className={styles.container}>
         <h1>
           <Link href="/">
-            <Image
-              src={logoSrc}
-              alt="git-challenge-logo"
-              width={238}
-              height={30}
-            />
+            <Image src={logoSrc} alt="Git Challenge" width={238} height={30} />
           </Link>
         </h1>
       </div>
