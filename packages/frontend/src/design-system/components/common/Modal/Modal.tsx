@@ -1,8 +1,9 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { IoCloseOutline } from "react-icons/io5";
 
 import { ESC_KEY } from "../../../../constants/event";
+import useMount from "../../../../hooks/useMount";
 import { preventBubbling } from "../../../../utils/event";
 import IconButton from "../IconButton/IconButton";
 
@@ -18,10 +19,9 @@ const setScrollLock = (isLock: boolean) => {
 };
 
 export default function Modal({ onClose, children }: ModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const { mounted } = useMount();
 
   useEffect(() => {
-    setMounted(true);
     const escKeyCloseEvent = (event: KeyboardEvent) => {
       if (event.key === ESC_KEY) {
         onClose();
