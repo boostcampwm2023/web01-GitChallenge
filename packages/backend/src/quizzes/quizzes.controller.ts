@@ -161,18 +161,15 @@ export class QuizzesController {
         ));
 
         if (result === MODE.EDITOR) {
-          await this.containerService.stashPopContainer(containerId);
-          // containerId = await this.containerService.getContainer(id);
-          // await this.sessionService.setContainerBySessionId(
-          //   sessionId,
-          //   id,
-          //   containerId,
-          // );
-          // this.containerService.restoreContainer(
-          //   await this.sessionService.getLogObject(sessionId, id),
-          // );
-        } else {
-          await this.containerService.stashContainer(containerId);
+          containerId = await this.containerService.getContainer(id);
+          await this.sessionService.setContainerBySessionId(
+            sessionId,
+            id,
+            containerId,
+          );
+          this.containerService.restoreContainer(
+            await this.sessionService.getLogObject(sessionId, id),
+          );
         }
       } else if (execCommandDto.mode === MODE.EDITOR) {
         // editor mode

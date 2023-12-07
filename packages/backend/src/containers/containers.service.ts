@@ -138,8 +138,6 @@ export class ContainersService {
     const chownOriginCommand = `[ -d ~/origins/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /origin`;
     const chownUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /remote`;
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
-    const containerDirectoryCommand = `mkdir /root/store/${containerId}`;
-    const containerDirectoryCpCommand = `docker cp ${containerId}:/home/quizzer/quiz/. /root/store/${containerId}/`;
     await this.commandService.executeCommand(
       createContainerCommand,
       copyFilesCommand,
@@ -149,8 +147,6 @@ export class ContainersService {
       chownOriginCommand,
       chownUpstreamCommand,
       coreEditorCommand,
-      containerDirectoryCommand,
-      containerDirectoryCpCommand,
     );
 
     return containerId;
@@ -262,20 +258,6 @@ export class ContainersService {
 
     await this.commandService.executeCommand(
       this.buildDockerCommand(containerId, ...commands),
-    );
-  }
-
-  async stashContainer(container: string): Promise<void> {
-    this.commandService.executeCommand(
-      `docker cp ${container}:/home/quizzer/quiz/. /root/store/${container}/`,
-    );
-  }
-
-  async stashPopContainer(container: string): Promise<void> {
-    this.commandService.executeCommand(
-      `docker exec -u quizzer -w /home/quizzer/ ${container} rm -rf quiz/.`,
-      `docker cp /root/store/${container} ${container}:/home/quizzer/quiz/.`,
-      `docker exec -u root ${container} chown -R quizzer:quizzer /home/quizzer`,
     );
   }
 }
