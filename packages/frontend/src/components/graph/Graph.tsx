@@ -17,18 +17,25 @@ type AddedLineType = {
 };
 
 function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
-  if (!data.length) {
-    return;
-  }
-
   const { parsedData, additionalLinks } = parsingMultipleParents(data);
   const addedLine: AddedLineType[] = [];
+
+  // Select the root of the tree and bind the data
+  const svg = d3.select(svgRef.current);
+
+  if (!parsedData.length) {
+    svg.select("#text").selectAll("*").remove();
+    svg.select("#link").selectAll("*").remove();
+    svg.select("#node").selectAll("*").remove();
+    return;
+  }
 
   // Stratify the data
   const stratify = d3
     .stratify<InitialDataProps>()
     .parentId((d) => d.parentId)
     .id((d) => d.id);
+
   const rootNode = stratify(parsedData);
 
   // Create a tree layout
@@ -37,9 +44,6 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
   // Apply the tree layout to the hierarchical data
   const treeData = treeLayout(rootNode);
   fillColor(treeData);
-
-  // Select the root of the tree and bind the data
-  const svg = d3.select(svgRef.current);
 
   // Add text next to each node
   svg
