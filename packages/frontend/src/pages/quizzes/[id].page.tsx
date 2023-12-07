@@ -1,7 +1,14 @@
 import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { RefObject, useEffect, useReducer, useRef } from "react";
+import {
+  RefObject,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
@@ -19,7 +26,7 @@ import {
   terminalActionTypeMap,
   terminalReducer,
 } from "../../reducers/terminalReducer";
-import { Categories, Quiz } from "../../types/quiz";
+import { Categories, Quiz, QuizGitGraphCommit } from "../../types/quiz";
 import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
 
@@ -31,11 +38,24 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     query: { id },
   } = router;
 
+  const [gitGraphData, setGitGraphData] = useState<QuizGitGraphCommit[]>([]);
+
   const solvedModal = useSolvedModal(isString(id) ? +id : -1);
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
     useReducer(terminalReducer, initialTerminalState);
 
   const terminalInputRef = useRef<HTMLSpanElement>(null);
+
+  const fetchGitGraphData = useCallback(async (curId: number) => {
+    try {
+      const { graph: nextGraph } = await quizAPI.getGraph(curId);
+      setGitGraphData(nextGraph);
+    } catch (error) {
+      handleResponseError(error);
+    }
+  }, []);
+
+  const fetchGitGraphDataRef = useRef(fetchGitGraphData);
 
   const handleTerminal = async (input: string) => {
     if (!isString(id)) {
@@ -43,18 +63,21 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     }
 
     try {
-      const { result, message } = await quizAPI.postCommand({
+      const { result, message, graph } = await quizAPI.postCommand({
         id: +id,
         mode: terminalMode,
         message: input,
       });
+      if (graph) {
+        setGitGraphData(graph);
+      }
       terminalDispatch({
         type: terminalActionTypeMap[terminalMode][result],
         input,
         message,
       });
     } catch (error) {
-      handleResponseError(error);
+      handleResponseError(error, terminalMode);
     }
   };
 
@@ -85,26 +108,16 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     router.push(`${BROWSWER_PATH.QUIZZES}/${+id + 1}`);
   };
 
-  const handleResponseError = (error: unknown) => {
-    if (
-      isAxiosError(error) &&
-      error.response?.status === 403 &&
-      terminalMode === "command"
-    ) {
-      toast.error("지원하지 않는 명령어입니다.");
-      return;
-    }
-
-    toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
-  };
-
   const handleReset = async () => {
     if (!isString(id)) {
       return;
     }
 
+    const numId = +id;
+
     try {
-      await quizAPI.resetQuizById(+id);
+      await quizAPI.resetQuizById(numId);
+      fetchGitGraphDataRef?.current(numId);
       terminalDispatch({ type: TerminalActionTypes.reset });
       clearTextContent(terminalInputRef);
       terminalInputRef.current?.focus();
@@ -117,6 +130,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   };
 
   useEffect(() => {
+    if (isString(id)) {
+      fetchGitGraphDataRef?.current(+id);
+    }
     terminalDispatch({ type: TerminalActionTypes.reset });
     clearTextContent(terminalInputRef);
   }, [id]);
@@ -133,7 +149,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       <main className={styles.mainContainer}>
         <div className={styles.mainInnerContainer}>
           <div className={styles.topContainer} ref={topRef}>
-            <Graph className={styles.graph} />
+            <Graph className={styles.graph} data={gitGraphData} />
             <QuizGuide quiz={quiz} />
           </div>
           <div
@@ -213,4 +229,20 @@ function clearTextContent<T extends Element>(ref: RefObject<T>) {
 
 function isEditorMode(terminalMode: "editor" | "command") {
   return terminalMode === "editor";
+}
+
+function handleResponseError(
+  error: unknown,
+  curTerminalMode?: "command" | "editor",
+) {
+  if (
+    isAxiosError(error) &&
+    error.response?.status === 403 &&
+    curTerminalMode === "command"
+  ) {
+    toast.error("지원하지 않는 명령어입니다.");
+    return;
+  }
+
+  toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
 }

@@ -5,7 +5,7 @@ export type CommandEditor = "editor";
 export type Command = {
   message: string;
   result: CommandSuccess | CommandFail | CommandEditor;
-  graph?: string;
+  graph?: QuizGitGraph;
 };
 
 export type Quiz = {
@@ -42,3 +42,12 @@ export type QuizSolveCorrect = {
 export type QuizSolveWrong = {
   solved: false;
 };
+
+export type QuizGitGraphCommit = {
+  id: string;
+  parentId: string;
+  message: string;
+  refs: string;
+};
+
+export type QuizGitGraph = QuizGitGraphCommit[];

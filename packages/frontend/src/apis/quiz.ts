@@ -3,6 +3,7 @@ import {
   Categories,
   Command,
   Quiz,
+  QuizGitGraph,
   QuizSolve,
   SharedQuiz,
 } from "../types/quiz";
@@ -41,6 +42,12 @@ export const quizAPI = {
     );
     return data;
   },
+  getGraph: async (id: number) => {
+    const { data } = await instance.get<GetQuizGraphResponse>(
+      `${API_PATH.QUIZZES}/${id}/graph`,
+    );
+    return data;
+  },
 };
 
 type PostCommandRequest = {
@@ -52,4 +59,8 @@ type PostCommandRequest = {
 export type GetSharedAnswerResponse = {
   answer: string[];
   quiz: SharedQuiz;
+};
+
+type GetQuizGraphResponse = {
+  graph: QuizGitGraph;
 };
