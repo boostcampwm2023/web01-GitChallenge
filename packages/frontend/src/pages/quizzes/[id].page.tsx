@@ -20,6 +20,7 @@ import {
   terminalReducer,
 } from "../../reducers/terminalReducer";
 import { Categories, Quiz, QuizGitGraphCommit } from "../../types/quiz";
+import { TerminalContentType } from "../../types/terminalType";
 import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
 
@@ -150,7 +151,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
             ref={barRef}
             aria-label="divider"
             onMouseDown={handleBarHover}
-          />
+          >
+            {getTerminalInfo({ terminalMode, contentArray })}
+          </div>
           {isEditorMode(terminalMode) ? (
             <Editor initialFile={editorFile} onSubmit={handleTerminal} />
           ) : (
@@ -236,4 +239,24 @@ function handleResponseError(
   }
 
   toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+}
+
+function getTerminalInfo({
+  terminalMode,
+  contentArray,
+}: {
+  terminalMode: "command" | "editor";
+  contentArray: TerminalContentType[];
+}) {
+  const VI = "vi";
+  const EDITOR_REDIRECTION = " ◀ ";
+
+  return isEditorMode(terminalMode)
+    ? [VI, getCommandOpenEditor(contentArray)].join(EDITOR_REDIRECTION)
+    : "";
+}
+
+function getCommandOpenEditor(contentArray: TerminalContentType[]) {
+  const index = contentArray.findLastIndex(({ type }) => type === "stdin");
+  return index < 0 ? "" : contentArray[index].content;
 }

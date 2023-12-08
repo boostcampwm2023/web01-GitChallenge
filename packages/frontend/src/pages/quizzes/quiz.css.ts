@@ -1,6 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
 import color from "../../design-system/tokens/color";
+import typography from "../../design-system/tokens/typography";
 import {
   border,
   flex,
@@ -12,11 +13,14 @@ import {
 export const bar = style([
   middleLayer,
   border.all,
+  typography.$semantic.code,
   {
     position: "relative",
     minHeight: 20,
     borderBottom: "none",
+    color: color.$scale.grey600,
     backgroundColor: color.$scale.grey100,
+    textAlign: "center",
     cursor: "row-resize",
 
     "::before": {
