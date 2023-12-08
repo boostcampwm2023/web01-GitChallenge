@@ -1,6 +1,7 @@
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
+  RefObject,
   useRef,
   useState,
 } from "react";
@@ -10,6 +11,8 @@ import { ENTER_KEY, ESC_KEY } from "../../constants/event";
 import * as styles from "./Editor.css";
 
 type ModeType = "insert" | "command";
+
+const ERROR_CLASS_NAME = "error";
 
 export interface EditorProps {
   initialFile: string;
@@ -24,7 +27,13 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const manipulateErrorClass = createClassManipulator(
+    inputRef,
+    ERROR_CLASS_NAME,
+  );
+
   const toCommandMode = (nextInputValue: string) => {
+    manipulateErrorClass("remove");
     setMode("command");
     setInputValue(nextInputValue);
     setInputReadonly(true);
@@ -90,6 +99,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         if (changedFile) {
           event.preventDefault();
           toCommandMode("E37: No write since last change (add ! to override)");
+          manipulateErrorClass("add");
           return;
         }
         onSubmit(initialFile);
@@ -108,6 +118,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
 
       event.preventDefault();
       toCommandMode(`E492: Not an editor command: ${value.substring(1)}`);
+      manipulateErrorClass("add");
     }
   };
 
@@ -147,4 +158,12 @@ function isCommandMode(mode: ModeType) {
 
 function isInsertMode(mode: ModeType) {
   return !isCommandMode(mode);
+}
+
+function createClassManipulator<T extends Element>(
+  ref: RefObject<T>,
+  className: string,
+) {
+  return (action: "add" | "remove") =>
+    ref.current?.classList[action](className);
 }
