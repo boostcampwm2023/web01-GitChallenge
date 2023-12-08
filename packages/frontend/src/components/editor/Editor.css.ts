@@ -52,6 +52,12 @@ export const input = style([
     backgroundColor: color.$semantic.bgDefault,
     color: color.$scale.grey900,
     outline: "none",
+
+    selectors: {
+      "&.error": {
+        color: color.$semantic.danger,
+      },
+    },
   },
 ]);
 
