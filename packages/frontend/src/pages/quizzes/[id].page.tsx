@@ -127,11 +127,13 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     }
     terminalDispatch({ type: TerminalActionTypes.reset });
     clearTextContent(terminalInputRef);
+    terminalInputRef.current?.focus();
   }, [id]);
 
   useEffect(() => {
     scrollIntoView(terminalInputRef);
     clearTextContent(terminalInputRef);
+    terminalInputRef.current?.focus();
   }, [contentArray]);
 
   const { barRef, topRef, handleBarHover } = useResizableSplitView();
