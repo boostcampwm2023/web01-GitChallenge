@@ -178,9 +178,9 @@ export class ContainersService {
         this.availableContainers.get(quizId).push(containerId);
       });
 
-      if (!(await this.isValidateContainerId(containerId))) {
-        return await this.createContainer(quizId);
-      }
+      // if (!(await this.isValidateContainerId(containerId))) {
+      //   return await this.createContainer(quizId);
+      // }
 
       return containerId;
     }
