@@ -1,8 +1,6 @@
 import {
   ChangeEventHandler,
-  FocusEventHandler,
   KeyboardEventHandler,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -11,6 +9,7 @@ import { ENTER_KEY, ESC_KEY } from "../../constants/event";
 import { createClassManipulator } from "../../utils/classList";
 
 import * as styles from "./Editor.css";
+import { useTextareaCursor } from "./useTextareaCursor";
 
 type ModeType = "insert" | "command";
 
@@ -28,8 +27,14 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const [textareaValue, setTextareaValue] = useState(initialFile);
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [textareaCursorLast, setTextareaCursorLast] = useState(false);
-  const textareaCursorRef = useRef({ selectionStart: 0, selectionEnd: 0 });
+
+  const {
+    storeCursor,
+    restoreCursorRef,
+    storeCursorBeforeJumpToLast,
+    handleTextareaBlur,
+    handleTextareaFocus,
+  } = useTextareaCursor(textareaRef);
 
   const manipulateErrorClass = createClassManipulator(
     inputRef,
@@ -53,16 +58,14 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     if (isCommandMode(mode)) {
       const { selectionStart, selectionEnd } = target;
 
-      // key가 추가된 cursor 값을 key가 추가되기 전으로
       const keyOffset = key?.length ?? 0;
       const selectionStartBeforeKeyAdded = selectionStart - keyOffset;
       const selectionEndBeforeKeyAdded = selectionEnd - keyOffset;
 
       if (key === ":") {
-        target.setSelectionRange(
-          selectionStartBeforeKeyAdded,
-          selectionEndBeforeKeyAdded,
-        );
+        // textarea가 blur되기 전에 key가 입력되기 전의 커서 위치를 저장하고 복원해야 함
+        storeCursor(selectionStartBeforeKeyAdded, selectionEndBeforeKeyAdded);
+        restoreCursorRef.current();
 
         setInputValue(key);
         setInputReadonly(false);
@@ -70,20 +73,16 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         return;
       }
 
-      // 커서가 마지막으로 가기 전에 cursor 저장
-      textareaCursorRef.current = {
-        selectionStart: selectionStartBeforeKeyAdded,
-        selectionEnd: selectionEndBeforeKeyAdded,
-      };
-      setTextareaCursorLast(true);
+      storeCursorBeforeJumpToLast(
+        selectionStartBeforeKeyAdded,
+        selectionEndBeforeKeyAdded,
+      );
 
       if (key === "i") {
         setMode("insert");
         setInputValue("-- INSERT --");
         return;
       }
-
-      return;
     }
     if (isInsertMode(mode)) setTextareaValue(target.value);
   };
@@ -152,28 +151,6 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   }) => {
     setInputValue(value);
   };
-
-  const handleTextareaBlur: FocusEventHandler<HTMLTextAreaElement> = ({
-    target: { selectionStart, selectionEnd },
-  }) => {
-    textareaCursorRef.current = { selectionStart, selectionEnd };
-  };
-
-  const handleTextareaFocus: FocusEventHandler<HTMLTextAreaElement> = ({
-    target,
-  }) => {
-    const { selectionStart, selectionEnd } = textareaCursorRef.current;
-    target.setSelectionRange(selectionStart, selectionEnd);
-  };
-
-  useLayoutEffect(() => {
-    if (textareaCursorLast) {
-      // 마지막으로 이동한 커서 위치 이전으로 복원
-      const { selectionStart, selectionEnd } = textareaCursorRef.current;
-      textareaRef.current?.setSelectionRange(selectionStart, selectionEnd);
-      setTextareaCursorLast(false);
-    }
-  }, [textareaCursorLast]);
 
   return (
     <div className={styles.container}>
