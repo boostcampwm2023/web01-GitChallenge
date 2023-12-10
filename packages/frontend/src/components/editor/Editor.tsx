@@ -2,6 +2,7 @@ import {
   ChangeEventHandler,
   FocusEventHandler,
   KeyboardEventHandler,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -27,6 +28,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const [textareaValue, setTextareaValue] = useState(initialFile);
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaCursorLast, setTextareaCursorLast] = useState(false);
   const textareaCursorRef = useRef({ selectionStart: 0, selectionEnd: 0 });
 
   const manipulateErrorClass = createClassManipulator(
@@ -48,12 +50,6 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     const key = (event.nativeEvent as InputEvent).data;
     event.preventDefault();
     if (isCommandMode(mode)) {
-      if (key === "i") {
-        setMode("insert");
-        setInputValue("-- INSERT --");
-        event.preventDefault();
-        return;
-      }
       if (key === ":") {
         // ":"이 반영된 cursor 값을 ":"이 반영되기 전으로 보정
         event.target.setSelectionRange(
@@ -67,6 +63,21 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         event.preventDefault();
         return;
       }
+
+      textareaCursorRef.current = {
+        selectionStart: event.target.selectionStart - 1,
+        selectionEnd: event.target.selectionEnd - 1,
+      };
+      setTextareaCursorLast(true);
+
+      if (key === "i") {
+        setMode("insert");
+        setInputValue("-- INSERT --");
+        event.preventDefault();
+        return;
+      }
+
+      return;
     }
     if (isInsertMode(mode)) setTextareaValue(event.target.value);
   };
@@ -148,6 +159,14 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     const { selectionStart, selectionEnd } = textareaCursorRef.current;
     target.setSelectionRange(selectionStart, selectionEnd);
   };
+
+  useLayoutEffect(() => {
+    if (textareaCursorLast) {
+      const { selectionStart, selectionEnd } = textareaCursorRef.current;
+      textareaRef.current?.setSelectionRange(selectionStart, selectionEnd);
+      setTextareaCursorLast(false);
+    }
+  }, [textareaCursorLast]);
 
   return (
     <div className={styles.container}>
