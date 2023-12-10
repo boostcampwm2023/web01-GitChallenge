@@ -137,6 +137,8 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         onKeyUp={handleTextareaKeyUp}
         ref={textareaRef}
         data-testid="textarea"
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus
       />
       <input
         className={styles.input}
