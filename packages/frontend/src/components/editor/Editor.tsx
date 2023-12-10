@@ -1,12 +1,12 @@
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
-  RefObject,
   useRef,
   useState,
 } from "react";
 
 import { ENTER_KEY, ESC_KEY } from "../../constants/event";
+import { createClassManipulator } from "../../utils/classList";
 
 import * as styles from "./Editor.css";
 
@@ -158,12 +158,4 @@ function isCommandMode(mode: ModeType) {
 
 function isInsertMode(mode: ModeType) {
   return !isCommandMode(mode);
-}
-
-function createClassManipulator<T extends Element>(
-  ref: RefObject<T>,
-  className: string,
-) {
-  return (action: "add" | "remove") =>
-    ref.current?.classList[action](className);
 }
