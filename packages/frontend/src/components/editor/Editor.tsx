@@ -52,12 +52,13 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const handleTextareaOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
     event,
   ) => {
+    const { target } = event;
+    const { value, selectionStart, selectionEnd } = target;
+
     const key = (event.nativeEvent as InputEvent).data;
     event.preventDefault();
-    const { target } = event;
-    if (isCommandMode(mode)) {
-      const { selectionStart, selectionEnd } = target;
 
+    if (isCommandMode(mode)) {
       const keyOffset = key?.length ?? 0;
       const selectionStartBeforeKeyAdded = selectionStart - keyOffset;
       const selectionEndBeforeKeyAdded = selectionEnd - keyOffset;
@@ -84,7 +85,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         return;
       }
     }
-    if (isInsertMode(mode)) setTextareaValue(target.value);
+    if (isInsertMode(mode)) setTextareaValue(value);
   };
 
   const handleTextareaKeyUp: KeyboardEventHandler = (event) => {
