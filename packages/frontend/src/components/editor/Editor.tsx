@@ -49,14 +49,20 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   ) => {
     const key = (event.nativeEvent as InputEvent).data;
     event.preventDefault();
+    const { target } = event;
     if (isCommandMode(mode)) {
+      const { selectionStart, selectionEnd } = target;
+
       // key가 추가된 cursor 값을 key가 추가되기 전으로
       const keyOffset = key?.length ?? 0;
-      const selectionStart = event.target.selectionStart - keyOffset;
-      const selectionEnd = event.target.selectionEnd - keyOffset;
+      const selectionStartBeforeKeyAdded = selectionStart - keyOffset;
+      const selectionEndBeforeKeyAdded = selectionEnd - keyOffset;
 
       if (key === ":") {
-        event.target.setSelectionRange(selectionStart, selectionEnd);
+        target.setSelectionRange(
+          selectionStartBeforeKeyAdded,
+          selectionEndBeforeKeyAdded,
+        );
 
         setInputValue(key);
         setInputReadonly(false);
@@ -65,7 +71,10 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
       }
 
       // 커서가 마지막으로 가기 전에 cursor 저장
-      textareaCursorRef.current = { selectionStart, selectionEnd };
+      textareaCursorRef.current = {
+        selectionStart: selectionStartBeforeKeyAdded,
+        selectionEnd: selectionEndBeforeKeyAdded,
+      };
       setTextareaCursorLast(true);
 
       if (key === "i") {
@@ -76,7 +85,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
 
       return;
     }
-    if (isInsertMode(mode)) setTextareaValue(event.target.value);
+    if (isInsertMode(mode)) setTextareaValue(target.value);
   };
 
   const handleTextareaKeyUp: KeyboardEventHandler = (event) => {
