@@ -50,12 +50,13 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     const key = (event.nativeEvent as InputEvent).data;
     event.preventDefault();
     if (isCommandMode(mode)) {
+      // key가 추가된 cursor 값을 key가 추가되기 전으로
+      const keyOffset = key?.length ?? 0;
+      const selectionStart = event.target.selectionStart - keyOffset;
+      const selectionEnd = event.target.selectionEnd - keyOffset;
+
       if (key === ":") {
-        // ":"이 반영된 cursor 값을 ":"이 반영되기 전으로 보정
-        event.target.setSelectionRange(
-          event.target.selectionStart - 1,
-          event.target.selectionEnd - 1,
-        );
+        event.target.setSelectionRange(selectionStart, selectionEnd);
 
         setInputValue(key);
         setInputReadonly(false);
@@ -64,10 +65,8 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         return;
       }
 
-      textareaCursorRef.current = {
-        selectionStart: event.target.selectionStart - 1,
-        selectionEnd: event.target.selectionEnd - 1,
-      };
+      // 커서가 마지막으로 가기 전에 cursor 저장
+      textareaCursorRef.current = { selectionStart, selectionEnd };
       setTextareaCursorLast(true);
 
       if (key === "i") {
@@ -162,6 +161,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
 
   useLayoutEffect(() => {
     if (textareaCursorLast) {
+      // 마지막으로 이동한 커서 위치 이전으로 복원
       const { selectionStart, selectionEnd } = textareaCursorRef.current;
       textareaRef.current?.setSelectionRange(selectionStart, selectionEnd);
       setTextareaCursorLast(false);
