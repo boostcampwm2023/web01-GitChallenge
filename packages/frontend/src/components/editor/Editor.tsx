@@ -61,7 +61,6 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         setInputValue(key);
         setInputReadonly(false);
         inputRef.current?.focus();
-        event.preventDefault();
         return;
       }
 
@@ -72,7 +71,6 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
       if (key === "i") {
         setMode("insert");
         setInputValue("-- INSERT --");
-        event.preventDefault();
         return;
       }
 
