@@ -6,6 +6,7 @@ import {
   Modal,
   toast,
 } from "../../../design-system/components/common";
+import { createClassManipulator } from "../../../utils/classList";
 
 import * as styles from "./SolvedModal.css";
 
@@ -27,14 +28,15 @@ export function SolvedModal({
   onNextQuiz,
 }: SolvedModalProps) {
   const copyButtonRef = useRef<HTMLButtonElement>(null);
+  const manipulateVisibleClass = createClassManipulator(copyButtonRef, VISIBLE);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(link);
-      copyButtonRef.current?.classList.add(VISIBLE);
+      manipulateVisibleClass("add");
 
       setTimeout(() => {
-        copyButtonRef.current?.classList.remove(VISIBLE);
+        manipulateVisibleClass("remove");
       }, COPY_SUCCESS_DURATION);
     } catch (error) {
       toast.error("링크 복사를 실패했습니다. 잠시 후 다시 시도해 주세요.");
