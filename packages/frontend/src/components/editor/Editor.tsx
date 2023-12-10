@@ -1,5 +1,6 @@
 import {
   ChangeEventHandler,
+  FocusEventHandler,
   KeyboardEventHandler,
   useRef,
   useState,
@@ -26,6 +27,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const [textareaValue, setTextareaValue] = useState(initialFile);
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaCursorRef = useRef({ selectionStart: 0, selectionEnd: 0 });
 
   const manipulateErrorClass = createClassManipulator(
     inputRef,
@@ -53,6 +55,12 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         return;
       }
       if (key === ":") {
+        // ":"이 반영된 cursor 값을 ":"이 반영되기 전으로 보정
+        event.target.setSelectionRange(
+          event.target.selectionStart - 1,
+          event.target.selectionEnd - 1,
+        );
+
         setInputValue(key);
         setInputReadonly(false);
         inputRef.current?.focus();
@@ -128,6 +136,19 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     setInputValue(value);
   };
 
+  const handleTextareaBlur: FocusEventHandler<HTMLTextAreaElement> = ({
+    target: { selectionStart, selectionEnd },
+  }) => {
+    textareaCursorRef.current = { selectionStart, selectionEnd };
+  };
+
+  const handleTextareaFocus: FocusEventHandler<HTMLTextAreaElement> = ({
+    target,
+  }) => {
+    const { selectionStart, selectionEnd } = textareaCursorRef.current;
+    target.setSelectionRange(selectionStart, selectionEnd);
+  };
+
   return (
     <div className={styles.container}>
       <textarea
@@ -135,6 +156,8 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
         value={textareaValue}
         onChange={handleTextareaOnChange}
         onKeyUp={handleTextareaKeyUp}
+        onFocus={handleTextareaFocus}
+        onBlur={handleTextareaBlur}
         ref={textareaRef}
         data-testid="textarea"
         // eslint-disable-next-line jsx-a11y/no-autofocus
