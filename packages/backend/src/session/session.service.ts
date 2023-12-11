@@ -38,6 +38,7 @@ export class SessionService {
         logs: [],
         containerId: '',
         graph: '',
+        ref: '',
       });
       this.logger.log('info', `session ${session._id as ObjectId} updated`);
       this.logger.log(
@@ -177,6 +178,11 @@ export class SessionService {
     return session.problems.get(problemId)?.graph;
   }
 
+  async getRefById(sessionId: string, problemId: number): Promise<string> {
+    const session = await this.getSessionById(sessionId);
+    return session.problems.get(problemId)?.ref;
+  }
+
   async isGraphUpdated(
     sessionId: string,
     problemId: number,
@@ -199,6 +205,18 @@ export class SessionService {
       throw new Error('problem not found');
     }
     session.problems.get(problemId).graph = graph;
+  }
+
+  async updateRef(
+    sessionId: string,
+    problemId: number,
+    ref: string,
+  ): Promise<void> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    session.problems.get(problemId).ref = ref;
   }
 
   async checkLogLength(sessionId: string, problemId: number): Promise<boolean> {
