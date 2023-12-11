@@ -7,6 +7,7 @@ const BROWSWER_PATH = {
 
 const API_PATH = {
   QUIZZES: "/quizzes",
+  SESSION: "/session",
 } as const;
 
 const GIT_BOOK_URL = "https://git-scm.com/docs/git";
