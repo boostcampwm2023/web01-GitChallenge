@@ -83,10 +83,16 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       return;
     }
 
+    const numId = +id;
+
     try {
-      const response = await quizAPI.submit(+id);
+      const response = await quizAPI.submit(numId);
       if (response.solved) {
         const shareLink = `${process.env.NEXT_PUBLIC_BASE_URL}${BROWSWER_PATH.SHARE}/${response.slug}`;
+        userQuizStatusDispatcher({
+          type: UserQuizStatusActionType.SolveQuizById,
+          id: numId,
+        });
         solvedModal.onSolved(shareLink);
         return;
       }
