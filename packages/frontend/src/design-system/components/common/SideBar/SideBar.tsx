@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { IoMdCheckmark } from "react-icons/io";
 
 import { BROWSWER_PATH } from "../../../../constants/path";
+import { useUserQuizStatus } from "../../../../contexts/UserQuizStatusContext";
 import * as layout from "../../../tokens/layout.css";
 import { Accordion } from "../Accordion";
 
@@ -34,6 +36,8 @@ function SubItems({ subItems }: { subItems: SubItemsProps[] }) {
   const {
     query: { id },
   } = useRouter();
+  const userQuizStatus = useUserQuizStatus();
+
   const idNum = id ? +id : 0;
 
   return (
@@ -50,6 +54,9 @@ function SubItems({ subItems }: { subItems: SubItemsProps[] }) {
             }
           >
             {subTitle.subTitle}
+            {userQuizStatus[subTitle.id ?? ""] && (
+              <IoMdCheckmark className={styles.checkIcon} size={14} />
+            )}
           </Link>
         </li>
       ))}

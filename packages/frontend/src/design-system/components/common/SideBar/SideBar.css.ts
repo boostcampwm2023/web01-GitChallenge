@@ -26,7 +26,13 @@ export const linkItemStyle = style({
 export const baseLinkStyle = style([
   flexAlignCenter,
   typography.$semantic.title4Regular,
-  { width: "100%", height: "100%", paddingLeft: 15, textDecoration: "none" },
+  {
+    width: "100%",
+    height: "100%",
+    paddingLeft: 15,
+    textDecoration: "none",
+    gap: 2,
+  },
 ]);
 
 export const currentLinkStyle = style([
@@ -42,3 +48,7 @@ export const linkStyle = style([
     color: color.$scale.grey600,
   },
 ]);
+
+export const checkIcon = style({
+  color: color.$semantic.success,
+});
