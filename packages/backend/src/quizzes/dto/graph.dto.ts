@@ -14,4 +14,10 @@ export class GraphDto {
       ']\n',
   })
   graph: object[];
+
+  @ApiProperty({
+    description: '현재 브랜치(reference)위치',
+    example: 'main',
+  })
+  ref: string;
 }

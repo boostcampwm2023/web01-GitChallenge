@@ -33,4 +33,7 @@ export class Quiz extends BaseEntity {
 
   @Column()
   graph: string;
+
+  @Column()
+  ref: string;
 }
