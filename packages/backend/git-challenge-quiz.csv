@@ -392,7 +392,7 @@ id,title,description,category,keyword,answer,graph,ref
             ""refs"": """"
         }
     ]
-}",
+}",main
 17,브랜치 최신화하기,"당신이 개발한 기능을 포함한 모든 기능들이 `origin` 저장소의 `main` branch에 합쳐졌습니다.  
 그리고 당신은 `origin` 저장소의 `main` branch에서의 구현 결과를 다른 사람들에게 공유하고자 합니다. 
 
@@ -486,7 +486,7 @@ id,title,description,category,keyword,answer,graph,ref
             ""refs"": """"
         }
     ]
-}",main
+}",feat/merge-master
 19,브랜치 삭제하기,"당신은 개발을 완료한 뒤 push한 commit들을 기반으로 Github 상에서 PR을 생성했고, 해당 PR은 성공적으로 merge 되었습니다.
 merge된 branch를 포함해서 현재 로컬 저장소에는 필요 없는 branch들이 있습니다. 
 이제는 필요 없어진 branch들을 확인하고 모두 삭제해 주세요.",Remote Start,"switch, branch",# merge 된 브랜치 확인\n`git` branch --merged\n`git` branch -d feat/somethingA\n`git` branch -d feat/somethingB,"{
