@@ -82,7 +82,7 @@ export class ContainersService {
   private buildEditorCommand(message: string, command: string) {
     const escapedMessage = shellEscape([message]);
 
-    return `git config core.editor --global /editor/input.sh; echo ${escapedMessage} | ${command}`;
+    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}`;
   }
 
   private getEditorCommand(
