@@ -11,6 +11,10 @@ import { SolvedModal, useSolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { BROWSWER_PATH } from "../../constants/path";
+import {
+  UserQuizStatusActionType,
+  useUserQuizStatusDispatch,
+} from "../../contexts/UserQuizStatusContext";
 import { Button, toast } from "../../design-system/components/common";
 import useResizableSplitView from "../../hooks/useResizableSplitView";
 import {
@@ -33,6 +37,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   } = router;
 
   const [gitGraphData, setGitGraphData] = useState<QuizGitGraphCommit[]>([]);
+  const userQuizStatusDispatcher = useUserQuizStatusDispatch();
 
   const solvedModal = useSolvedModal(isString(id) ? +id : -1);
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
@@ -113,6 +118,10 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       terminalDispatch({ type: TerminalActionTypes.reset });
       clearTextContent(terminalInputRef);
       focusRef(terminalInputRef);
+      userQuizStatusDispatcher({
+        type: UserQuizStatusActionType.ResetQuizById,
+        id: numId,
+      });
       toast.success("문제가 성공적으로 초기화되었습니다!");
     } catch (error) {
       toast.error(
