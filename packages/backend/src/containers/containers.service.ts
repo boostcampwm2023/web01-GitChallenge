@@ -82,7 +82,7 @@ export class ContainersService {
   private buildEditorCommand(message: string, command: string) {
     const escapedMessage = shellEscape([message]);
 
-    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}`;
+    return `git config core.editor --global /editor/input.sh; echo ${escapedMessage} | ${command}`;
   }
 
   private getEditorCommand(
@@ -138,6 +138,7 @@ export class ContainersService {
     const chownOriginCommand = `[ -d ~/origins/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /origin`;
     const chownUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /remote`;
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
+    const mainBranchCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global init.defaultbranch main`;
     const containerDirectoryCommand = `mkdir /root/store/${containerId}`;
     const containerDirectoryCpCommand = `docker cp ${containerId}:/home/quizzer/quiz/. /root/store/${containerId}/`;
     await this.commandService.executeCommand(
@@ -149,6 +150,7 @@ export class ContainersService {
       chownOriginCommand,
       chownUpstreamCommand,
       coreEditorCommand,
+      mainBranchCommand,
       containerDirectoryCommand,
       containerDirectoryCpCommand,
     );
@@ -262,21 +264,6 @@ export class ContainersService {
 
     await this.commandService.executeCommand(
       this.buildDockerCommand(containerId, ...commands),
-    );
-  }
-
-  async stashContainer(container: string): Promise<void> {
-    this.commandService.executeCommand(
-      `rm -rf /root/store/${container}/.`,
-      `docker cp ${container}:/home/quizzer/quiz/. /root/store/${container}/`,
-    );
-  }
-
-  async stashApplyContainer(container: string): Promise<void> {
-    this.commandService.executeCommand(
-      `docker exec -u quizzer -w /home/quizzer/ ${container} rm -rf quiz/.`,
-      `docker cp /root/store/${container}/. ${container}:/home/quizzer/quiz/.`,
-      `docker exec -u root ${container} chown -R quizzer:quizzer /home/quizzer`,
     );
   }
 }
