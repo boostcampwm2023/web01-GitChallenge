@@ -11,6 +11,8 @@ const RETRY_DELAY = 500;
 const MAX_RETRY = 3;
 const GRAPH_COMMAND = `git log --branches --pretty=format:'%H%n%P%n%s%n%D' --topo-order`;
 const GRAPH_ESCAPE = '89BDBC3136461-17189F6963D26-9F1BC6D53A3ED';
+const BRANCH_COMMAND = `git rev-parse --is-inside-work-tree &>/dev/null && (git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD) || echo ""`;
+const BRANCH_ESCAPE = '23ASDF2312-ASDFAS223-ASDF2223';
 
 @Injectable()
 export class ContainersService {
@@ -47,16 +49,21 @@ export class ContainersService {
   async runGitCommand(
     container: string,
     command: string,
-  ): Promise<{ message: string; result: string; graph?: string }> {
+  ): Promise<{ message: string; result: string; graph?: string; ref: string }> {
     let { stdoutData, stderrData } = await this.commandService.executeCommand(
       this.getGitCommand(container, command),
-      `echo "${GRAPH_ESCAPE}" 1>&2`,
-      `echo "${GRAPH_ESCAPE}"`,
-      `${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${GRAPH_COMMAND}`,
+      `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "echo ${GRAPH_ESCAPE} 1>&2; echo ${GRAPH_ESCAPE}; ${GRAPH_COMMAND}; echo ${BRANCH_ESCAPE} 1>&2; echo ${BRANCH_ESCAPE}; ${BRANCH_COMMAND}"`,
     );
 
     const graphMessage = stdoutData
-      .slice(stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length)
+      .slice(
+        stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length,
+        stdoutData.indexOf(BRANCH_ESCAPE),
+      )
+      .trim();
+
+    const branchMessage = stdoutData
+      .slice(stdoutData.indexOf(BRANCH_ESCAPE) + BRANCH_ESCAPE.length)
       .trim();
 
     stdoutData = stdoutData.slice(0, stdoutData.indexOf(GRAPH_ESCAPE));
@@ -69,14 +76,25 @@ export class ContainersService {
         message,
         result: 'editor',
         graph: graphMessage,
+        ref: branchMessage,
       };
     }
 
     if (stderrData) {
-      return { message: stderrData, result: 'fail', graph: graphMessage };
+      return {
+        message: stderrData,
+        result: 'fail',
+        graph: graphMessage,
+        ref: branchMessage,
+      };
     }
 
-    return { message: stdoutData, result: 'success', graph: graphMessage };
+    return {
+      message: stdoutData,
+      result: 'success',
+      graph: graphMessage,
+      ref: branchMessage,
+    };
   }
 
   private buildEditorCommand(message: string, command: string) {
@@ -85,41 +103,47 @@ export class ContainersService {
     return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}`;
   }
 
-  private getEditorCommand(
-    container: string,
-    message: string,
-    command: string,
-  ): string {
-    return `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "${this.buildEditorCommand(
-      message,
-      command,
-    )}"`;
-  }
-
   async runEditorCommand(
     container: string,
     command: string,
     message: string,
-  ): Promise<{ message: string; result: string; graph: string }> {
+  ): Promise<{ message: string; result: string; graph: string; ref: string }> {
     let { stdoutData, stderrData } = await this.commandService.executeCommand(
-      this.getEditorCommand(container, message, command),
-      `echo "${GRAPH_ESCAPE}" 1>&2`,
-      `echo "${GRAPH_ESCAPE}"`,
-      `${DOCKER_QUIZZER_COMMAND} ${container} /usr/local/bin/restricted-shell ${GRAPH_COMMAND}`,
+      `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "${this.buildEditorCommand(
+        message,
+        command,
+      )}; echo ${GRAPH_ESCAPE} 1>&2; echo ${GRAPH_ESCAPE}; ${GRAPH_COMMAND}; echo ${BRANCH_ESCAPE} 1>&2; echo ${BRANCH_ESCAPE}; ${BRANCH_COMMAND}"`,
     );
 
     const graphMessage = stdoutData
-      .slice(stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length)
+      .slice(
+        stdoutData.indexOf(GRAPH_ESCAPE) + GRAPH_ESCAPE.length,
+        stdoutData.indexOf(BRANCH_ESCAPE),
+      )
+      .trim();
+
+    const branchMessage = stdoutData
+      .slice(stdoutData.indexOf(BRANCH_ESCAPE) + BRANCH_ESCAPE.length)
       .trim();
 
     stdoutData = stdoutData.slice(0, stdoutData.indexOf(GRAPH_ESCAPE));
     stderrData = stderrData.slice(0, stderrData.indexOf(GRAPH_ESCAPE));
 
     if (stderrData) {
-      return { message: stderrData, result: 'fail', graph: graphMessage };
+      return {
+        message: stderrData,
+        result: 'fail',
+        graph: graphMessage,
+        ref: branchMessage,
+      };
     }
 
-    return { message: stdoutData, result: 'success', graph: graphMessage };
+    return {
+      message: stdoutData,
+      result: 'success',
+      graph: graphMessage,
+      ref: branchMessage,
+    };
   }
 
   async createContainer(quizId: number): Promise<string> {
