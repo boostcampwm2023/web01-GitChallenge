@@ -246,21 +246,16 @@ export class ContainersService {
 
     let recentMessage = '';
 
-    const commands = logs.reduce((acc, log, index, array) => {
+    const commands: string[] = logs.map((log) => {
       if (log.mode === 'command') {
         recentMessage = log.message;
-        if (array[index + 1] && array[index + 1].mode === 'editor') {
-          return acc;
-        }
-        acc.push(log.message);
+        return log.message;
       } else if (log.mode === 'editor') {
-        acc.push(this.buildEditorCommand(log.message, recentMessage));
+        return this.buildEditorCommand(log.message, recentMessage);
       } else {
         throw new Error('Invalid log mode');
       }
-
-      return acc;
-    }, []);
+    });
 
     await this.commandService.executeCommand(
       this.buildDockerCommand(containerId, ...commands),
