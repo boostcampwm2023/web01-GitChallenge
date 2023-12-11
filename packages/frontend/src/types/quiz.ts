@@ -6,6 +6,7 @@ export type Command = {
   message: string;
   result: CommandSuccess | CommandFail | CommandEditor;
   graph?: QuizGitGraph;
+  ref: string;
 };
 
 export type Quiz = {
