@@ -63,4 +63,5 @@ export type GetSharedAnswerResponse = {
 
 type GetQuizGraphResponse = {
   graph: QuizGitGraph;
+  ref: string;
 };
