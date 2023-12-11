@@ -170,21 +170,6 @@ export class QuizzesController {
           containerId,
           execCommandDto.message,
         ));
-
-        if (result === MODE.EDITOR) {
-          this.containerService.stashApplyContainer(containerId);
-          // containerId = await this.containerService.getContainer(id);
-          // await this.sessionService.setContainerBySessionId(
-          //   sessionId,
-          //   id,
-          //   containerId,
-          // );
-          // this.containerService.restoreContainer(
-          //   await this.sessionService.getLogObject(sessionId, id),
-          // );
-        } else {
-          this.containerService.stashContainer(containerId);
-        }
       } else if (execCommandDto.mode === MODE.EDITOR) {
         // editor mode
         const { mode: recentMode, message: recentMessage } =
@@ -223,7 +208,7 @@ export class QuizzesController {
       this.sessionService.pushLogBySessionId(execCommandDto, sessionId, id);
 
       if (
-        result !== MODE.EDITOR ||
+        result !== MODE.EDITOR &&
         (await this.sessionService.isGraphUpdated(sessionId, id, graph))
       ) {
         await this.sessionService.updateGraph(sessionId, id, graph);
