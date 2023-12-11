@@ -157,7 +157,7 @@ export class QuizzesController {
       }
 
       // 리팩토링 필수입니다.
-      let message: string, result: string, graph: string;
+      let message: string, result: string, graph: string, ref: string;
 
       // command mode
       if (execCommandDto.mode === MODE.COMMAND) {
@@ -166,10 +166,11 @@ export class QuizzesController {
           `running command "${execCommandDto.message}" for container ${containerId}`,
         );
 
-        ({ message, result, graph } = await this.containerService.runGitCommand(
-          containerId,
-          execCommandDto.message,
-        ));
+        ({ message, result, graph, ref } =
+          await this.containerService.runGitCommand(
+            containerId,
+            execCommandDto.message,
+          ));
       } else if (execCommandDto.mode === MODE.EDITOR) {
         // editor mode
         const { mode: recentMode, message: recentMessage } =
@@ -192,7 +193,7 @@ export class QuizzesController {
           )}"`,
         );
 
-        ({ message, result, graph } =
+        ({ message, result, graph, ref } =
           await this.containerService.runEditorCommand(
             containerId,
             recentMessage,
@@ -206,6 +207,7 @@ export class QuizzesController {
 
       // message를 저장합니다.
       this.sessionService.pushLogBySessionId(execCommandDto, sessionId, id);
+      this.sessionService.updateRef(sessionId, id, ref);
 
       if (
         result !== MODE.EDITOR &&
@@ -216,11 +218,13 @@ export class QuizzesController {
           message,
           result,
           graph: graphParser(graph),
+          ref,
         });
       } else {
         response.status(HttpStatus.OK).send({
           message,
           result,
+          ref,
         });
       }
 
@@ -448,18 +452,35 @@ export class QuizzesController {
     @Param('id') id: number,
     @SessionId() sessionId: string,
   ): Promise<GraphDto> {
-    if (!sessionId) return JSON.parse(await this.quizService.getGraphById(id));
-    let graph;
+    const defaultRef = await this.quizService.getRefById(id);
+    const defaultGraph = JSON.parse(await this.quizService.getGraphById(id));
+    if (!sessionId) {
+      return {
+        ...defaultGraph,
+        ref: defaultRef,
+      };
+    }
+    let graph: string;
+    let ref: string;
     try {
       graph = await this.sessionService.getGraphById(sessionId, id);
+      ref = await this.sessionService.getRefById(sessionId, id);
     } catch (e) {
-      return JSON.parse(await this.quizService.getGraphById(id));
+      return {
+        ...defaultGraph,
+        ref: defaultRef,
+      };
     }
     if (!graph) {
-      return JSON.parse(await this.quizService.getGraphById(id));
-    } else {
       return {
-        graph: graphParser(graph),
+        ...defaultGraph,
+        ref: defaultRef,
+      };
+    } else {
+      const parsedGraph = graphParser(graph);
+      return {
+        graph: parsedGraph,
+        ref,
       };
     }
   }
