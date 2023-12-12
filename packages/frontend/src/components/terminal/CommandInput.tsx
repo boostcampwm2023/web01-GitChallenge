@@ -4,17 +4,16 @@ import {
   forwardRef,
 } from "react";
 
-import classnames from "../../utils/classnames";
-
 import Prompt from "./Prompt";
 import * as styles from "./Terminal.css";
 
 interface CommandInputProps {
+  gitRef: string;
   handleInput: KeyboardEventHandler;
 }
 
 const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
-  ({ handleInput }, ref) => {
+  ({ gitRef, handleInput }, ref) => {
     const handlePaste: ClipboardEventHandler = (event) => {
       event.preventDefault();
 
@@ -42,9 +41,9 @@ const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
         <span id="commandLabel" style={{ display: "none" }}>
           Enter git command
         </span>
-        <Prompt />
+        <Prompt gitRef={gitRef} />
         <span
-          className={classnames(styles.commandInput, styles.stdin)}
+          className={styles.commandInput}
           contentEditable
           onKeyDown={handleInput}
           onPaste={handlePaste}

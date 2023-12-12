@@ -4,8 +4,8 @@ import color from "../../design-system/tokens/color";
 import typography from "../../design-system/tokens/typography";
 import {
   border,
-  flexAlignCenter,
   middleLayer,
+  widthFull,
 } from "../../design-system/tokens/utils.css";
 
 export const terminalContainer = style([
@@ -24,31 +24,15 @@ export const terminalContainer = style([
   },
 ]);
 
-export const commandInputContainer = style([
-  flexAlignCenter,
-  {
-    width: "100%",
-    position: "relative",
-  },
-]);
+export const commandInputContainer = style([widthFull]);
 
 export const prompt = style({
-  position: "absolute",
-  top: 1,
-  left: 0,
+  paddingRight: 6,
   color: color.$semantic.primary,
   fontWeight: 700,
 });
 
-export const stdinContainer = style({ position: "relative" });
-
-export const stdin = style({
-  display: "block",
-  textIndent: 22,
-});
-
 export const commandInput = style({
-  flex: 1,
   outline: 0,
   wordBreak: "break-all",
 });
