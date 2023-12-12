@@ -1,7 +1,10 @@
-import type { TerminalContentType } from "../../types/terminalType";
+import type {
+  StandardInputType,
+  StandardOutputType,
+  TerminalContentType,
+} from "../../types/terminalType";
 
 import Prompt from "./Prompt";
-import * as styles from "./Terminal.css";
 
 interface TerminalContentProps {
   contentArray: TerminalContentType[];
@@ -14,25 +17,19 @@ export default function TerminalContent({
   return <div>{content}</div>;
 }
 
-const contentMap = {
-  stdin: StandardInputContent,
-  stdout: StandardOutputContent,
-};
-
-interface ContentProps {
-  content: string;
-}
-
-function StandardInputContent({ content }: ContentProps) {
+function StandardInputContent({
+  content,
+  gitRef,
+}: Omit<StandardInputType, "type">) {
   return (
-    <div className={styles.stdinContainer}>
-      <Prompt />
-      <span className={styles.stdin}>{content}</span>
+    <div>
+      <Prompt gitRef={gitRef} />
+      <span>{content}</span>
     </div>
   );
 }
 
-function StandardOutputContent({ content }: ContentProps) {
+function StandardOutputContent({ content }: Omit<StandardOutputType, "type">) {
   return (
     <div>
       <span>{content}</span>
@@ -41,9 +38,21 @@ function StandardOutputContent({ content }: ContentProps) {
 }
 
 function toTerminalContentComponent(
-  { type, content }: TerminalContentType,
+  propsWithType: TerminalContentType,
   index: number,
 ) {
-  const Content = contentMap[type];
-  return <Content key={[type, index].join("-")} content={content} />;
+  const key = `${propsWithType.type} ${index}`;
+  switch (propsWithType.type) {
+    case "stdin": {
+      const { type, ...props } = propsWithType;
+      return <StandardInputContent key={key} {...props} />;
+    }
+    case "stdout": {
+      const { type, ...props } = propsWithType;
+      return <StandardOutputContent key={key} {...props} />;
+    }
+    default: {
+      return null;
+    }
+  }
 }

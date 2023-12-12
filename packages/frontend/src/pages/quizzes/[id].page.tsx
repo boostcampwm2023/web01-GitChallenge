@@ -184,6 +184,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
             <Editor initialFile={editorFile} onSubmit={handleTerminal} />
           ) : (
             <Terminal
+              gitRef={gitRef}
               contentArray={contentArray}
               onTerminal={handleTerminal}
               ref={terminalInputRef}

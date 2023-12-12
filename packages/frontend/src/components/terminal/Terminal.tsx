@@ -8,12 +8,13 @@ import * as styles from "./Terminal.css";
 import TerminalContent from "./TerminalContent";
 
 interface TerminalProps {
+  gitRef: string;
   contentArray: TerminalContentType[];
   onTerminal: (input: string) => void;
 }
 
 const Terminal = forwardRef<HTMLSpanElement, TerminalProps>(
-  ({ contentArray, onTerminal }, ref) => {
+  ({ gitRef, contentArray, onTerminal }, ref) => {
     const handleStandardInput: KeyboardEventHandler = async (event) => {
       const { key, currentTarget } = event;
       if (key !== ENTER_KEY) {
@@ -33,7 +34,11 @@ const Terminal = forwardRef<HTMLSpanElement, TerminalProps>(
     return (
       <div className={styles.terminalContainer}>
         <TerminalContent contentArray={contentArray} />
-        <CommandInput handleInput={handleStandardInput} ref={ref} />
+        <CommandInput
+          gitRef={gitRef}
+          handleInput={handleStandardInput}
+          ref={ref}
+        />
       </div>
     );
   },
