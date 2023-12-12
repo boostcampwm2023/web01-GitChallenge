@@ -21,6 +21,7 @@ import {
 } from "../../reducers/terminalReducer";
 import { Categories, Quiz, QuizGitGraphCommit } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
+import { focusRef } from "../../utils/refObject";
 import { scrollIntoView } from "../../utils/scroll";
 import { isString } from "../../utils/typeGuard";
 
@@ -112,7 +113,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       fetchGitGraphDataRef?.current(numId);
       terminalDispatch({ type: TerminalActionTypes.reset });
       clearTextContent(terminalInputRef);
-      terminalInputRef.current?.focus();
+      focusRef(terminalInputRef);
       toast.success("문제가 성공적으로 초기화되었습니다!");
     } catch (error) {
       toast.error(
@@ -127,13 +128,13 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     }
     terminalDispatch({ type: TerminalActionTypes.reset });
     clearTextContent(terminalInputRef);
-    terminalInputRef.current?.focus();
+    focusRef(terminalInputRef);
   }, [id]);
 
   useEffect(() => {
     scrollIntoView(terminalInputRef);
     clearTextContent(terminalInputRef);
-    terminalInputRef.current?.focus();
+    focusRef(terminalInputRef);
   }, [contentArray]);
 
   const { barRef, topRef, handleBarHover } = useResizableSplitView();
