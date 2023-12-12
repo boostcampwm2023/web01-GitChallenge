@@ -26,12 +26,6 @@ export const terminalContainer = style([
 
 export const commandInputContainer = style([widthFull]);
 
-export const prompt = style({
-  paddingRight: 6,
-  color: color.$semantic.primary,
-  fontWeight: 700,
-});
-
 export const commandInput = style({
   outline: 0,
   wordBreak: "break-all",
