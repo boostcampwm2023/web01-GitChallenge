@@ -7,6 +7,7 @@ import {
 
 import { ENTER_KEY, ESC_KEY } from "../../constants/event";
 import { createClassManipulator } from "../../utils/classList";
+import { focusRef } from "../../utils/refObject";
 
 import * as styles from "./Editor.css";
 import { useTextareaCursor } from "./useTextareaCursor";
@@ -46,7 +47,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
     setMode("command");
     setInputValue(nextInputValue);
     setInputReadonly(true);
-    textareaRef.current?.focus();
+    focusRef(textareaRef);
   };
 
   const handleTextareaOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
@@ -71,7 +72,7 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
 
         setInputValue(key);
         setInputReadonly(false);
-        inputRef.current?.focus();
+        focusRef(inputRef);
         return;
       }
 
