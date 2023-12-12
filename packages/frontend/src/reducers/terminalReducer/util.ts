@@ -1,11 +1,15 @@
-export function toStandardInput(content: string) {
-  return toContentArrayItem("stdin", content);
+import {
+  StandardInputType,
+  StandardOutputType,
+} from "../../types/terminalType";
+
+export function toStandardInput(
+  content: string,
+  gitRef: string = "",
+): StandardInputType {
+  return { type: "stdin", content, gitRef };
 }
 
-export function toStandardOutput(content: string) {
-  return toContentArrayItem("stdout", content);
-}
-
-export function toContentArrayItem(type: "stdin" | "stdout", content: string) {
-  return { type, content };
+export function toStandardOutput(content: string): StandardOutputType {
+  return { type: "stdout", content };
 }

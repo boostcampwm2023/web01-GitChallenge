@@ -37,6 +37,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   } = router;
 
   const [gitGraphData, setGitGraphData] = useState<QuizGitGraphCommit[]>([]);
+  const [gitRef, setGitRef] = useState("");
   const userQuizStatusDispatcher = useUserQuizStatusDispatch();
 
   const solvedModal = useSolvedModal(isString(id) ? +id : -1);
@@ -47,8 +48,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
   const fetchGitGraphDataRef = useRef(async (curId: number) => {
     try {
-      const { graph: nextGraph } = await quizAPI.getGraph(curId);
-      setGitGraphData(nextGraph);
+      const { graph, ref } = await quizAPI.getGraph(curId);
+      setGitGraphData(graph);
+      setGitRef(ref);
     } catch (error) {
       handleResponseError(error);
     }
@@ -60,7 +62,12 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
     }
 
     try {
-      const { result, message, graph } = await quizAPI.postCommand({
+      const {
+        result,
+        message,
+        graph,
+        ref: nextGitRef,
+      } = await quizAPI.postCommand({
         id: +id,
         mode: terminalMode,
         message: input,
@@ -72,7 +79,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         type: terminalActionTypeMap[terminalMode][result],
         input,
         message,
+        gitRef,
       });
+      setGitRef(nextGitRef);
     } catch (error) {
       handleResponseError(error, terminalMode);
     }

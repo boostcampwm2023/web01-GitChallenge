@@ -31,4 +31,5 @@ type RequestToResponse<Type> = {
   type: Type;
   input: string;
   message: string;
+  gitRef: string;
 };

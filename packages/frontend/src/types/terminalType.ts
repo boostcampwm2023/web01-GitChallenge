@@ -1,6 +1,9 @@
 export type TerminalContentType = StandardInputType | StandardOutputType;
 
-export type StandardInputType = WithContentType<"stdin">;
-export type StandardOutputType = WithContentType<"stdout">;
+export type StandardInputType = {
+  type: "stdin";
+  content: string;
+  gitRef: string;
+};
 
-type WithContentType<T> = { type: T; content: string };
+export type StandardOutputType = { type: "stdout"; content: string };
