@@ -1,4 +1,5 @@
-import { TerminalContentType } from "../types/terminalType";
+import { TerminalAction, TerminalActionTypes, TerminalState } from "./type";
+import { toStandardInput, toStandardOutput } from "./util";
 
 export const initialTerminalState: TerminalState = {
   terminalMode: "command",
@@ -49,32 +50,6 @@ export function terminalReducer(
   }
 }
 
-function toStandardInput(content: string) {
-  return toContentArrayItem("stdin", content);
-}
-
-function toStandardOutput(content: string) {
-  return toContentArrayItem("stdout", content);
-}
-
-function toContentArrayItem(type: "stdin" | "stdout", content: string) {
-  return { type, content };
-}
-
-type TerminalState = {
-  terminalMode: "command" | "editor";
-  editorFile: string;
-  contentArray: TerminalContentType[];
-};
-
-export enum TerminalActionTypes {
-  commandToCommand = "commandToCommand",
-  commandToEditor = "commandToEditor",
-  editorToCommand = "editorToCommand",
-  editorToEditor = "editorToEditor",
-  reset = "reset",
-}
-
 export const terminalActionTypeMap = {
   command: {
     success: TerminalActionTypes.commandToCommand,
@@ -86,23 +61,4 @@ export const terminalActionTypeMap = {
     fail: TerminalActionTypes.editorToCommand,
     editor: TerminalActionTypes.editorToEditor,
   },
-};
-
-type TerminalAction =
-  | CommandToCommand
-  | CommandToEditor
-  | EditorToCommand
-  | EditorToEditor
-  | ClearTerminal;
-
-type CommandToCommand = RequestToResponse<TerminalActionTypes.commandToCommand>;
-type CommandToEditor = RequestToResponse<TerminalActionTypes.commandToEditor>;
-type EditorToCommand = RequestToResponse<TerminalActionTypes.editorToCommand>;
-type EditorToEditor = RequestToResponse<TerminalActionTypes.editorToEditor>;
-type ClearTerminal = { type: TerminalActionTypes.reset };
-
-type RequestToResponse<Type> = {
-  type: Type;
-  input: string;
-  message: string;
 };
