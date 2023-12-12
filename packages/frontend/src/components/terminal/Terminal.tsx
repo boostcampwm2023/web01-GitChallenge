@@ -16,8 +16,12 @@ interface TerminalProps {
 const Terminal = forwardRef<HTMLSpanElement, TerminalProps>(
   ({ gitRef, contentArray, onTerminal }, ref) => {
     const handleStandardInput: KeyboardEventHandler = async (event) => {
-      const { key, currentTarget } = event;
-      if (key !== ENTER_KEY) {
+      const {
+        key,
+        currentTarget,
+        nativeEvent: { isComposing },
+      } = event;
+      if (isComposing || key !== ENTER_KEY) {
         return;
       }
 
