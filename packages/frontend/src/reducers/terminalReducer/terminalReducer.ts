@@ -17,7 +17,7 @@ export function terminalReducer(
         ...state,
         contentArray: [
           ...state.contentArray,
-          toStandardInput(action.input),
+          toStandardInput(action.input, action.gitRef),
           toStandardOutput(action.message),
         ],
       };
@@ -25,7 +25,10 @@ export function terminalReducer(
     case TerminalActionTypes.commandToEditor:
       return {
         terminalMode: "editor",
-        contentArray: [...state.contentArray, toStandardInput(action.input)],
+        contentArray: [
+          ...state.contentArray,
+          toStandardInput(action.input, action.gitRef),
+        ],
         editorFile: action.message,
       };
 
