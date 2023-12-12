@@ -1,6 +1,4 @@
-import classnames from "../../utils/classnames";
-
-import { prompt as promptStyle } from "./Terminal.css";
+import * as styles from "./Prompt.css";
 
 const USER_NAME = "root";
 
@@ -10,12 +8,10 @@ interface PromptProps {
 
 export default function Prompt({ gitRef }: PromptProps) {
   return (
-    <span className={promptStyle}>
-      {formatPromptInfo(USER_NAME, gitRef)} &gt;&gt;
+    <span className={styles.prompt}>
+      <span className={styles.username}>{USER_NAME}</span>
+      {gitRef && <span className={styles.gitRef}>({gitRef})</span>}
+      &gt;&gt;
     </span>
   );
-}
-
-function formatPromptInfo(username: string, gitRef: string) {
-  return classnames(username, gitRef ? `(${gitRef})` : "");
 }
