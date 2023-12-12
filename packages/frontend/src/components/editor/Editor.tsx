@@ -52,8 +52,9 @@ export function Editor({ initialFile, onSubmit }: EditorProps) {
   const handleTextareaOnChange: ChangeEventHandler<HTMLTextAreaElement> = (
     event,
   ) => {
-    const { target } = event;
-    const { value, selectionStart, selectionEnd } = target;
+    const {
+      target: { value, selectionStart, selectionEnd },
+    } = event;
 
     const key = (event.nativeEvent as InputEvent).data;
     event.preventDefault();
