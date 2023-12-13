@@ -471,7 +471,7 @@ export class QuizzesController {
         ref: defaultRef,
       };
     }
-    if (!graph) {
+    if (await this.sessionService.isReseted(sessionId, id)) {
       return {
         ...defaultGraph,
         ref: defaultRef,

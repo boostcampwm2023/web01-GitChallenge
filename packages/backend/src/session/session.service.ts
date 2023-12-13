@@ -108,6 +108,7 @@ export class SessionService {
     session.problems.get(problemId).status = 'solving';
     session.problems.get(problemId).graph = '';
     session.problems.get(problemId).containerId = '';
+    session.problems.get(problemId).ref = '';
   }
 
   private async getSessionById(id: string): Promise<Session> {
@@ -234,5 +235,13 @@ export class SessionService {
       );
     }
     return;
+  }
+
+  async isReseted(sessionId: string, problemId: number): Promise<boolean> {
+    const session = await this.getSessionById(sessionId);
+    if (!session.problems.get(problemId)) {
+      throw new Error('problem not found');
+    }
+    return session.problems.get(problemId).logs.length === 0;
   }
 }
