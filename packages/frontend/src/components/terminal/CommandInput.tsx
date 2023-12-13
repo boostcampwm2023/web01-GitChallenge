@@ -6,6 +6,8 @@ import {
   useRef,
 } from "react";
 
+import { focusRef, scrollIntoViewRef } from "../../utils/refObject";
+
 import Prompt from "./Prompt";
 import * as styles from "./Terminal.css";
 
@@ -27,10 +29,10 @@ const CommandInput = forwardRef<ForwardRefType, CommandInputProps>(
       ref,
       () => ({
         focus(options) {
-          inputRef.current?.focus(options);
+          focusRef(inputRef, options);
         },
         scrollIntoView(arg) {
-          inputRef.current?.scrollIntoView(arg);
+          scrollIntoViewRef(inputRef, arg);
         },
       }),
       [],
@@ -59,7 +61,7 @@ const CommandInput = forwardRef<ForwardRefType, CommandInputProps>(
     };
 
     const handleClick = () => {
-      inputRef.current?.focus();
+      focusRef(inputRef);
     };
 
     return (
