@@ -44,7 +44,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserQuizStatusProvider initialUserQuizStatus={userQuizStatus}>
           <ThemeWrapper>
             <Layout>
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Component {...pageProps} />
             </Layout>
           </ThemeWrapper>
