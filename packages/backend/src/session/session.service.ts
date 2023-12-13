@@ -240,7 +240,7 @@ export class SessionService {
   async isReseted(sessionId: string, problemId: number): Promise<boolean> {
     const session = await this.getSessionById(sessionId);
     if (!session.problems.get(problemId)) {
-      throw new Error('problem not found');
+      return true;
     }
     return session.problems.get(problemId).logs.length === 0;
   }
