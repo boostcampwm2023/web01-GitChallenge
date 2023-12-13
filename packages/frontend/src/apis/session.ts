@@ -4,7 +4,7 @@ import { UserQuizStatus } from "../types/user";
 import { instance } from "./base";
 
 export const sessionAPI = {
-  getSolved: async () => {
+  getUserQuizStatus: async () => {
     const { data } = await instance.get<UserQuizStatus>(
       `${API_PATH.SESSION}/solved`,
     );

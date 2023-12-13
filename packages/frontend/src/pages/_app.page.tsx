@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     (async () => {
       try {
-        const nextUserQuizStatus = await sessionAPI.getSolved();
+        const nextUserQuizStatus = await sessionAPI.getUserQuizStatus();
         setUserQuizStatus(nextUserQuizStatus);
       } catch (error) {
         toast.error("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
