@@ -106,6 +106,17 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
       "fill",
       (d: d3.HierarchyPointNode<InitialDataProps>) => d.data?.color ?? "",
     );
+
+  svg.select("#node").on("mouseout", (event) => {
+    const nodeNotHovered = !(
+      event.relatedTarget.nodeName === "rect" ||
+      event.relatedTarget.nodeName === "tspan"
+    );
+
+    if (nodeNotHovered) {
+      svg.select("#tooltip").remove();
+    }
+  });
 }
 
 interface GraphProps {

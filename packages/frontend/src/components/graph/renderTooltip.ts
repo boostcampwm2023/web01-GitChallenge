@@ -21,7 +21,7 @@ export default function renderTooltip(
     position: `translate(${d.x - 110},${d.y - 60})`,
   };
 
-  const transparentRectPosition = "translate(85, 40)";
+  const transparentRectPosition = "translate(95, 40)";
 
   const tooltipDataFormat = [
     {
@@ -61,7 +61,7 @@ export default function renderTooltip(
     // 요기나
     .attr("fill", "transparent")
     // 요기 바꿔보심 돼여
-    // .attr("stroke", color.$scale.grey300)
+    .attr("stroke", color.$scale.grey300)
     .attr("transform", transparentRectPosition);
 
   tooltip
@@ -91,6 +91,9 @@ export default function renderTooltip(
       if (!currentValueNode.empty() && currentValueNode.node()) {
         const tspanMaxWidth = 110;
         const originalText = currentValueNode.text();
+        if (currentValueNode.node()!.getComputedTextLength() < tspanMaxWidth) {
+          return;
+        }
 
         let start = 0;
         let end = tspanMaxWidth;
