@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { RefObject, useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 
 import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
@@ -10,6 +10,7 @@ import { Graph } from "../../components/graph";
 import { SolvedModal, useSolvedModal } from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
+import { CommandInputForwardRefType } from "../../components/terminal/CommandInput";
 import { BROWSWER_PATH } from "../../constants/path";
 import {
   UserQuizStatusActionType,
@@ -25,7 +26,6 @@ import {
 } from "../../reducers/terminalReducer";
 import { Categories, Quiz, QuizGitGraphCommit } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
-import { focusRef, scrollIntoViewRef } from "../../utils/refObject";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./quiz.css";
@@ -44,7 +44,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
     useReducer(terminalReducer, initialTerminalState);
 
-  const terminalInputRef = useRef<HTMLSpanElement>(null);
+  const terminalInputRef = useRef<CommandInputForwardRefType>(null);
 
   const fetchGitGraphDataRef = useRef(async (curId: number) => {
     try {
@@ -131,8 +131,8 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       await quizAPI.resetQuizById(numId);
       fetchGitGraphDataRef?.current(numId);
       terminalDispatch({ type: TerminalActionTypes.reset });
-      clearTextContent(terminalInputRef);
-      focusRef(terminalInputRef);
+      terminalInputRef.current?.clear();
+      terminalInputRef.current?.focus();
       userQuizStatusDispatcher({
         type: UserQuizStatusActionType.ResetQuizById,
         id: numId,
@@ -150,14 +150,17 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       fetchGitGraphDataRef?.current(+id);
     }
     terminalDispatch({ type: TerminalActionTypes.reset });
-    clearTextContent(terminalInputRef);
-    focusRef(terminalInputRef);
+    terminalInputRef.current?.clear();
+    terminalInputRef.current?.focus();
   }, [id]);
 
   useEffect(() => {
-    scrollIntoViewRef(terminalInputRef);
-    clearTextContent(terminalInputRef);
-    focusRef(terminalInputRef);
+    const $terminalInput = terminalInputRef.current;
+    if (!$terminalInput) return;
+
+    $terminalInput.scrollIntoView();
+    $terminalInput.clear();
+    $terminalInput.focus();
   }, [contentArray]);
 
   const { barRef, topRef, handleBarHover } = useResizableSplitView();
@@ -238,15 +241,6 @@ export const getStaticPaths = (async () => {
 
   return { paths, fallback: "blocking" };
 }) satisfies GetStaticPaths;
-
-function clearTextContent<T extends Element>(ref: RefObject<T>) {
-  const $element = ref.current;
-  if (!$element) {
-    return;
-  }
-
-  $element.textContent = "";
-}
 
 function isEditorMode(terminalMode: "editor" | "command") {
   return terminalMode === "editor";

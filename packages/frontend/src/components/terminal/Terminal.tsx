@@ -3,7 +3,7 @@ import { type KeyboardEventHandler, forwardRef } from "react";
 import { ENTER_KEY } from "../../constants/event";
 import type { TerminalContentType } from "../../types/terminalType";
 
-import CommandInput from "./CommandInput";
+import CommandInput, { CommandInputForwardRefType } from "./CommandInput";
 import * as styles from "./Terminal.css";
 import TerminalContent from "./TerminalContent";
 
@@ -13,7 +13,7 @@ interface TerminalProps {
   onTerminal: (input: string) => void;
 }
 
-const Terminal = forwardRef<HTMLSpanElement, TerminalProps>(
+const Terminal = forwardRef<CommandInputForwardRefType, TerminalProps>(
   ({ gitRef, contentArray, onTerminal }, ref) => {
     const handleStandardInput: KeyboardEventHandler = async (event) => {
       const {
