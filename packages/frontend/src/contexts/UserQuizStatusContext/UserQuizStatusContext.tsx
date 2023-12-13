@@ -51,11 +51,11 @@ export function useUserQuizStatus() {
 }
 
 export function useUserQuizStatusDispatch() {
-  const dispatch = useContext(UserQuizStatusDispatchContext);
-  if (!dispatch) {
+  const userQuizStatusDispatch = useContext(UserQuizStatusDispatchContext);
+  if (!userQuizStatusDispatch) {
     throw new Error("UserQuizStatusProvider 컴포넌트로 래핑해야 합니다.");
   }
-  return dispatch;
+  return userQuizStatusDispatch;
 }
 
 function reducer(state: UserQuizStatus, action: Action): UserQuizStatus {
