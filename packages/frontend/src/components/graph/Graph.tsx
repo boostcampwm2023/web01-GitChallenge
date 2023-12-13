@@ -24,7 +24,6 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
   const svg = d3.select(svgRef.current);
 
   if (!parsedData.length) {
-    svg.select("#text").selectAll("*").remove();
     svg.select("#link").selectAll("*").remove();
     svg.select("#node").selectAll("*").remove();
     return;
@@ -44,24 +43,6 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
   // Apply the tree layout to the hierarchical data
   const treeData = treeLayout(rootNode);
   fillColor(treeData);
-
-  // Add text next to each node
-  svg
-    .select("#text")
-    .selectAll("text")
-    .data(treeData.descendants())
-    .join(
-      (enter) => enter.append("text").style("opacity", 0),
-      (update) => update,
-      (exit) =>
-        exit.transition().duration(DURATION).style("opacity", 0).remove(),
-    )
-    .text((d) => d.data.message)
-    .attr("x", (d) => d.x + 20)
-    .attr("y", (d) => d.y + 5)
-    .transition()
-    .duration(DURATION)
-    .style("opacity", 1);
 
   additionalLinks.forEach(({ id, parentId }) => {
     const sourceNode = treeData.descendants().filter((d) => d.id === id)[0];
@@ -138,7 +119,6 @@ export function Graph({ data, className = "" }: GraphProps) {
         <g ref={gRef} transform="translate(100,70)">
           <g id="link" />
           <g id="node" />
-          <g id="text" />
         </g>
       </svg>
     </div>

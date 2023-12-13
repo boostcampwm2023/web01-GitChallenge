@@ -11,7 +11,7 @@ interface TooltipProps {
 }
 
 export default function renderTooltip(
-  svg,
+  svg: d3.Selection<SVGGElement | null, unknown, null, undefined>,
   d: d3.HierarchyPointNode<InitialDataProps>,
 ) {
   const tooltipStyle = {
