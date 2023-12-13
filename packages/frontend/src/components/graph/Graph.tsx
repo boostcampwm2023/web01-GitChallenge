@@ -109,12 +109,10 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     );
 
   svg.select("#node").on("mouseout", (event) => {
-    const nodeNotHovered = !(
+    const hoverTooltip =
       event.relatedTarget.nodeName === "rect" ||
-      event.relatedTarget.nodeName === "tspan"
-    );
-
-    if (nodeNotHovered) {
+      event.relatedTarget.nodeName === "tspan";
+    if (!hoverTooltip) {
       svg.select("#tooltip").remove();
     }
   });
