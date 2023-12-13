@@ -16,10 +16,7 @@ interface CommandInputProps {
   handleInput: KeyboardEventHandler;
 }
 
-interface ForwardRefType {
-  focus: HTMLOrSVGElement["focus"];
-  scrollIntoView: Element["scrollIntoView"];
-}
+type ForwardRefType = Pick<HTMLSpanElement, "focus" | "scrollIntoView">;
 
 const CommandInput = forwardRef<ForwardRefType, CommandInputProps>(
   ({ gitRef, handleInput }, ref) => {
