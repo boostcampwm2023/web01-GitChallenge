@@ -2,6 +2,8 @@ import {
   type ClipboardEventHandler,
   type KeyboardEventHandler,
   forwardRef,
+  useImperativeHandle,
+  useRef,
 } from "react";
 
 import Prompt from "./Prompt";
@@ -12,8 +14,28 @@ interface CommandInputProps {
   handleInput: KeyboardEventHandler;
 }
 
-const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
+interface ForwardRefType {
+  focus: HTMLOrSVGElement["focus"];
+  scrollIntoView: Element["scrollIntoView"];
+}
+
+const CommandInput = forwardRef<ForwardRefType, CommandInputProps>(
   ({ gitRef, handleInput }, ref) => {
+    const inputRef = useRef<HTMLSpanElement>(null);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus(options) {
+          inputRef.current?.focus(options);
+        },
+        scrollIntoView(arg) {
+          inputRef.current?.scrollIntoView(arg);
+        },
+      }),
+      [],
+    );
+
     const handlePaste: ClipboardEventHandler = (event) => {
       event.preventDefault();
 
@@ -36,8 +58,16 @@ const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
       cursorAnchorNode.remove();
     };
 
+    const handleClick = () => {
+      inputRef.current?.focus();
+    };
+
     return (
-      <div className={styles.commandInputContainer}>
+      <div
+        className={styles.commandInputContainer}
+        onClick={handleClick}
+        aria-hidden
+      >
         <span id="commandLabel" style={{ display: "none" }}>
           Enter git command
         </span>
@@ -51,7 +81,7 @@ const CommandInput = forwardRef<HTMLSpanElement, CommandInputProps>(
           aria-placeholder="git command"
           aria-labelledby="commandLabel"
           tabIndex={0}
-          ref={ref}
+          ref={inputRef}
         />
       </div>
     );
