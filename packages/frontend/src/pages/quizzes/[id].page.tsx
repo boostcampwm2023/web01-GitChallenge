@@ -21,8 +21,7 @@ import {
 } from "../../reducers/terminalReducer";
 import { Categories, Quiz, QuizGitGraphCommit } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
-import { focusRef } from "../../utils/refObject";
-import { scrollIntoView } from "../../utils/scroll";
+import { focusRef, scrollIntoViewRef } from "../../utils/refObject";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./quiz.css";
@@ -132,7 +131,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   }, [id]);
 
   useEffect(() => {
-    scrollIntoView(terminalInputRef);
+    scrollIntoViewRef(terminalInputRef);
     clearTextContent(terminalInputRef);
     focusRef(terminalInputRef);
   }, [contentArray]);
