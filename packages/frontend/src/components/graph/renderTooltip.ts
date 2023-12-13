@@ -58,10 +58,9 @@ export default function renderTooltip(
     .append("rect")
     .attr("width", 30)
     .attr("height", 30)
-    // 요기나
-    .attr("fill", "transparent")
     // 요기 바꿔보심 돼여
-    .attr("stroke", color.$scale.grey300)
+    .attr("fill", "transparent")
+    .style("cursor", "pointer")
     .attr("transform", transparentRectPosition);
 
   tooltip

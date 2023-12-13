@@ -102,6 +102,7 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
     .transition()
     .duration(DURATION)
     .style("opacity", 1)
+    .style("cursor", "pointer")
     .attr(
       "fill",
       (d: d3.HierarchyPointNode<InitialDataProps>) => d.data?.color ?? "",
