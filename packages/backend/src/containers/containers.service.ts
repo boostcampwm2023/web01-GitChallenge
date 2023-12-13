@@ -44,7 +44,7 @@ export class ContainersService {
   }
 
   private getGitCommand(container: string, command: string): string {
-    return `${DOCKER_QUIZZER_COMMAND} ${container} sh -c "git config --global core.editor /editor/output.sh; ${command}"`;
+    return `${DOCKER_QUIZZER_COMMAND} ${container} ${command}`;
   }
   async runGitCommand(
     container: string,
@@ -100,7 +100,7 @@ export class ContainersService {
   private buildEditorCommand(message: string, command: string) {
     const escapedMessage = shellEscape([message]);
 
-    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}`;
+    return `git config --global core.editor /editor/input.sh; echo ${escapedMessage} | ${command}; git config --global core.editor /editor/output.sh`;
   }
 
   async runEditorCommand(
