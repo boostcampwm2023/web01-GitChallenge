@@ -6,6 +6,7 @@ import { QuizGitGraphCommit } from "../../types/quiz";
 
 import fillColor from "./fillColor";
 import { InitialDataProps, parsingMultipleParents } from "./parsing";
+import renderTooltip from "./renderTooltip";
 
 const { grey500 } = color.$scale;
 
@@ -87,6 +88,12 @@ function renderD3(svgRef: RefObject<SVGGElement>, data: InitialDataProps[]) {
       (exit) =>
         exit.transition().duration(DURATION).style("opacity", 0).remove(),
     )
+    .on("mouseover", (event, d) => {
+      const existingTooltip = svg.select("#tooltip");
+      if (existingTooltip.empty()) {
+        renderTooltip(svg, d);
+      }
+    })
     .attr("cx", (d) => d.x)
     .attr("cy", (d) => d.y)
     .attr("r", 13)

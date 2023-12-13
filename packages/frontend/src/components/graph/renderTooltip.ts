@@ -79,5 +79,36 @@ export default function renderTooltip(
     .append("tspan")
     .attr("fill", color.$scale.grey700)
     .text((tooltipData: TooltipProps) => tooltipData.value)
-    .attr("id", (tooltipData: TooltipProps) => tooltipData.id);
+    .attr("id", (tooltipData: TooltipProps) => tooltipData.id)
+    .each(() => {
+      const currentValueNode: d3.Selection<
+        SVGTSpanElement | null,
+        unknown,
+        HTMLElement,
+        undefined
+      > = d3.select("#value");
+
+      if (!currentValueNode.empty() && currentValueNode.node()) {
+        const tspanMaxWidth = 110;
+        const originalText = currentValueNode.text();
+
+        let start = 0;
+        let end = tspanMaxWidth;
+        let mid;
+        while (start < end) {
+          mid = Math.floor((start + end) / 2);
+          const truncatedText = `${originalText.slice(0, mid)}...`;
+          currentValueNode.text(truncatedText); // Set text here for width calculation
+          const textWidth =
+            currentValueNode?.node()?.getComputedTextLength() || 0;
+          if (textWidth > tspanMaxWidth) {
+            end = mid;
+          } else {
+            start = mid + 1;
+          }
+        }
+        const truncatedText = `${originalText.slice(0, start - 1)}...`;
+        currentValueNode.text(truncatedText);
+      }
+    });
 }
