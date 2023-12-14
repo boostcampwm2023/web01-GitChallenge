@@ -5,7 +5,7 @@ id,title,description,category,keyword,answer,graph,ref
 2,내 정보 설정하기,현재 디렉터리의 Git 저장소 환경에서 user name과 user email을 여러분의 name과 email로 설정해주세요.,Git Start,config,"`git` config user.name ""유저 이름""\n`git` config user.email 유저 이메일","{
     ""graph"": []
 }",main
-3,파일 스테이징 하기,현재 변경된 파일 중에서 `achitecture.md` 파일을 제외하고 staging 해주세요.,Git Start,"status, add",`git` status\n`git` add README.md docs/plan.md,"{
+3,파일 스테이징 하기,현재 변경된 파일 중에서 `architecture.md` 파일을 제외하고 staging 해주세요.,Git Start,"status, add",`git` status\n`git` add README.md docs/plan.md,"{
     ""graph"": [
         {
             ""id"": ""410b79bff71d5e6ab7ae2d9a94e204c0f83a961e"",
