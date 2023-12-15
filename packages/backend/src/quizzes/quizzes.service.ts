@@ -1,16 +1,15 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Quiz } from './entity/quiz.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuizDto } from './dto/quiz.dto';
 import { CategoryQuizzesDto, QuizzesDto } from './dto/quizzes.dto';
 import { Category } from './entity/category.entity';
-import { ContainersService } from 'src/containers/containers.service';
-import { CommandResponseDto } from './dto/command-response.dto';
 import fs from 'fs';
 import * as Papa from 'papaparse';
 import { Keyword } from './entity/keyword.entity';
 import { Logger } from 'winston';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class QuizzesService {
@@ -21,10 +20,12 @@ export class QuizzesService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(Keyword)
     private keywordRepository: Repository<Keyword>,
-    private containerService: ContainersService,
+    private configService: ConfigService,
     @Inject('winston') private readonly logger: Logger,
   ) {
-    this.initQiuzzes();
+    if (configService.get<string>('NODE_ENV') !== 'test') {
+      this.initQiuzzes();
+    }
   }
 
   private async initQiuzzes() {
@@ -66,6 +67,9 @@ export class QuizzesService {
       quiz.description = data.description;
       quiz.category = categories[data.category];
       quiz.id = data.id;
+      quiz.answer = data.answer || '';
+      quiz.graph = data.graph || '';
+      quiz.ref = data.ref || '';
 
       const keywordList = data.keyword.split(',').map((kw) => kw.trim());
       quiz.keywords = keywordList.map((kw) => keywords[kw]);
@@ -94,15 +98,14 @@ export class QuizzesService {
       });
     });
   }
+  async isQuizExist(id: number): Promise<boolean> {
+    return await this.quizRepository.exist({ where: { id } });
+  }
   async getQuizById(id: number): Promise<QuizDto> {
     const quiz = await this.quizRepository.findOne({
       where: { id },
       relations: ['keywords', 'category'],
     });
-
-    if (!quiz) {
-      throw new NotFoundException(`Quiz ${id} not found`);
-    }
 
     const quizDto: QuizDto = {
       id: quiz.id,
@@ -110,6 +113,7 @@ export class QuizzesService {
       description: quiz.description,
       keywords: quiz.keywords.map((keyword) => keyword.keyword),
       category: quiz.category.name,
+      answer: quiz.answer.split('\\n'),
     };
 
     return quizDto;
@@ -138,15 +142,19 @@ export class QuizzesService {
     return quizzesDtos;
   }
 
-  async runGitCommand(command: string): Promise<CommandResponseDto> {
-    // 세션 검색
+  async getGraphById(id: number): Promise<string> {
+    const quiz = await this.quizRepository.findOne({
+      where: { id },
+    });
 
-    // 세션 없으면 or 세션에 할당된 컨테이너 없으면 컨테이너 생성
-    // await this.containerService.getContainer(quizId);
+    return quiz.graph;
+  }
 
-    // 컨테이너 생성, 세션에 할당하고 DB 저장
+  async getRefById(id: number): Promise<string> {
+    const quiz = await this.quizRepository.findOne({
+      where: { id },
+    });
 
-    // 최종 실행
-    return this.containerService.runGitCommand('testContainer', command);
+    return quiz.ref;
   }
 }

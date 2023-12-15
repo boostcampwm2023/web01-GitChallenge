@@ -1,4 +1,3 @@
-// problem.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsInt, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -48,4 +47,24 @@ export class QuizzesDto {
     ],
   })
   categories: CategoryQuizzesDto[];
+}
+
+export class NotFoundResponseDto {
+  @ApiProperty({
+    description: '없는 문제를 조회했을때',
+    example: 'Quiz 1212 not found',
+  })
+  message: string;
+
+  @ApiProperty({
+    description: `Not Found`,
+    example: 'Not Found',
+  })
+  error: string;
+
+  @ApiProperty({
+    description: `statusCode`,
+    example: 404,
+  })
+  statusCode: number;
 }
