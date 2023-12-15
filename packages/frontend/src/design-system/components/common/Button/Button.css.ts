@@ -2,13 +2,14 @@ import { style, styleVariants } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
 import typography from "../../../tokens/typography";
+import { borderRadius } from "../../../tokens/utils.css";
 
 export const buttonBase = style([
   typography.$semantic.title4Regular,
+  borderRadius,
   {
     height: 42,
     border: "1px solid transparent",
-    borderRadius: 8,
     padding: "8px 13px",
 
     ":disabled": {

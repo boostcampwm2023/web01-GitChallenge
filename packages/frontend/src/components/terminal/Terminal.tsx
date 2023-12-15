@@ -1,51 +1,53 @@
-import { type KeyboardEventHandler, useEffect, useRef } from "react";
+import { type KeyboardEventHandler, forwardRef } from "react";
 
 import { ENTER_KEY } from "../../constants/event";
 import type { TerminalContentType } from "../../types/terminalType";
-import { scrollIntoView } from "../../utils/scroll";
 
-import CommandInput from "./CommandInput";
+import CommandInput, { CommandInputForwardRefType } from "./CommandInput";
 import * as styles from "./Terminal.css";
 import TerminalContent from "./TerminalContent";
 
 interface TerminalProps {
+  gitRef: string;
   contentArray: TerminalContentType[];
-  onTerminal: (input: string) => Promise<void>;
+  onTerminal: (input: string) => void;
 }
 
-export default function Terminal({ contentArray, onTerminal }: TerminalProps) {
-  const inputRef = useRef<HTMLSpanElement>(null);
+const Terminal = forwardRef<CommandInputForwardRefType, TerminalProps>(
+  ({ gitRef, contentArray, onTerminal }, ref) => {
+    const handleStandardInput: KeyboardEventHandler = async (event) => {
+      const {
+        key,
+        currentTarget,
+        nativeEvent: { isComposing },
+      } = event;
+      if (isComposing || key !== ENTER_KEY) {
+        return;
+      }
 
-  const handleStandardInput: KeyboardEventHandler = async (event) => {
-    const { key, currentTarget } = event;
-    if (key !== ENTER_KEY) {
-      return;
-    }
+      event.preventDefault();
 
-    event.preventDefault();
+      const value = (currentTarget.textContent ?? "").trim();
+      if (!value) {
+        return;
+      }
 
-    const value = (currentTarget.textContent ?? "").trim();
-    if (!value) {
-      return;
-    }
+      onTerminal(value);
+    };
 
-    await onTerminal(value);
-
-    currentTarget.textContent = "";
-  };
-
-  useEffect(() => {
-    scrollIntoView(inputRef);
-  }, [contentArray]);
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.hr} />
+    return (
       <div className={styles.terminalContainer}>
         <TerminalContent contentArray={contentArray} />
-
-        <CommandInput handleInput={handleStandardInput} ref={inputRef} />
+        <CommandInput
+          gitRef={gitRef}
+          handleInput={handleStandardInput}
+          ref={ref}
+        />
       </div>
-    </div>
-  );
-}
+    );
+  },
+);
+
+Terminal.displayName = "Terminal";
+
+export default Terminal;

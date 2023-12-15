@@ -2,6 +2,7 @@ import { style } from "@vanilla-extract/css";
 
 import color from "../../../tokens/color";
 import {
+  borderRadius,
   boxShadow,
   flexAlignCenter,
   flexCenter,
@@ -26,23 +27,18 @@ export const container = style([
   boxShadow,
   flexColumn,
   flexAlignCenter,
+  borderRadius,
   {
-    width: 427,
-    borderRadius: 8,
-    padding: 27,
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
+    padding: "48px 27px 40px 27px",
+    position: "relative",
   },
 ]);
 
-export const buttonContainer = style({
-  width: "100%",
-  height: 40,
-  position: "relative",
-});
-
 export const close = style({
   color: color.$scale.grey900,
-  position: "absolute",
-  right: 0,
   fontSize: 40,
+  position: "absolute",
+  right: 20,
+  top: 20,
 });

@@ -1,2 +1,1 @@
-export { Badge } from "./Badge";
-export { BadgeGroup } from "./BadgeGroup";
+export { Badge, badgeVariantList } from "./Badge";
