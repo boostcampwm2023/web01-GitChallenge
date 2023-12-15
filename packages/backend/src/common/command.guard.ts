@@ -18,7 +18,18 @@ export class CommandGuard implements CanActivate {
         (mode === 'editor' ||
           (mode === 'command' &&
             message.startsWith('git') &&
-            !this.isMessageIncluded(message, [';', '>', '|', '<', '&'])))
+            !this.isMessageIncluded(message, [
+              ';',
+              '>',
+              '|',
+              '<',
+              '&',
+              '$',
+              '(',
+              ')',
+              '{',
+              '}',
+            ])))
       )
     ) {
       throw new ForbiddenException('금지된 명령입니다');
