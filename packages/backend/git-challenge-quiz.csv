@@ -400,7 +400,7 @@ id,title,description,category,keyword,answer,graph,ref
 `origin` 저장소 디렉터리: /origin  
 `upstream` 저장소 디렉터리: /upstream
 
-현재 당신의 로컬 저장소의 코드는 `origin` 저장소의 버전에 비해 뒤쳐져 있습니다. 로컬 저장소의 코드를 최신화 해 주세요.",Remote Start,"pull, fetch, rebase",`git` pull origin main\n#or\n`git` fetch origin main\n`git` rebase origin/mainzx,"{
+현재 당신의 로컬 저장소의 코드는 `origin` 저장소의 버전에 비해 뒤쳐져 있습니다. 로컬 저장소의 코드를 최신화 해 주세요.",Remote Start,"pull, fetch, rebase",`git` pull origin main\n#or\n`git` fetch origin main\n`git` rebase origin/main,"{
     ""graph"": [
         {
             ""id"": ""e930ab7d9077037fe675792d382e1f69b6b2be75"",
