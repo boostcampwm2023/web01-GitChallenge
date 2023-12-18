@@ -68,6 +68,7 @@ jobs:
           port: ${{ secrets.NGINX_SSH_PORT }}
           script: |
             CURRENT_STATE=$(cat /status)
+            echo "cur staate is $CURRENT_STATE"
             echo "::set-output name=CURRENT_STATE::$CURRENT_STATE"
 
       - name: SSH and Deploy
@@ -81,21 +82,7 @@ jobs:
             echo "The current state is ${{ steps.get-state.outputs.CURRENT_STATE }}"
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
             if [ ${{ steps.get-state.outputs.CURRENT_STATE }} = "blue" ]; then
-              docker run -d --name backend-blue -p 8081:8080 \
-                -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
-                -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
-                -e MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
-                -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
-                -e X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }} \
-                -e X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }} \
-                -e X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }} \
-                -e CONTAINER_SERVER_HOST=${{ secrets.CONTAINER_SERVER_HOST }} \
-                -e CONTAINER_POOL_MAX=${{ secrets.CONTAINER_POOL_MAX }} \
-                ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
-              docker rm -f backend-green || true
-              echo "green" > /status
-            else
-              docker run -d --name backend-green -p 8080:8080 \
+              docker run -d --name backend-green -p 8081:8080 \
                 -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
                 -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
                 -e MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
@@ -107,6 +94,20 @@ jobs:
                 -e CONTAINER_POOL_MAX=${{ secrets.CONTAINER_POOL_MAX }} \
                 ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
               docker rm -f backend-blue || true
+              echo "green" > /status
+            else
+              docker run -d --name backend-blue -p 8080:8080 \
+                -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
+                -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
+                -e MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
+                -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+                -e X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }} \
+                -e X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }} \
+                -e X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }} \
+                -e CONTAINER_SERVER_HOST=${{ secrets.CONTAINER_SERVER_HOST }} \
+                -e CONTAINER_POOL_MAX=${{ secrets.CONTAINER_POOL_MAX }} \
+                ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
+              docker rm -f backend-green || true
               echo "blue" > /status
             fi
 
