@@ -24,6 +24,7 @@ export class ContainersService {
     private commandService: CommandService,
   ) {
     if (this.configService.get<string>('SERVER_MODE') !== 'dev') {
+      this.commandService.executeCommand('docker rm -f $(docker ps -a -q)');
       this.initializeContainers();
     }
   }
@@ -163,8 +164,6 @@ export class ContainersService {
     const chownUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /remote`;
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
     const mainBranchCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global init.defaultbranch main`;
-    const containerDirectoryCommand = `mkdir /root/store/${containerId}`;
-    const containerDirectoryCpCommand = `docker cp ${containerId}:/home/quizzer/quiz/. /root/store/${containerId}/`;
     await this.commandService.executeCommand(
       createContainerCommand,
       copyFilesCommand,
@@ -175,8 +174,6 @@ export class ContainersService {
       chownUpstreamCommand,
       coreEditorCommand,
       mainBranchCommand,
-      containerDirectoryCommand,
-      containerDirectoryCpCommand,
     );
 
     return containerId;
@@ -204,9 +201,9 @@ export class ContainersService {
         this.availableContainers.get(quizId).push(containerId);
       });
 
-      // if (!(await this.isValidateContainerId(containerId))) {
-      //   return await this.createContainer(quizId);
-      // }
+      if (!(await this.isValidateContainerId(containerId))) {
+        return await this.createContainer(quizId);
+      }
 
       return containerId;
     }
