@@ -13,7 +13,7 @@ import { LoggingInterceptor } from './common/logging.interceptor';
 import { QuizWizardModule } from './quiz-wizard/quiz-wizard.module';
 import { AiModule } from './ai/ai.module';
 import { CommandModule } from './command/command.module';
-import { ContainersService } from './containers/containers.service';
+import { ContainersModule } from './containers/containers.module';
 
 @Module({
   imports: [
@@ -45,6 +45,7 @@ import { ContainersService } from './containers/containers.service';
     QuizWizardModule,
     AiModule,
     CommandModule,
+    ContainersModule,
   ],
   controllers: [AppController],
   providers: [
@@ -53,7 +54,6 @@ import { ContainersService } from './containers/containers.service';
       provide: 'APP_INTERCEPTOR',
       useClass: LoggingInterceptor,
     },
-    ContainersService,
   ],
 })
 export class AppModule {}
