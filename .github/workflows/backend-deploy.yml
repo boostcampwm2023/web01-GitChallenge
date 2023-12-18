@@ -2,7 +2,7 @@ name: "backend-docker-build"
 
 on:
   push:
-    branches: [ "dev-be", "feature-be-#300" ]
+    branches: [ "dev-be" ]
     
 jobs:
   build:
