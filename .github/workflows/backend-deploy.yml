@@ -113,8 +113,8 @@ jobs:
           port: ${{ secrets.NGINX_SSH_PORT }}
           script: |
             if [ "$CURRENT_STATE" = "green" ]; then
-              sed -i 's/proxy_pass http:\/\/[a-zA-Z0-9\.\-]+:8080;/proxy_pass http:\/\/[a-zA-Z0-9\.\-]+:8081;/' /etc/nginx/sites-available/default
+              sed -i 's/8080/8081/' /etc/nginx/sites-available/default
             else
-              sed -i 's/proxy_pass http:\/\/[a-zA-Z0-9\.\-]+:8081;/proxy_pass http:\/\/[a-zA-Z0-9\.\-]+:8080;/' /etc/nginx/sites-available/default
+              sed -i 's/8081/8080/' /etc/nginx/sites-available/default
             fi
             sudo nginx -s reload
