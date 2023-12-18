@@ -71,6 +71,7 @@ jobs:
             docker image prune -f
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
             if [ $CURRENT_STATE = "blue" ]; then
+              docker rm -f backend-green || true
               docker run -d --name backend-green -p 8081:8080 \
                 -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
                 -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
@@ -91,6 +92,7 @@ jobs:
                 -d '{"status":"green"}' \
                 http://${{ secrets.BLUE_GREEN_HOST }}:${{ secrets.BLUE_GREEN_PORT }}/status
             else
+              docker rm -f backend-blue || true
               docker run -d --name backend-blue -p 8080:8080 \
                 -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
                 -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
