@@ -25,7 +25,6 @@ export class ContainersService {
   ) {
     if (this.configService.get<string>('SERVER_MODE') !== 'dev') {
       this.initializeContainers();
-      this.removeUnusedContainers();
     }
   }
 
@@ -42,6 +41,8 @@ export class ContainersService {
 
       this.availableContainers.set(i, containers);
     }
+
+    this.removeUnusedContainers();
   }
 
   async removeUnusedContainers() {
