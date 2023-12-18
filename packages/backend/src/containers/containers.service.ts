@@ -24,8 +24,8 @@ export class ContainersService {
     private commandService: CommandService,
   ) {
     if (this.configService.get<string>('SERVER_MODE') !== 'dev') {
-      this.commandService.executeCommand('docker rm -f $(docker ps -a -q)');
       this.initializeContainers();
+      this.removeUnusedContainers();
     }
   }
 
@@ -42,6 +42,22 @@ export class ContainersService {
 
       this.availableContainers.set(i, containers);
     }
+  }
+
+  async removeUnusedContainers() {
+    const { stdoutData: allContainers } =
+      await this.commandService.executeCommand('docker ps -aq');
+
+    const usedContainers = new Set<string>();
+    this.availableContainers.forEach((containers) => {
+      containers.forEach((containerId) => usedContainers.add(containerId));
+    });
+
+    allContainers.split('\n').forEach((containerId) => {
+      if (!usedContainers.has(containerId)) {
+        this.commandService.executeCommand(`docker rm -f ${containerId}`);
+      }
+    });
   }
 
   private getGitCommand(container: string, command: string): string {
