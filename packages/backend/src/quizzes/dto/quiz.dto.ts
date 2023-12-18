@@ -26,4 +26,11 @@ export class QuizDto {
   @IsString()
   @ApiProperty({ description: '문제 카테고리', example: 'Git Start' })
   readonly category: string;
+
+  @IsString()
+  @ApiProperty({
+    description: '모범 답안',
+    example: ['`git` status', '`git` add README.md docs/plan.md'],
+  })
+  readonly answer: string[];
 }

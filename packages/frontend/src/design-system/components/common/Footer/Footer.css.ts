@@ -7,7 +7,7 @@ import { border, flex } from "../../../tokens/utils.css";
 export const container = style([
   border.top,
   {
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
   },
 ]);
 

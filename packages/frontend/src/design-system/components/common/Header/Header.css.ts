@@ -10,7 +10,8 @@ export const container = style([
   widthMax,
   {
     height: "100%",
+    justifyContent: "space-between",
     margin: "0 auto",
-    backgroundColor: color.$scale.grey00,
+    backgroundColor: color.$semantic.bgDefault,
   },
 ]);

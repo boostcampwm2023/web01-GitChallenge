@@ -1,6 +1,10 @@
+import Link from "next/link";
+
+import { GIT_BOOK_URL } from "../../../constants/path";
 import {
   Accordion,
-  BadgeGroup,
+  Badge,
+  badgeVariantList,
 } from "../../../design-system/components/common";
 
 import badgeGroupLayout from "./CommandAccordion.css";
@@ -21,13 +25,15 @@ export default function CommandAccordion({
           {({ open }) => <>핵심명령어 {open ? "숨기기" : "보기"}</>}
         </Accordion.Summary>
         <div className={badgeGroupLayout}>
-          <BadgeGroup items={items.map(toLabelProps)} />
+          {items.map((item, index) => (
+            <Badge key={item} variant={badgeVariantList[index % items.length]}>
+              <Link href={`${GIT_BOOK_URL}-${item}`} target="_blank">
+                {item}
+              </Link>
+            </Badge>
+          ))}
         </div>
       </Accordion.Details>
     </Accordion>
   );
-}
-
-function toLabelProps(item: string) {
-  return { label: item };
 }

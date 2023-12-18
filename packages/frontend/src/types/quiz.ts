@@ -1,11 +1,12 @@
 export type CommandSuccess = "success";
 export type CommandFail = "fail";
-export type CommandVI = "vi";
+export type CommandEditor = "editor";
 
 export type Command = {
   message: string;
-  result: CommandSuccess | CommandFail | CommandVI;
-  graph?: string;
+  result: CommandSuccess | CommandFail | CommandEditor;
+  graph?: QuizGitGraph;
+  ref: string;
 };
 
 export type Quiz = {
@@ -14,7 +15,10 @@ export type Quiz = {
   description: string;
   keywords: string[];
   category: string;
+  answer: string[];
 };
+
+export type SharedQuiz = Omit<Quiz, "answer">;
 
 export type Quizzes = {
   id: number;
@@ -28,3 +32,23 @@ export type Quizzes = {
 export type Categories = {
   categories: Quizzes;
 };
+
+export type QuizSolve = QuizSolveCorrect | QuizSolveWrong;
+
+export type QuizSolveCorrect = {
+  solved: true;
+  slug: string;
+};
+
+export type QuizSolveWrong = {
+  solved: false;
+};
+
+export type QuizGitGraphCommit = {
+  id: string;
+  parentId: string;
+  message: string;
+  refs: string;
+};
+
+export type QuizGitGraph = QuizGitGraphCommit[];

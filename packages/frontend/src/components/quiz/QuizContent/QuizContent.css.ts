@@ -12,16 +12,11 @@ export const description = style([
   typography.$semantic.body2Regular,
   {
     marginTop: 10,
-    height: 60,
+    maxHeight: 190,
     padding: "0 8px 4px 0",
     color: color.$scale.grey700,
     overflowY: "auto",
     whiteSpace: "break-spaces",
-    "@media": {
-      "(min-width: 1920px) and (max-width: 2559px)": {
-        height: 250,
-      },
-    },
   },
 ]);
 

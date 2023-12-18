@@ -1,6 +1,6 @@
 @import "reset.css";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
-@import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
+@import url("https://fonts.googleapis.com/earlyaccess/notosanskr.css");
 @import url("https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css");
 
 * {
@@ -8,60 +8,39 @@
 }
 
 :root[data-theme] {
+  /* static color part [light, dark] */
+  /* static color [light, dark] */
   --mm-static-color-white: #ffffff;
   --mm-static-color-grey-200: #eaebee;
   --mm-static-color-grey-500: #adb1ba;
-  --mm-static-color-blue-50: #e8f3ff;
-  --mm-static-color-blue-700: #1b64da;
-  --mm-static-color-brown-50: #f4efee;
-  --mm-static-color-brown-100: #ded5d4;
-  --mm-static-color-brown-400: #b19792;
-  --mm-static-color-brown-500: #917974;
-  --mm-static-color-coral-50: #fff1ed;
-  --mm-static-color-coral-100: #ffe3dc;
-  --mm-static-color-coral-400: #ff977d;
-  --mm-static-color-coral-500: #ff7b5a;
-  --mm-static-color-green-50: #f0faf6;
-  --mm-static-color-green-700: #029359;
-  --mm-static-color-orange-50: #fff3e0;
-  --mm-static-color-orange-700: #f57800;
-  --mm-static-color-purple-50: #f9f0fc;
-  --mm-static-color-purple-700: #8222a2;
-  --mm-static-color-red-50: #ffeeee;
-  --mm-static-color-red-700: #d22030;
-  --mm-static-color-teal-50: #edf8f8;
-  --mm-static-color-teal-700: #0c8585;
-  --mm-static-color-yellow-50: #fff9e7;
-  --mm-static-color-yellow-700: #faa131;
-  --mm-semantic-color-text-white-default: var(--mm-static-color-white);
-  --mm-semantic-color-bg-white-default: var(--mm-static-color-white);
+  /* text, text-background color [light, dark] */
+  --mm-semantic-color-text-white: var(--mm-static-color-white);
+  --mm-semantic-color-background-white: var(--mm-static-color-white);
   --mm-semantic-color-text-disabled: var(--mm-static-color-grey-500);
-  --mm-semantic-color-bg-disabled: var(--mm-static-color-grey-200);
-  --mm-semantic-color-badge-blue-bg: var(--mm-static-color-blue-50);
-  --mm-semantic-color-badge-blue: var(--mm-static-color-blue-700);
-  --mm-semantic-color-badge-green-bg: var(--mm-static-color-green-50);
-  --mm-semantic-color-badge-green: var(--mm-static-color-green-700);
-  --mm-semantic-color-badge-orange-bg: var(--mm-static-color-orange-50);
-  --mm-semantic-color-badge-orange: var(--mm-static-color-orange-700);
-  --mm-semantic-color-badge-purple-bg: var(--mm-static-color-purple-50);
-  --mm-semantic-color-badge-purple: var(--mm-static-color-purple-700);
-  --mm-semantic-color-badge-red-bg: var(--mm-static-color-red-50);
-  --mm-semantic-color-badge-red: var(--mm-static-color-red-700);
-  --mm-semantic-color-badge-teal-bg: var(--mm-static-color-teal-50);
-  --mm-semantic-color-badge-teal: var(--mm-static-color-teal-700);
-  --mm-semantic-color-badge-yellow-bg: var(--mm-static-color-yellow-50);
-  --mm-semantic-color-badge-yellow: var(--mm-static-color-yellow-700);
-  --mm-semantic-color-primary-hover: var(--mm-static-color-coral-400);
-  --mm-semantic-color-primary-low-hover: var(--mm-static-color-coral-100);
-  --mm-semantic-color-primary-low: var(--mm-static-color-coral-50);
-  --mm-semantic-color-primary: var(--mm-static-color-coral-500);
-  --mm-semantic-color-secondary-hover: var(--mm-static-color-brown-400);
-  --mm-semantic-color-secondary-low-hover: var(--mm-static-color-brown-100);
-  --mm-semantic-color-secondary-low: var(--mm-static-color-brown-50);
-  --mm-semantic-color-secondary: var(--mm-static-color-brown-500);
-  --mm-semantic-color-success: var(--mm-static-color-blue-700);
-  --mm-semantic-color-danger: var(--mm-static-color-red-700);
-  /* Font Size */
+  --mm-semantic-color-background-disabled: var(--mm-static-color-grey-200);
+  /* scale color part [light, dark] */
+  /* background color [light, dark] */
+  --mm-semantic-color-background-default: var(--mm-scale-color-grey-00);
+  --mm-semantic-color-background-alt: var(--mm-scale-color-grey-50);
+  /* badge color [light, dark] */
+  --mm-semantic-color-badge-blue-bg: var(--mm-scale-color-blue-50);
+  --mm-semantic-color-badge-blue: var(--mm-scale-color-blue-700);
+  --mm-semantic-color-badge-green-bg: var(--mm-scale-color-green-50);
+  --mm-semantic-color-badge-green: var(--mm-scale-color-green-700);
+  --mm-semantic-color-badge-orange-bg: var(--mm-scale-color-orange-50);
+  --mm-semantic-color-badge-orange: var(--mm-scale-color-orange-700);
+  --mm-semantic-color-badge-purple-bg: var(--mm-scale-color-purple-50);
+  --mm-semantic-color-badge-purple: var(--mm-scale-color-purple-700);
+  --mm-semantic-color-badge-red-bg: var(--mm-scale-color-red-50);
+  --mm-semantic-color-badge-red: var(--mm-scale-color-red-700);
+  --mm-semantic-color-badge-teal-bg: var(--mm-scale-color-teal-50);
+  --mm-semantic-color-badge-teal: var(--mm-scale-color-teal-700);
+  --mm-semantic-color-badge-yellow-bg: var(--mm-scale-color-yellow-50);
+  --mm-semantic-color-badge-yellow: var(--mm-scale-color-yellow-700);
+  /* success, danger color [light, dark] */
+  --mm-semantic-color-success: var(--mm-scale-color-green-700);
+  --mm-semantic-color-danger: var(--mm-scale-color-red-700);
+  /* font size */
   --mm-scale-font-size-25: 11px;
   --mm-scale-font-size-50: 12px;
   --mm-scale-font-size-75: 13px;
@@ -72,19 +51,20 @@
   --mm-scale-font-size-400: 24px;
   --mm-scale-font-size-500: 26px;
   --mm-scale-font-size-600: 30px;
-  /* Font Weight */
+  /* font weight */
   --mm-static-font-weight-regular: 400;
   --mm-static-font-weight-bold: 700;
-  /* Line Height */
+  /* line height */
   --mm-static-line-height-small: 135%;
   --mm-static-line-height-medium: 150%;
-  /* Letter Spacing */
+  /* letter spacing */
   --mm-static-letter-spacing-none: 0;
   --mm-static-letter-spacing-medium: -0.3px;
   --mm-static-letter-spacing-large: -0.7px;
 }
 
 :root[data-theme="light"] {
+  /* brown color scale [light] */
   --mm-scale-color-brown-50: #f4efee;
   --mm-scale-color-brown-100: #ded5d4;
   --mm-scale-color-brown-200: #cfc0be;
@@ -96,6 +76,7 @@
   --mm-scale-color-brown-800: #5a4b48;
   --mm-scale-color-brown-900: #4a3c39;
   --mm-scale-color-brown-950: #413932;
+  /* coral color scale [light] */
   --mm-scale-color-coral-50: #fff1ed;
   --mm-scale-color-coral-100: #ffe3dc;
   --mm-scale-color-coral-200: #ffcabc;
@@ -107,6 +88,7 @@
   --mm-scale-color-coral-800: #e64f29;
   --mm-scale-color-coral-900: #cd4b2b;
   --mm-scale-color-coral-950: #a93c20;
+  /* grey color scale [light] */
   --mm-scale-color-grey-00: #ffffff;
   --mm-scale-color-grey-50: #f7f8fa;
   --mm-scale-color-grey-100: #f2f3f6;
@@ -118,44 +100,97 @@
   --mm-scale-color-grey-700: #4d5159;
   --mm-scale-color-grey-800: #393a40;
   --mm-scale-color-grey-900: #212124;
+  /* badge color scale [light] */
+  --mm-scale-color-blue-50: #e8f3ff;
+  --mm-scale-color-blue-700: #1b64da;
+  --mm-scale-color-green-50: #f0faf6;
+  --mm-scale-color-green-700: #029359;
+  --mm-scale-color-orange-50: #fff3e0;
+  --mm-scale-color-orange-700: #f57800;
+  --mm-scale-color-purple-50: #f9f0fc;
+  --mm-scale-color-purple-700: #8222a2;
+  --mm-scale-color-red-50: #ffeeee;
+  --mm-scale-color-red-700: #d22030;
+  --mm-scale-color-teal-50: #edf8f8;
+  --mm-scale-color-teal-700: #0c8585;
+  --mm-scale-color-yellow-50: #fff9e7;
+  --mm-scale-color-yellow-700: #faa131;
+  /* border color [light] */
   --mm-semantic-color-border: var(--mm-scale-color-grey-300);
+  /* primary, secondary color [light] */
+  --mm-semantic-color-primary: var(--mm-scale-color-coral-500);
+  --mm-semantic-color-primary-hover: var(--mm-scale-color-coral-400);
+  --mm-semantic-color-primary-low: var(--mm-scale-color-coral-50);
+  --mm-semantic-color-primary-low-hover: var(--mm-scale-color-coral-100);
+  --mm-semantic-color-secondary: var(--mm-scale-color-brown-500);
+  --mm-semantic-color-secondary-hover: var(--mm-scale-color-brown-400);
+  --mm-semantic-color-secondary-low: var(--mm-scale-color-brown-50);
+  --mm-semantic-color-secondary-low-hover: var(--mm-scale-color-brown-100);
 }
 
 :root[data-theme="dark"] {
-  --mm-scale-color-brown-50: #413932;
-  --mm-scale-color-brown-100: #4a3c39;
-  --mm-scale-color-brown-200: #5a4b48;
-  --mm-scale-color-brown-300: #675552;
-  --mm-scale-color-brown-400: #76605c;
-  --mm-scale-color-brown-500: #917974;
-  --mm-scale-color-brown-600: #b19792;
-  --mm-scale-color-brown-700: #c4b0ad;
-  --mm-scale-color-brown-800: #cfc0be;
-  --mm-scale-color-brown-900: #ded5d4;
-  --mm-scale-color-brown-950: #f4efee;
-  --mm-scale-color-coral-50: #a93c20;
-  --mm-scale-color-coral-100: #cd4b2b;
-  --mm-scale-color-coral-200: #e64f29;
-  --mm-scale-color-coral-300: #f15f3b;
-  --mm-scale-color-coral-400: #fc6e4a;
-  --mm-scale-color-coral-500: #ff7b5a;
-  --mm-scale-color-coral-600: #ff977d;
-  --mm-scale-color-coral-700: #ffb4a1;
-  --mm-scale-color-coral-800: #ffcabc;
-  --mm-scale-color-coral-900: #ffe3dc;
-  --mm-scale-color-coral-950: #fff1ed;
-  --mm-scale-color-grey-00: #212124;
-  --mm-scale-color-grey-50: #393a40;
-  --mm-scale-color-grey-100: #4d5159;
-  --mm-scale-color-grey-200: #868b94;
-  --mm-scale-color-grey-300: #adb1ba;
-  --mm-scale-color-grey-400: #d1d3d8;
-  --mm-scale-color-grey-500: #dcdee3;
-  --mm-scale-color-grey-600: #eaebee;
-  --mm-scale-color-grey-700: #f2f3f6;
-  --mm-scale-color-grey-800: #f7f8fa;
-  --mm-scale-color-grey-900: #ffffff;
+  /* brown color scale [dark] */
+  --mm-scale-color-brown-50: #37302a;
+  --mm-scale-color-brown-100: #3f3330;
+  --mm-scale-color-brown-200: #504340;
+  --mm-scale-color-brown-300: #594a48;
+  --mm-scale-color-brown-400: #65514e;
+  --mm-scale-color-brown-500: #7e6964;
+  --mm-scale-color-brown-600: #9f8884;
+  --mm-scale-color-brown-700: #b5a3a0;
+  --mm-scale-color-brown-800: #bfb1af;
+  --mm-scale-color-brown-900: #d1c7c5;
+  --mm-scale-color-brown-950: #e1d8d6;
+  /* coral color scale [dark] */
+  --mm-scale-color-coral-50: #8e3c27;
+  --mm-scale-color-coral-100: #af4b32;
+  --mm-scale-color-coral-200: #d35030;
+  --mm-scale-color-coral-300: #e45b39;
+  --mm-scale-color-coral-400: #ed6846;
+  --mm-scale-color-coral-500: #f27758;
+  --mm-scale-color-coral-600: #f28f76;
+  --mm-scale-color-coral-700: #f1a997;
+  --mm-scale-color-coral-800: #f1beb1;
+  --mm-scale-color-coral-900: #f4d9d2;
+  --mm-scale-color-coral-950: #f2e4e1;
+  /* grey color scale [dark] */
+  --mm-scale-color-grey-00: #17171a;
+  --mm-scale-color-grey-50: #212124;
+  --mm-scale-color-grey-100: #34373d;
+  --mm-scale-color-grey-200: #43474f;
+  --mm-scale-color-grey-300: #50545c;
+  --mm-scale-color-grey-400: #6d717a;
+  --mm-scale-color-grey-500: #868b94;
+  --mm-scale-color-grey-600: #adb1ba;
+  --mm-scale-color-grey-700: #ced3de;
+  --mm-scale-color-grey-800: #eaebee;
+  --mm-scale-color-grey-900: #f2f3f6;
+  /* badge color scale [dark] */
+  --mm-scale-color-blue-50: #c2cad2;
+  --mm-scale-color-blue-700: #164ea8;
+  --mm-scale-color-green-50: #cdd6d3;
+  --mm-scale-color-green-700: #026b41;
+  --mm-scale-color-orange-50: #dfd5c5;
+  --mm-scale-color-orange-700: #cd6807;
+  --mm-scale-color-purple-50: #d2c8d5;
+  --mm-scale-color-purple-700: #5c1873;
+  --mm-scale-color-red-50: #d8caca;
+  --mm-scale-color-red-700: #b51d2a;
+  --mm-scale-color-teal-50: #cbd3d3;
+  --mm-scale-color-teal-700: #086161;
+  --mm-scale-color-yellow-50: #d9d5c7;
+  --mm-scale-color-yellow-700: #c67e23;
+  /* border color [dark] */
   --mm-semantic-color-border: var(--mm-scale-color-grey-100);
+  /* primary, secondary color [dark] */
+  --mm-semantic-color-primary: var(--mm-scale-color-coral-500);
+  --mm-semantic-color-primary-hover: var(--mm-scale-color-coral-600);
+  --mm-semantic-color-primary-low: var(--mm-scale-color-coral-950);
+  --mm-semantic-color-primary-low-hover: var(--mm-scale-color-coral-900);
+  --mm-semantic-color-secondary: var(--mm-scale-color-brown-500);
+  --mm-semantic-color-secondary-hover: var(--mm-scale-color-brown-600);
+  --mm-semantic-color-secondary-low: var(--mm-scale-color-brown-950);
+  --mm-semantic-color-secondary-low-hover: var(--mm-scale-color-brown-900);
 }
 
 .mm-semantic-typography-h1 {
@@ -293,5 +328,6 @@
 
 .mm-semantic-typography-code {
   font-family: "Fira Code", monospace;
+  font-size: var(--mm-scale-font-size-75);
   line-height: var(--mm-static-line-height-medium);
 }
