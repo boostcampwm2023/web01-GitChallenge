@@ -58,23 +58,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker
     steps:
-      - name: Get Current Deployment Status via SSH
-        id: get-state
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.NGINX_SSH_HOST }}
-          username: ${{ secrets.NGINX_SSH_USERNAME }}
-          password: ${{ secrets.NGINX_SSH_PASSWORD }}
-          port: ${{ secrets.NGINX_SSH_PORT }}
-          script: |
-            scp ${{ secrets.NGINX_SSH_USERNAME }}@${{ secrets.NGINX_SSH_HOST }}:/status ./status
-
-      - name: Read Status File
-        id: read-status
-        run: |
-          CURRENT_STATE=$(cat ./status)
-          echo "CURRENT_STATE=$CURRENT_STATE" >> $GITHUB_ENV
-
       - name: SSH and Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -83,9 +66,10 @@ jobs:
           password: ${{ secrets.BACKEND_SSH_PASSWORD }}
           port: ${{ secrets.BACKEND_SSH_PORT }}
           script: |
-            echo "The current state is ${{ env.CURRENT_STATE }}"
+            CURRENT_STATE=$(curl -s http://${{ secrets.NGINX_SSH_HOST }}:3000/status)
+            echo "The current state is $CURRENT_STATE"
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
-            if [ ${{ env.CURRENT_STATE }} = "blue" ]; then
+            if [ $CURRENT_STATE = "blue" ]; then
               docker run -d --name backend-green -p 8081:8080 \
                 -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
                 -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
@@ -98,7 +82,9 @@ jobs:
                 -e CONTAINER_POOL_MAX=${{ secrets.CONTAINER_POOL_MAX }} \
                 ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
               docker rm -f backend-blue || true
-              echo "green" > /status
+              curl -X POST -H "Content-Type: application/json" \
+                -d '{"status":"green"}' \
+                http://${{ secrets.NGINX_SSH_HOST }}:3000/status
             else
               docker run -d --name backend-blue -p 8080:8080 \
                 -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
@@ -112,7 +98,9 @@ jobs:
                 -e CONTAINER_POOL_MAX=${{ secrets.CONTAINER_POOL_MAX }} \
                 ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
               docker rm -f backend-green || true
-              echo "blue" > /status
+              curl -X POST -H "Content-Type: application/json" \
+                -d '{"status":"blue"}' \
+                http://${{ secrets.NGINX_SSH_HOST }}:3000/status
             fi
 
       - name: Update NGINX Configuration
