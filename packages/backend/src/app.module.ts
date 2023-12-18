@@ -13,6 +13,7 @@ import { LoggingInterceptor } from './common/logging.interceptor';
 import { QuizWizardModule } from './quiz-wizard/quiz-wizard.module';
 import { AiModule } from './ai/ai.module';
 import { CommandModule } from './command/command.module';
+import { ContainersService } from './containers/containers.service';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { CommandModule } from './command/command.module';
       provide: 'APP_INTERCEPTOR',
       useClass: LoggingInterceptor,
     },
+    ContainersService,
   ],
 })
 export class AppModule {}
