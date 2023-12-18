@@ -67,9 +67,13 @@ jobs:
           password: ${{ secrets.NGINX_SSH_PASSWORD }}
           port: ${{ secrets.NGINX_SSH_PORT }}
           script: |
-            CURRENT_STATE=$(cat /status)
-            echo "cur staate is $CURRENT_STATE"
-            echo "::set-output name=CURRENT_STATE::$CURRENT_STATE"
+            scp ${{ secrets.NGINX_SSH_USERNAME }}@${{ secrets.NGINX_SSH_HOST }}:/status ./status
+
+      - name: Read Status File
+        id: read-status
+        run: |
+          CURRENT_STATE=$(cat ./status)
+          echo "CURRENT_STATE=$CURRENT_STATE" >> $GITHUB_ENV
 
       - name: SSH and Deploy
         uses: appleboy/ssh-action@master
@@ -79,9 +83,9 @@ jobs:
           password: ${{ secrets.BACKEND_SSH_PASSWORD }}
           port: ${{ secrets.BACKEND_SSH_PORT }}
           script: |
-            echo "The current state is ${{ steps.get-state.outputs.CURRENT_STATE }}"
+            echo "The current state is ${{ env.CURRENT_STATE }}"
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/git-challenge-backend:0.1
-            if [ ${{ steps.get-state.outputs.CURRENT_STATE }} = "blue" ]; then
+            if [ ${{ env.CURRENT_STATE }} = "blue" ]; then
               docker run -d --name backend-green -p 8081:8080 \
                 -v /${{ secrets.BACKEND_SSH_USERNAME }}/backend-logs:/app/packages/backend/logs/ \
                 -e CONTAINER_GIT_USERNAME=${{ secrets.CONTAINER_GIT_USERNAME }} \
