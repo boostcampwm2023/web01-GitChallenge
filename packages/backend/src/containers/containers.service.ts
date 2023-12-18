@@ -17,6 +17,7 @@ const BRANCH_ESCAPE = '23ASDF2312-ASDFAS223-ASDF2223';
 @Injectable()
 export class ContainersService {
   private availableContainers: Map<number, string[]> = new Map();
+  private initialized: boolean = false;
 
   constructor(
     private configService: ConfigService,
@@ -25,7 +26,13 @@ export class ContainersService {
   ) {
     if (this.configService.get<string>('SERVER_MODE') !== 'dev') {
       this.initializeContainers();
+    } else {
+      this.initialized = true;
     }
+  }
+
+  isInitialized() {
+    return this.initialized;
   }
 
   async initializeContainers() {
@@ -47,6 +54,8 @@ export class ContainersService {
 
       this.availableContainers.set(i, containers);
     }
+
+    this.initialized = true;
 
     existingContainersSet.forEach((containerId) => {
       this.commandService.executeCommand(`docker rm -f ${containerId}`);
