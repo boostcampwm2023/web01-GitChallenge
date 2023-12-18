@@ -29,6 +29,12 @@ export class ContainersService {
   }
 
   async initializeContainers() {
+    const { stdoutData: existingContainers } =
+      await this.commandService.executeCommand('docker ps -aq');
+    const existingContainersSet = new Set(
+      existingContainers.split('\n').filter((id) => id),
+    );
+
     for (let i: number = 1; i < 20; i++) {
       const maxContainers =
         this.configService.get<number>('CONTAINER_POOL_MAX') || 1;
@@ -42,22 +48,8 @@ export class ContainersService {
       this.availableContainers.set(i, containers);
     }
 
-    this.removeUnusedContainers();
-  }
-
-  async removeUnusedContainers() {
-    const { stdoutData: allContainers } =
-      await this.commandService.executeCommand('docker ps -aq');
-
-    const usedContainers = new Set<string>();
-    this.availableContainers.forEach((containers) => {
-      containers.forEach((containerId) => usedContainers.add(containerId));
-    });
-
-    allContainers.split('\n').forEach((containerId) => {
-      if (!usedContainers.has(containerId)) {
-        this.commandService.executeCommand(`docker rm -f ${containerId}`);
-      }
+    existingContainersSet.forEach((containerId) => {
+      this.commandService.executeCommand(`docker rm -f ${containerId}`);
     });
   }
 
