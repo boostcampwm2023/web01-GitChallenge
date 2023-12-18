@@ -5457,6 +5457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/gtag.js@npm:^0.0.18":
+  version: 0.0.18
+  resolution: "@types/gtag.js@npm:0.0.18"
+  checksum: af7a0a5769c5cfbe75e47f2b0346a65db8234b3c89775b897681548dfb6898edb3145153e2bc5dd1751a5ace221e03e6a68b7650ecacc6aa16a099aa9d925c99
+  languageName: node
+  linkType: hard
+
 "@types/html-minifier-terser@npm:^6.0.0":
   version: 6.1.0
   resolution: "@types/html-minifier-terser@npm:6.1.0"
@@ -10951,6 +10958,7 @@ __metadata:
     "@testing-library/react": "npm:^14.1.0"
     "@testing-library/user-event": "npm:^14.5.1"
     "@types/d3": "npm:^7"
+    "@types/gtag.js": "npm:^0.0.18"
     "@types/jest": "npm:^29.5.8"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"

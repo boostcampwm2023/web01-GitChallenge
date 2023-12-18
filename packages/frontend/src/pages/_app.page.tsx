@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.min.css";
 
 import { sessionAPI } from "../apis/session";
+import Scripts from "../components/analytics/Scripts";
+import useGtagEffect from "../components/analytics/useGtagEffect";
 import { UserQuizStatusProvider } from "../contexts/UserQuizStatusContext";
 import { ToastContainer, toast } from "../design-system/components/common";
 import Layout from "../design-system/components/common/Layout";
@@ -31,6 +33,8 @@ export default function App({ Component, pageProps }: AppProps) {
     })();
   }, []);
 
+  useGtagEffect();
+
   return (
     <>
       <React.StrictMode>
@@ -42,6 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
           />
         </Head>
         <UserQuizStatusProvider initialUserQuizStatus={userQuizStatus}>
+          <Scripts />
           <ThemeWrapper>
             <Layout>
               <Component {...pageProps} />
