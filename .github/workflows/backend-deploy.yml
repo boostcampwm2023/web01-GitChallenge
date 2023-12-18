@@ -120,6 +120,7 @@ jobs:
           password: ${{ secrets.NGINX_SSH_PASSWORD }}
           port: ${{ secrets.NGINX_SSH_PORT }}
           script: |
+            CURRENT_STATE=$(curl -s http://${{ secrets.BLUE_GREEN_HOST }}:${{ secrets.BLUE_GREEN_PORT }}/status)
             if [ "$CURRENT_STATE" = "green" ]; then
               sed -i 's/8080/8081/' /etc/nginx/sites-available/default
             else
