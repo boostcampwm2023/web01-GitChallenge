@@ -37,7 +37,9 @@ export class ContainersService {
 
   async initializeContainers() {
     const { stdoutData: existingContainers } =
-      await this.commandService.executeCommand('docker ps -aq');
+      await this.commandService.executeCommand(
+        'docker ps -aq --filter "label=git"',
+      );
     const existingContainersSet = new Set(
       existingContainers.split('\n').filter((id) => id),
     );
@@ -172,8 +174,7 @@ export class ContainersService {
 
     const containerId = uuidv4();
 
-    const createContainerCommand = `docker run -itd --network none -v ~/editor:/editor \
---name ${containerId} mergemasters/alpine-git:0.2 /bin/sh`;
+    const createContainerCommand = `docker run -itd --network none -v ~/editor:/editor --name ${containerId} --label git=true mergemasters/alpine-git:0.2 /bin/sh`;
     const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
     const copyOriginCommand = `[ -d ~/origins/${quizId} ] && docker cp ~/origins/${quizId}/. ${containerId}:/origin/`;
     const copyUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker cp ~/upstreams/${quizId}/. ${containerId}:/upstream/`;
