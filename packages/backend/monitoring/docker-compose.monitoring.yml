@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus-data:/prometheus/data
+      - ./prometheus.yml:/prometheus/prometheus.yml:ro
+    ports:
+      - 9090:9090
+    command:
+      - "--web.enable-lifecycle"
+    restart: always
+    networks:
+      - promnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    user: root
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - ./grafana-volume:/var/lib/grafana
+    restart: always
+    networks:
+      - promnet
+    ports:
+      - 5000:3000
+    user: root
+
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 18080:8080
+    restart: always
+    networks:
+      - promnet
+    user: root
+
+networks:
+  promnet:
+    driver: bridge
