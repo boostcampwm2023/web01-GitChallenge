@@ -1,0 +1,95 @@
+groups:
+- name: system_alerts
+  rules:
+  # CPU Alerts
+  - alert: HighCpuLoad
+    expr: (100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 90
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: CPU 사용량 부하 감지 (30초 간 90%+)
+
+  - alert: HighCpuLoad
+    expr: (100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 80
+    for: 30m
+    labels:
+      severity: warning
+    annotations:
+      summary: CPU 사용량 부하 감지 (30분 간 80%+)
+
+  # Memory Alerts
+  - alert: HighMemoryLoad
+    expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 90
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: 메모리 사용량 부하 감지 (30초 간 90%+)
+
+  - alert: HighMemoryLoad
+    expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 80
+    for: 30m
+    labels:
+      severity: warning
+    annotations:
+      summary: 메모리 사용량 부하 감지 (30분 간 80%+)
+
+  # Disk Alerts
+  #- alert: HighDiskUsage
+  #  expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 90
+  #  for: 1m
+  #  labels:
+  #    severity: warning
+  #  annotations:
+  #    summary: 디스크 사용량 90% 돌파 감지
+
+  - alert: HighDiskUsage
+    expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 95
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: 디스크 사용량 95% 돌파 감지
+
+  # Container Count Alerts
+  - alert: HighContainerCount
+    expr: count by (job)(container_last_seen{image!=""}) > 350
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: 컨테이너 수 350개 돌파 감지
+
+  - alert: HighContainerCount
+    expr: count by (job)(container_last_seen{image!=""}) > 400
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: 컨테이너 수 400개 돌파 감지
+
+  # HttpAlerts
+  - alert: FrontendDown
+    expr: probe_success{service="frontend"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: 프론트엔드 서버 장애 감지
+
+  - alert: GitChallengeDown
+    expr: probe_success{service="git_challenge"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: git-challenge.com 도메인 장애 감지
+
+  - alert: BackendDown
+    expr: (probe_success{service="backend_8080"} == 0 and probe_success{service="backend_8081"} == 0)
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: 백엔드 서버 장애 감지
