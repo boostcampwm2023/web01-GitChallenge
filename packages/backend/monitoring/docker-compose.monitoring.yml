@@ -7,6 +7,7 @@ services:
     volumes:
       - ./prometheus-data:/prometheus/data
       - ./prometheus.yml:/prometheus/prometheus.yml:ro
+      - ./alert.rules.yml:/prometheus/alert.rules.yml:ro
     ports:
       - 9090:9090
     command:
@@ -30,6 +31,19 @@ services:
       - 5000:3000
     user: root
 
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager-data:/alertmanager
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - 9093:9093
+    restart: always
+    networks:
+      - promnet
+    user: root
+
   cadvisor:
     image: google/cadvisor:latest
     container_name: cadvisor
@@ -41,6 +55,20 @@ services:
       - /dev/disk/:/dev/disk:ro
     ports:
       - 18080:8080
+    restart: always
+    networks:
+      - promnet
+    user: root
+
+  blackbox_exporter:
+    image: prom/blackbox-exporter
+    container_name: blackbox_exporter
+    volumes:
+      - ./blackbox.yml:/config/blackbox.yml
+    command:
+      - "--config.file=/config/blackbox.yml"
+    ports:
+      - 9115:9115
     restart: always
     networks:
       - promnet
