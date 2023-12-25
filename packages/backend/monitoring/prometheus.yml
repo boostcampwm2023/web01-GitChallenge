@@ -1,0 +1,63 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+scrape_configs:
+  - job_name: 'git-challenge server node'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['(your node)']
+
+  - job_name: 'git-challenge server cAdvisor'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['(your cAdvisor)']
+
+  - job_name: 'container server node'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['(your node)']
+
+  - job_name: 'container server cAdvisor'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['(your cAdvisor)']
+
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Blackbox Exporter의 http_2xx 모듈 사용
+    static_configs:
+      - targets:
+        - '(your targets)'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115
+      - source_labels: [__param_target]
+        regex: ".*:3000/.*"
+        target_label: service
+        replacement: "frontend"
+      - source_labels: [__param_target]
+        regex: ".*:8080/.*"
+        target_label: service
+        replacement: "backend_8080"
+      - source_labels: [__param_target]
+        regex: ".*:8081/.*"
+        target_label: service
+        replacement: "backend_8081"
+      - source_labels: [__param_target]
+        regex: ".*git-challenge.com.*"
+        target_label: service
+        replacement: "git_challenge"
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - 'alertmanager:9093'
+
+rule_files:
+  - /prometheus/alert.rules.yml
