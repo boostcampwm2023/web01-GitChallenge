@@ -1,0 +1,33 @@
+global:
+  resolve_timeout: 3h
+
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 3h
+  repeat_interval: 3h
+  receiver: 'slack-notifications'
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - api_url: 'https://hooks.slack.com/services/(your secret)'
+    channel: '#monitoring'
+    text: |
+      {{ .Alerts | len }} 개의 알람 발생 중...
+
+      {{ range .Alerts }}
+      탐지 인스턴스: {{ .Labels.job }}
+      알람명: {{ .Labels.alertname }}
+      위험도: {{ .Labels.severity }}
+      내용: {{ .Annotations.summary }}
+
+      {{ end }}
+      대시보드 링크: (your dashboard link)
+
+inhibit_rules:
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  equal: ['alertname']
