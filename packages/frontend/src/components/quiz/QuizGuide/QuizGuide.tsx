@@ -7,7 +7,12 @@ import QuizContent from "../QuizContent";
 
 import * as styles from "./QuizGuide.css";
 
-export function QuizGuide({ quiz }: { quiz: Quiz }) {
+interface QuizGuideProps {
+  quiz: Quiz;
+  keywordsClassName?: string;
+}
+
+export function QuizGuide({ quiz, keywordsClassName }: QuizGuideProps) {
   const { modalOpen, openModal, closeModal } = useModal();
 
   return (
@@ -21,7 +26,11 @@ export function QuizGuide({ quiz }: { quiz: Quiz }) {
           title={quiz.title}
           description={quiz.description}
         />
-        <CommandAccordion width="100%" items={quiz.keywords} />
+        <CommandAccordion
+          width="100%"
+          items={quiz.keywords}
+          className={keywordsClassName}
+        />
         <Button
           className={styles.checkAnswerButton}
           variant="secondaryFill"
