@@ -3,15 +3,19 @@ import { type ReactNode, useEffect, useRef } from "react";
 import { useAccordion } from "./AccordionContextProvider";
 
 interface AccordionDetailsProps {
+  className?: string;
   children: ReactNode;
 }
 
-export default function AccordionDetails({ children }: AccordionDetailsProps) {
+export default function AccordionDetails({
+  className,
+  children,
+}: AccordionDetailsProps) {
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const accordionContext = useAccordion();
   if (!accordionContext) {
     throw new Error(
-      "Accordion.Details 컴포넌트는 Accordion 컴포넌트로 래핑해야 합니다."
+      "Accordion.Details 컴포넌트는 Accordion 컴포넌트로 래핑해야 합니다.",
     );
   }
 
@@ -45,7 +49,12 @@ export default function AccordionDetails({ children }: AccordionDetailsProps) {
   }, [onChange, open]);
 
   return (
-    <details ref={detailsRef} style={{ width }} open={open}>
+    <details
+      ref={detailsRef}
+      style={{ width }}
+      open={open}
+      className={className}
+    >
       {children}
     </details>
   );
