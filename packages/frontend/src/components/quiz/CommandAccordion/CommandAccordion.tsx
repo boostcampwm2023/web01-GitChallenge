@@ -12,15 +12,17 @@ import badgeGroupLayout from "./CommandAccordion.css";
 interface CommandAccordionProps {
   width?: number | string;
   items: string[];
+  className?: string;
 }
 
 export default function CommandAccordion({
   width = "100%",
   items,
+  className,
 }: CommandAccordionProps) {
   return (
     <Accordion width={width}>
-      <Accordion.Details>
+      <Accordion.Details className={className}>
         <Accordion.Summary color="grey" size="sm">
           {({ open }) => <>핵심명령어 {open ? "숨기기" : "보기"}</>}
         </Accordion.Summary>
