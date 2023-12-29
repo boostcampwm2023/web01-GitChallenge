@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { sessionAPI } from "../apis/session";
 import Scripts from "../components/analytics/Scripts";
 import useGtagEffect from "../components/analytics/useGtagEffect";
+import { QuizCoachProvider } from "../contexts/QuizCoachContext";
 import { UserQuizStatusProvider } from "../contexts/UserQuizStatusContext";
 import { ToastContainer, toast } from "../design-system/components/common";
 import Layout from "../design-system/components/common/Layout";
@@ -46,12 +47,14 @@ export default function App({ Component, pageProps }: AppProps) {
           />
         </Head>
         <UserQuizStatusProvider initialUserQuizStatus={userQuizStatus}>
-          <Scripts />
-          <ThemeWrapper>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ThemeWrapper>
+          <QuizCoachProvider>
+            <Scripts />
+            <ThemeWrapper>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </ThemeWrapper>
+          </QuizCoachProvider>
         </UserQuizStatusProvider>
       </React.StrictMode>
       <ToastContainer />
