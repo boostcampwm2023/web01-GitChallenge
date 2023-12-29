@@ -7,11 +7,20 @@ import { quizAPI } from "../../apis/quiz";
 import { Editor } from "../../components/editor";
 import EditorInfo from "../../components/editor/EditorInfo";
 import { Graph } from "../../components/graph";
-import { SolvedModal, useSolvedModal } from "../../components/quiz";
+import {
+  COACHMARK_TARGETS,
+  QuizCoachmark,
+  SolvedModal,
+  useSolvedModal,
+} from "../../components/quiz";
 import { QuizGuide } from "../../components/quiz/QuizGuide";
 import { Terminal } from "../../components/terminal";
 import { CommandInputForwardRefType } from "../../components/terminal/CommandInput";
 import { BROWSWER_PATH } from "../../constants/path";
+import {
+  useQuizCoachActionContext,
+  useQuizCoachContext,
+} from "../../contexts/QuizCoachContext";
 import {
   UserQuizStatusActionType,
   useUserQuizStatusDispatch,
@@ -26,6 +35,7 @@ import {
 } from "../../reducers/terminalReducer";
 import { Categories, Quiz, QuizGitGraphCommit } from "../../types/quiz";
 import { TerminalContentType } from "../../types/terminalType";
+import classnames from "../../utils/classnames";
 import { isString } from "../../utils/typeGuard";
 
 import * as styles from "./quiz.css";
@@ -43,6 +53,9 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
   const solvedModal = useSolvedModal(isString(id) ? +id : -1);
   const [{ terminalMode, editorFile, contentArray }, terminalDispatch] =
     useReducer(terminalReducer, initialTerminalState);
+
+  const run = useQuizCoachContext();
+  const { handleEnd } = useQuizCoachActionContext();
 
   const terminalInputRef = useRef<CommandInputForwardRefType>(null);
 
@@ -170,11 +183,17 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
       <main className={styles.mainContainer}>
         <div className={styles.mainInnerContainer}>
           <div className={styles.topContainer} ref={topRef}>
-            <Graph className={styles.graph} data={gitGraphData} />
-            <QuizGuide quiz={quiz} />
+            <Graph
+              className={classnames(styles.graph, COACHMARK_TARGETS.GIT_GRAPH)}
+              data={gitGraphData}
+            />
+            <QuizGuide
+              quiz={quiz}
+              keywordsClassName={COACHMARK_TARGETS.KEY_COMMAND}
+            />
           </div>
           <div
-            className={styles.bar}
+            className={classnames(styles.bar, COACHMARK_TARGETS.RESIZABLE)}
             role="button"
             tabIndex={0}
             ref={barRef}
@@ -191,6 +210,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
               contentArray={contentArray}
               onTerminal={handleTerminal}
               ref={terminalInputRef}
+              className={COACHMARK_TARGETS.TERMINAL}
             />
           )}
         </div>
@@ -212,6 +232,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
           onNextQuiz={handleNextQuizPage}
         />
       )}
+      {run && <QuizCoachmark onTourEnd={handleEnd} />}
     </>
   );
 }
