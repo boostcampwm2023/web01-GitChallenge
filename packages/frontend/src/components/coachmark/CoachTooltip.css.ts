@@ -13,7 +13,6 @@ export const container = style([
     position: "relative",
     width: 398,
     padding: 16,
-    color: color.$scale.grey800,
     backgroundColor: color.$semantic.bgWhite,
   },
 ]);
@@ -22,17 +21,13 @@ export const header = style([flexAlignCenter, { gap: 5, marginBottom: 12 }]);
 
 export const title = style([typography.$semantic.title3Bold]);
 
-export const stepProgress = style([
-  typography.$semantic.caption2Regular,
-  { color: color.$scale.grey500 },
-]);
+export const stepProgress = style([typography.$semantic.caption2Regular]);
 
 export const closeButton = style({
   position: "absolute",
   top: 13,
   right: 3,
   border: 0,
-  color: color.$scale.grey700,
   backgroundColor: "transparent",
 });
 
@@ -56,7 +51,6 @@ export const actionButtonVariant = styleVariants({
     actionBaseButton,
     {
       padding: 0,
-      color: color.$scale.grey600,
       backgroundColor: "transparent",
     },
   ],
