@@ -45,7 +45,8 @@ const LOCALE: RequiredJoyrideProps["locale"] = {
 
 const STYLES: RequiredJoyrideProps["styles"] = {
   options: {
-    overlayColor: "rgba(0, 0, 0, 0.2)",
+    arrowColor: color.$semantic.bgWhite,
+    overlayColor: "rgba(0, 0, 0, 0.6)",
     primaryColor: color.$semantic.primary,
     zIndex: coachmarkZIndex,
   },
