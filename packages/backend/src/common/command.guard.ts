@@ -31,6 +31,8 @@ export class CommandGuard implements CanActivate {
               '}',
               `
 `,
+              `!`,
+              '`',
             ])))
       )
     ) {
