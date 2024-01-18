@@ -27,7 +27,7 @@ export const base = style([
   flex,
   widthMax,
   {
-    height: "100vh",
+    height: `calc(100vh - ${headerHeight})`,
     margin: "0 auto",
   },
 ]);

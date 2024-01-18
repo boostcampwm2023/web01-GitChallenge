@@ -17,13 +17,21 @@ export const container = style([
   },
 ]);
 
-export const actionGroup = style([flexAlignCenter, { gap: 4 }]);
+export const actionGroup = style([flexAlignCenter, { gap: 10 }]);
 
 export const tutorialButton = style([
   typography.$semantic.body2Regular,
+  flexAlignCenter,
+  border.all,
   {
-    border: 0,
-    backgroundColor: "transparent",
+    backgroundColor: color.$scale.grey00,
+    borderRadius: "8px",
+    padding: 15,
+    height: 36,
     color: color.$scale.grey700,
+    transition: "border 0.2s ease",
+    ":hover": {
+      border: `1px solid ${color.$scale.grey600}`,
+    },
   },
 ]);

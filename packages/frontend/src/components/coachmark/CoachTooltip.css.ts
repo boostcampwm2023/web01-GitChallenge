@@ -11,7 +11,7 @@ export const container = style([
   borderRadius,
   {
     position: "relative",
-    width: 398,
+    width: 350,
     padding: 16,
     backgroundColor: color.$semantic.bgWhite,
   },
@@ -19,7 +19,7 @@ export const container = style([
 
 export const header = style([flexAlignCenter, { gap: 5, marginBottom: 12 }]);
 
-export const title = style([typography.$semantic.title3Bold]);
+export const title = style([typography.$semantic.title4Bold]);
 
 export const stepProgress = style([typography.$semantic.caption2Regular]);
 
@@ -32,7 +32,7 @@ export const closeButton = style({
 });
 
 export const content = style([
-  typography.$semantic.title3Regular,
+  typography.$semantic.title4Regular,
   { height: 53 },
 ]);
 
@@ -42,7 +42,7 @@ export const footer = style([
 ]);
 
 const actionBaseButton = style([
-  typography.$semantic.body2Regular,
+  typography.$semantic.caption1Regular,
   { border: 0 },
 ]);
 
