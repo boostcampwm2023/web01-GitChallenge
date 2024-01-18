@@ -1,4 +1,4 @@
-import { EVENTS } from "react-joyride";
+import { ACTIONS, EVENTS } from "react-joyride";
 
 import { Coachmark, type CoachmarkProps } from "../../coachmark";
 
@@ -10,13 +10,14 @@ export function QuizCoachmark({ onTourEnd }: QuizCoachmarkProps) {
   const handleProgress: CoachmarkProps["callback"] = ({
     index: stepIndex,
     type,
+    action,
   }) => {
     if (stepIndex === HEARDER_OVERLAP_STEP && type === EVENTS.TOOLTIP) {
       window?.scroll(0, 0);
       return;
     }
 
-    if (type === EVENTS.TOUR_END) {
+    if (type === EVENTS.TOUR_END || action === ACTIONS.CLOSE) {
       onTourEnd();
     }
   };
