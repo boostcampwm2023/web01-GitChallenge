@@ -5,8 +5,7 @@ import { instance } from "./base";
 
 export const sessionAPI = {
   resetSession: async () => {
-    const { data } = await instance.delete(API_PATH.SESSION);
-    return data;
+    await instance.delete(API_PATH.SESSION);
   },
   getUserQuizStatus: async () => {
     const { data } = await instance.get<UserQuizStatus>(
