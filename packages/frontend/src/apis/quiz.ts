@@ -33,8 +33,7 @@ export const quizAPI = {
     return data;
   },
   resetQuizById: async (id: number) => {
-    const { data } = await instance.delete(`${API_PATH.QUIZZES}/${id}/command`);
-    return data;
+    await instance.delete(`${API_PATH.QUIZZES}/${id}/command`);
   },
   getSharedAnswer: async (slug: string) => {
     const { data } = await instance.get<GetSharedAnswerResponse>(
