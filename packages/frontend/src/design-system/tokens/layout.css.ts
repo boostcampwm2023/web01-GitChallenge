@@ -17,7 +17,7 @@ export const header = style([
   widthFull,
   {
     height: headerHeight,
-    position: "fixed",
+    position: "sticky",
     top: 0,
     left: 0,
   },
@@ -28,7 +28,6 @@ export const base = style([
   widthMax,
   {
     height: "100vh",
-    paddingTop: headerHeight,
     margin: "0 auto",
   },
 ]);
