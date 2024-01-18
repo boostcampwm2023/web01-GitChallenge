@@ -50,6 +50,9 @@ const STYLES: RequiredJoyrideProps["styles"] = {
     primaryColor: color.$semantic.primary,
     zIndex: coachmarkZIndex,
   },
+  beacon: {
+    display: "none",
+  },
 };
 
 const FLOATER_PROPS: RequiredJoyrideProps["floaterProps"] = {
