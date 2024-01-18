@@ -7,7 +7,7 @@ import { Accordion } from "../Accordion";
 import { gitHelpNavigation } from "./nav";
 import * as styles from "./SideBar.css";
 
-export default function GitHelpAccordian() {
+export default function GitHelpAccordion() {
   const { pathname } = useRouter();
   const current = pathname === BROWSWER_PATH.MAIN;
   return (
