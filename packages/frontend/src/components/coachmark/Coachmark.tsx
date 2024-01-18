@@ -2,7 +2,6 @@ import ReactJoyride, { type Props as JoyrideProps } from "react-joyride";
 
 import color from "../../design-system/tokens/color";
 import { coachmarkZIndex } from "../../design-system/tokens/utils.css";
-import useMount from "../../hooks/useMount";
 
 import { CoachTooltip } from "./CoachTooltip";
 
@@ -18,9 +17,6 @@ export type CoachmarkProps = Partial<
 >;
 
 export function Coachmark(props: CoachmarkProps) {
-  const { mounted } = useMount();
-
-  if (!mounted) return null;
   return (
     <ReactJoyride
       {...props}
