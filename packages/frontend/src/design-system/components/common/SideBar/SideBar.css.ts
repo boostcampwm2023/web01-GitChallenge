@@ -68,6 +68,7 @@ export const navigation = style([
 ]);
 
 export const resetButton = style([
+  flexAlignCenter,
   typography.$semantic.caption1Regular,
   {
     width: 200,
@@ -75,8 +76,6 @@ export const resetButton = style([
     color: color.$scale.grey800,
     border: "none",
     position: "relative",
-    display: "flex",
-    alignItems: "center",
     borderTop: `1px solid ${color.$scale.grey300}`,
     paddingTop: 10,
     paddingLeft: 20,
