@@ -1,13 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import {
-  flex,
-  flexColumn,
-  scrollBarHidden,
-  topLayer,
-  widthFull,
-  widthMax,
-} from "./utils.css";
+import { flex, flexColumn, topLayer, widthFull, widthMax } from "./utils.css";
 
 export const headerHeight = "56px";
 const footerHeight = "250px";
@@ -35,12 +28,11 @@ export const base = style([
 
 export const sideBar = style([
   flexColumn,
-  scrollBarHidden,
   {
     maxHeight: "100vh",
     width: 250,
     padding: "30px 0px",
-    gap: 24,
+    gap: 20,
   },
 ]);
 
