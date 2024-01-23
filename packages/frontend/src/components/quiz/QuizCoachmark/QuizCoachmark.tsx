@@ -7,16 +7,7 @@ interface QuizCoachmarkProps {
 }
 
 export function QuizCoachmark({ onTourEnd }: QuizCoachmarkProps) {
-  const handleProgress: CoachmarkProps["callback"] = ({
-    index: stepIndex,
-    type,
-    action,
-  }) => {
-    if (stepIndex === HEARDER_OVERLAP_STEP && type === EVENTS.TOOLTIP) {
-      window?.scroll(0, 0);
-      return;
-    }
-
+  const handleProgress: CoachmarkProps["callback"] = ({ type, action }) => {
     if (type === EVENTS.TOUR_END || action === ACTIONS.CLOSE) {
       onTourEnd();
     }
@@ -40,9 +31,6 @@ export const COACHMARK_TARGETS = {
   TERMINAL: "coach--terminal",
   RESIZABLE: "coach--resizable",
 };
-
-const GIT_GRAPH_STEP = 0;
-const HEARDER_OVERLAP_STEP = GIT_GRAPH_STEP;
 
 const STEPS: CoachmarkProps["steps"] = [
   {
