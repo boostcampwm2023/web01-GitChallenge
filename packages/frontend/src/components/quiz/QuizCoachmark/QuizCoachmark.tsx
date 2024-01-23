@@ -1,7 +1,10 @@
 import { ACTIONS, EVENTS } from "react-joyride";
 
+import {
+  Coachmark,
+  type CoachmarkProps,
+} from "../../../design-system/components/common";
 import { toClassSelector } from "../../../utils/cssSelector";
-import { Coachmark, type CoachmarkProps } from "../../coachmark";
 
 interface QuizCoachmarkProps {
   onTourEnd: () => void;

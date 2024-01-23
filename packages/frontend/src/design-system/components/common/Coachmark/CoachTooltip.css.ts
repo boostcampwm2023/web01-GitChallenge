@@ -1,11 +1,8 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import color from "../../design-system/tokens/color";
-import typography from "../../design-system/tokens/typography";
-import {
-  borderRadius,
-  flexAlignCenter,
-} from "../../design-system/tokens/utils.css";
+import color from "../../../tokens/color";
+import typography from "../../../tokens/typography";
+import { borderRadius, flexAlignCenter } from "../../../tokens/utils.css";
 
 export const container = style([
   borderRadius,
