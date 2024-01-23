@@ -1,5 +1,6 @@
 import { ACTIONS, EVENTS } from "react-joyride";
 
+import { toClassSelector } from "../../../utils/cssSelector";
 import { Coachmark, type CoachmarkProps } from "../../coachmark";
 
 interface QuizCoachmarkProps {
@@ -60,7 +61,3 @@ const STEPS: CoachmarkProps["steps"] = [
     placement: "top",
   },
 ];
-
-function toClassSelector(className: string) {
-  return `.${className}`;
-}
