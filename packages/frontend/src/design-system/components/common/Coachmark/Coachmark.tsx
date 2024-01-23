@@ -1,7 +1,7 @@
 import ReactJoyride, { type Props as JoyrideProps } from "react-joyride";
 
-import color from "../../design-system/tokens/color";
-import { coachmarkZIndex } from "../../design-system/tokens/utils.css";
+import color from "../../../tokens/color";
+import { coachmarkZIndex } from "../../../tokens/utils.css";
 
 import { CoachTooltip } from "./CoachTooltip";
 
