@@ -1,1 +1,2 @@
-export { COACHMARK_TARGETS, QuizCoachmark } from "./QuizCoachmark";
+export { QuizCoachmark } from "./QuizCoachmark";
+export { COACHMARK_TARGETS } from "./coachmarkData";
