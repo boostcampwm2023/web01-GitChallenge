@@ -3,6 +3,7 @@ name: "backend-docker-build"
 on:
   push:
     branches: [ "dev-be" ]
+  workflow_dispatch:  # 수동 트리거를 위한 설정
     
 jobs:
   build:
