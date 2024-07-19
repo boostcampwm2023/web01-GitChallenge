@@ -16,7 +16,7 @@ const BRANCH_ESCAPE = '23ASDF2312-ASDFAS223-ASDF2223';
 
 @Injectable()
 export class ContainersService {
-  private availableContainers: Map<number, string[]> = new Map();
+  private availableContainers: string[] = [];
   private initialized: boolean = false;
 
   constructor(
@@ -44,17 +44,11 @@ export class ContainersService {
       existingContainers.split('\n').filter((id) => id),
     );
 
-    for (let i: number = 1; i < 20; i++) {
-      const maxContainers =
-        this.configService.get<number>('CONTAINER_POOL_MAX') || 1;
-      const containers = [];
-
-      for (let j = 0; j < maxContainers; j++) {
-        const containerId = await this.createContainer(i);
-        containers.push(containerId);
-      }
-
-      this.availableContainers.set(i, containers);
+    const maxContainers =
+      this.configService.get<number>('CONTAINER_POOL_MAX') || 3;
+    for (let i = 0; i < maxContainers; i++) {
+      const containerId = await this.createContainer();
+      this.availableContainers.push(containerId);
     }
 
     this.initialized = true;
@@ -167,14 +161,18 @@ export class ContainersService {
     };
   }
 
-  async createContainer(quizId: number): Promise<string> {
+  async createContainer(): Promise<string> {
+    const containerId = uuidv4();
+    const createContainerCommand = `docker run -itd --network none -v ~/editor:/editor --name ${containerId} --label git=true mergemasters/alpine-git:0.2 /bin/sh`;
+    await this.commandService.executeCommand(createContainerCommand);
+    return containerId;
+  }
+
+  async setupContainer(containerId: string, quizId: number): Promise<void> {
     const user: string = this.configService.get<string>(
       'CONTAINER_GIT_USERNAME',
     );
 
-    const containerId = uuidv4();
-
-    const createContainerCommand = `docker run -itd --network none -v ~/editor:/editor --name ${containerId} --label git=true mergemasters/alpine-git:0.2 /bin/sh`;
     const copyFilesCommand = `docker cp ~/quizzes/${quizId}/. ${containerId}:/home/${user}/quiz/`;
     const copyOriginCommand = `[ -d ~/origins/${quizId} ] && docker cp ~/origins/${quizId}/. ${containerId}:/origin/`;
     const copyUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker cp ~/upstreams/${quizId}/. ${containerId}:/upstream/`;
@@ -183,8 +181,8 @@ export class ContainersService {
     const chownUpstreamCommand = `[ -d ~/upstreams/${quizId} ] && docker exec -u root ${containerId} chown -R ${user}:${user} /remote`;
     const coreEditorCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global core.editor /editor/output.sh`;
     const mainBranchCommand = `docker exec -w /home/quizzer/quiz/ -u ${user} ${containerId} git config --global init.defaultbranch main`;
+
     await this.commandService.executeCommand(
-      createContainerCommand,
       copyFilesCommand,
       copyOriginCommand,
       copyUpstreamCommand,
@@ -194,8 +192,6 @@ export class ContainersService {
       coreEditorCommand,
       mainBranchCommand,
     );
-
-    return containerId;
   }
 
   async getContainer(
@@ -206,24 +202,30 @@ export class ContainersService {
       typeof quizIdParam === 'string' ? parseInt(quizIdParam, 10) : quizIdParam;
 
     if (this.configService.get<string>('SERVER_MODE') === 'dev') {
-      return this.createContainer(quizId);
+      const containerId = await this.createContainer();
+      await this.setupContainer(containerId, quizId);
+      return containerId;
     }
 
-    if (this.availableContainers.get(quizId).length > 0) {
-      const containerId = this.availableContainers.get(quizId).shift();
+    if (this.availableContainers.length > 0) {
+      const containerId = this.availableContainers.shift();
 
       this.commandService.executeCron(
-        `(sleep 1800; docker rm -f ${containerId} >/dev/null 2>&1) &`,
+        `(sleep 900; docker rm -f ${containerId} >/dev/null 2>&1) &`,
       );
 
-      this.createContainer(quizId).then((containerId) => {
-        this.availableContainers.get(quizId).push(containerId);
+      this.createContainer().then(async (newContainerId) => {
+        await this.setupContainer(newContainerId, quizId);
+        this.availableContainers.push(newContainerId);
       });
 
       if (!(await this.isValidateContainerId(containerId))) {
-        return await this.createContainer(quizId);
+        const newContainerId = await this.createContainer();
+        await this.setupContainer(newContainerId, quizId);
+        return newContainerId;
       }
 
+      await this.setupContainer(containerId, quizId);
       return containerId;
     }
 
